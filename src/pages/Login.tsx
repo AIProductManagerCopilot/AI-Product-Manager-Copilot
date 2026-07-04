@@ -45,7 +45,7 @@ export const LoginPage: React.FC = () => {
     try {
       setIsLoading(true);
       setErrorMessage(null);
-      await login(data.email, data.password, data.rememberMe);
+      await login(data.email, data.password);
 
       setSuccessAnimation(true);
       setTimeout(() => {

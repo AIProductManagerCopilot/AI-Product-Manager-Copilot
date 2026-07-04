@@ -24,6 +24,7 @@ export const DashboardMockPage: React.FC = () => {
             <img
               src={user?.avatarUrl || 'https://api.dicebear.com/7.x/bottts/svg?seed=pm'}
               alt="Avatar"
+              referrerPolicy="no-referrer"
               className="w-7 h-7 rounded-full bg-primary/20 border border-primary/40"
             />
             <div className="flex flex-col text-left">

@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
+import { auth } from '../config/firebase';
 import { authService, User } from '../services/authService';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, pass: string, remember?: boolean) => Promise<void>;
+  login: (email: string, pass: string) => Promise<void>;
   registerUser: (data: { fullName: string; email: string; organization: string; role: string; password: string }) => Promise<void>;
   loginOAuth: (provider: 'google' | 'github') => Promise<void>;
   logout: () => void;
@@ -19,30 +21,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const existingUser = authService.getCurrentUser();
-    if (existingUser) {
-      setUser(existingUser);
-    }
-    setIsLoading(false);
+    // Set up Firebase Auth state observer
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+      setIsLoading(true);
+      if (firebaseUser) {
+        try {
+          const mappedUser = await authService.mapUser(firebaseUser);
+          setUser(mappedUser);
+        } catch (e) {
+          console.error("Failed to map Firebase user on state change:", e);
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+      setIsLoading(false);
+    });
+
+    // Unsubscribe on unmount
+    return () => unsubscribe();
   }, []);
 
-  const login = async (email: string, pass: string, remember: boolean = true) => {
-    const res = await authService.login(email, pass, remember);
-    setUser(res.user);
+  const login = async (email: string, pass: string) => {
+    const mappedUser = await authService.login(email, pass);
+    setUser(mappedUser);
   };
 
   const registerUser = async (data: { fullName: string; email: string; organization: string; role: string; password: string }) => {
-    const res = await authService.register(data);
-    setUser(res.user);
+    const mappedUser = await authService.register(data);
+    setUser(mappedUser);
   };
 
   const loginOAuth = async (provider: 'google' | 'github') => {
-    const res = await authService.loginWithOAuth(provider);
-    setUser(res.user);
+    const mappedUser = await authService.loginWithOAuth(provider);
+    setUser(mappedUser);
   };
 
-  const logout = () => {
-    authService.logout();
+  const logout = async () => {
+    await authService.logout();
     setUser(null);
   };
 
