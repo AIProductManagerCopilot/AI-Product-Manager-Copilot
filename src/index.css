@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #0D1117;
+    color: #F8FAFC;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  background: rgba(22, 27, 34, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(45, 55, 72, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.glass-panel-glow {
+  background: rgba(22, 27, 34, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  box-shadow: 0 0 40px -10px rgba(59, 130, 246, 0.2);
+}
+
+.glass-input {
+  background: rgba(13, 17, 23, 0.6);
+  border: 1px solid #2D3748;
+  color: #F8FAFC;
+  transition: all 0.2s ease-in-out;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), 0 0 15px rgba(59, 130, 246, 0.15);
+  background: rgba(13, 17, 23, 0.85);
+}
+
+/* Grid & Radial Background Effects */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(45, 55, 72, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(45, 55, 72, 0.15) 1px, transparent 1px);
+}
+
+.radial-glow-primary {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, rgba(13, 17, 23, 0) 70%);
+}
+
+.radial-glow-secondary {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, rgba(13, 17, 23, 0) 70%);
+}
+
+/* Shimmer animation */
+@keyframes shimmer-move {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer-move 2.5s infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0D1117;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2D3748;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
