@@ -50,3 +50,54 @@ npm run dev
 ```bash
 npm run build
 ```
+### Flow Diagram
+```
+                 User
+                   │
+                   ▼
+      Login (Firebase Authentication)
+                   │
+                   ▼
+          Create / Select Project
+                   │
+                   ▼
+      Upload Product Documents / Feedback
+                   │
+                   ▼
+        Document Processing Service
+                   │
+        ┌──────────┴──────────┐
+        ▼                     ▼
+ Text Extraction        Feedback Cleaning
+        │                     │
+        └──────────┬──────────┘
+                   ▼
+          NLP Preprocessing
+                   │
+                   ▼
+        Theme Extraction Engine
+                   │
+                   ▼
+      Feature Request Aggregation
+                   │
+                   ▼
+ AI Prioritization & Impact Analysis
+        ┌─────────┼───────────┐
+        ▼         ▼           ▼
+ PRD      User Stories    Roadmap
+Generator  Generator      Generator
+        │
+        ▼
+ Store Results in Firestore
+        │
+        ▼
+ RAG Knowledge Base (ChromaDB)
+        │
+        ▼
+ Conversational AI Assistant
+        │
+        ▼
+ Dashboard & Reports
+```
+### System Architecture
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/1499bcdb-c8a1-4b68-889a-d12ed8b4d33e" />
