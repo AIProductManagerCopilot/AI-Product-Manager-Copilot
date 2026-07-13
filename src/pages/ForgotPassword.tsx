@@ -8,6 +8,7 @@ import { AuthLayout } from '../components/AuthLayout';
 import { InputField } from '../components/InputField';
 import { LoadingButton } from '../components/LoadingButton';
 import { authService } from '../services/authService';
+import { useTheme } from '../context/ThemeContext';
 
 const forgotPasswordSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
@@ -16,6 +17,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 
 export const ForgotPasswordPage: React.FC = () => {
+  const { isDark } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState('');
@@ -44,6 +46,12 @@ export const ForgotPasswordPage: React.FC = () => {
     }
   };
 
+  const cardClass = isDark
+    ? 'bg-[#0D1117]/80 border-[#2D3748]'
+    : 'bg-[#F8FAFC] border-[#E2E8F0] shadow-sm';
+
+  const titleColor = isDark ? 'text-white' : 'text-[#0F172A]';
+
   return (
     <AuthLayout
       title={isSent ? 'Check Your Inbox' : 'Forgot Password?'}
@@ -56,13 +64,13 @@ export const ForgotPasswordPage: React.FC = () => {
       {isSent ? (
         <div className="space-y-6 animate-fadeIn py-2">
           {/* Inbox Success Card */}
-          <div className="p-5 rounded-2xl bg-[#0D1117]/80 border border-[#2D3748] flex flex-col items-center justify-center gap-3 text-center">
+          <div className={`p-5 rounded-2xl border flex flex-col items-center justify-center gap-3 text-center ${cardClass}`}>
             <div className="w-12 h-12 rounded-xl bg-status-success/20 border border-status-success/40 flex items-center justify-center text-status-success">
               <CheckCircle2 className="w-7 h-7" />
             </div>
 
             <div className="space-y-1">
-              <h4 className="text-sm font-bold text-white">Reset Link Dispatched</h4>
+              <h4 className={`text-sm font-bold ${titleColor}`}>Reset Link Dispatched</h4>
               <p className="text-xs text-text-secondary leading-relaxed">
                 Check your email inbox and click the reset button inside to set up a new password for your account.
               </p>

@@ -4,10 +4,12 @@ import { CheckCircle2, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { AuthLayout } from '../components/AuthLayout';
 import { LoadingButton } from '../components/LoadingButton';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 export const VerifyEmailPage: React.FC = () => {
   const navigate = useNavigate();
   const { verifyEmail, user } = useAuth();
+  const { isDark } = useTheme();
   const [isVerifying, setIsVerifying] = useState(true);
 
   useEffect(() => {
@@ -18,6 +20,12 @@ export const VerifyEmailPage: React.FC = () => {
 
     return () => clearTimeout(timer);
   }, [verifyEmail]);
+
+  const cardClass = isDark
+    ? 'bg-gradient-to-b from-status-success/15 via-[#161B22] to-[#0D1117] border-status-success/30'
+    : 'bg-gradient-to-b from-status-success/5 via-white to-white border-status-success/20 shadow-xl';
+
+  const titleColor = isDark ? 'text-white' : 'text-[#0F172A]';
 
   return (
     <AuthLayout
@@ -38,7 +46,7 @@ export const VerifyEmailPage: React.FC = () => {
       ) : (
         <div className="space-y-6 animate-fadeIn py-2">
           {/* Success Card */}
-          <div className="p-6 rounded-2xl bg-gradient-to-b from-status-success/15 via-[#161B22] to-[#0D1117] border border-status-success/30 flex flex-col items-center justify-center gap-4 text-center shadow-xl">
+          <div className={`p-6 rounded-2xl border flex flex-col items-center justify-center gap-4 text-center ${cardClass}`}>
             {/* Glowing Success Icon */}
             <div className="relative">
               <div className="absolute -inset-2 bg-status-success/30 rounded-full blur-md animate-pulse"></div>
@@ -48,7 +56,7 @@ export const VerifyEmailPage: React.FC = () => {
             </div>
 
             <div className="space-y-1.5">
-              <h3 className="text-xl font-extrabold text-white tracking-tight">
+              <h3 className={`text-xl font-extrabold tracking-tight ${titleColor}`}>
                 Email Verified Successfully
               </h3>
               <p className="text-xs text-text-secondary leading-relaxed max-w-xs mx-auto">
