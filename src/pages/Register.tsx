@@ -11,6 +11,7 @@ import { PasswordStrengthMeter } from '../components/PasswordStrengthMeter';
 import { LoadingButton } from '../components/LoadingButton';
 import { SocialLoginButtons } from '../components/SocialLoginButtons';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 // Zod schema for Registration
 const registerSchema = z
@@ -41,6 +42,7 @@ const ROLES = ['Product Manager', 'Founder', 'Business Analyst', 'Developer', 'S
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const { registerUser, loginOAuth } = useAuth();
+  const { isDark } = useTheme();
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -105,6 +107,13 @@ export const RegisterPage: React.FC = () => {
     }
   };
 
+  const successTitleColor = isDark ? 'text-white' : 'text-[#0F172A]';
+  const dividerBorder = isDark ? 'border-[#2D3748]' : 'border-[#E2E8F0]';
+  const dividerBg = isDark ? 'bg-[#161B22]' : 'bg-[#FFFFFF]';
+  const checkboxBg = isDark ? 'bg-[#0D1117] border-[#2D3748]' : 'bg-white border-[#CBD5E1]';
+  const subBorder = isDark ? 'border-[#2D3748]/50' : 'border-[#E2E8F0]';
+  const dropdownBg = isDark ? 'bg-[#161B22]' : 'bg-white';
+
   return (
     <AuthLayout
       title="Create Workspace"
@@ -115,7 +124,7 @@ export const RegisterPage: React.FC = () => {
           <div className="w-16 h-16 rounded-full bg-status-success/20 border border-status-success flex items-center justify-center text-status-success animate-bounce">
             <CheckCircle2 className="w-10 h-10" />
           </div>
-          <h3 className="text-xl font-bold text-white">Account Created!</h3>
+          <h3 className={`text-xl font-bold ${successTitleColor}`}>Account Created!</h3>
           <p className="text-xs text-text-secondary">Directing to email verification...</p>
         </div>
       ) : (
@@ -128,8 +137,8 @@ export const RegisterPage: React.FC = () => {
           />
 
           <div className="relative flex items-center justify-center my-3">
-            <div className="w-full border-t border-[#2D3748]"></div>
-            <span className="absolute px-3 bg-[#161B22] text-xs font-semibold text-text-muted uppercase tracking-wider">
+            <div className={`w-full border-t ${dividerBorder}`}></div>
+            <span className={`absolute px-3 text-xs font-semibold text-text-muted uppercase tracking-wider ${dividerBg}`}>
               OR
             </span>
           </div>
@@ -187,7 +196,7 @@ export const RegisterPage: React.FC = () => {
                     className="w-full py-2.5 pl-10 pr-3.5 rounded-input text-sm glass-input appearance-none cursor-pointer"
                   >
                     {ROLES.map((r) => (
-                      <option key={r} value={r} className="bg-[#161B22] text-text-primary">
+                      <option key={r} value={r} className={`${dropdownBg} text-text-primary`}>
                         {r}
                       </option>
                     ))}
@@ -223,7 +232,7 @@ export const RegisterPage: React.FC = () => {
               <label className="flex items-start gap-2.5 cursor-pointer text-xs text-text-secondary hover:text-text-primary transition-colors">
                 <input
                   type="checkbox"
-                  className="mt-0.5 w-4 h-4 rounded bg-[#0D1117] border-[#2D3748] text-primary focus:ring-primary/40 focus:ring-offset-0"
+                  className={`mt-0.5 w-4 h-4 rounded text-primary focus:ring-primary/40 focus:ring-offset-0 ${checkboxBg}`}
                   {...register('termsAccepted')}
                 />
                 <span>
@@ -255,7 +264,7 @@ export const RegisterPage: React.FC = () => {
           </form>
 
           {/* Footer Navigation */}
-          <div className="text-center text-xs text-text-secondary pt-2 border-t border-[#2D3748]/50">
+          <div className={`text-center text-xs text-text-secondary pt-2 border-t ${subBorder}`}>
             <span>Already have an account? </span>
             <Link to="/login" className="text-primary hover:text-primary-light font-bold transition-colors">
               Login

@@ -3,12 +3,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, ShieldCheck } from 'lucide-react';
 import { AuthLayout } from '../components/AuthLayout';
 import { PasswordField } from '../components/PasswordField';
 import { PasswordStrengthMeter } from '../components/PasswordStrengthMeter';
 import { LoadingButton } from '../components/LoadingButton';
 import { authService } from '../services/authService';
+import { useTheme } from '../context/ThemeContext';
 
 const resetPasswordSchema = z
   .object({
@@ -28,6 +29,7 @@ type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
 
 export const ResetPasswordPage: React.FC = () => {
   const navigate = useNavigate();
+  const { isDark } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -60,6 +62,8 @@ export const ResetPasswordPage: React.FC = () => {
     }
   };
 
+  const titleColor = isDark ? 'text-white' : 'text-[#0F172A]';
+
   return (
     <AuthLayout
       title="Reset Password"
@@ -71,7 +75,7 @@ export const ResetPasswordPage: React.FC = () => {
             <CheckCircle2 className="w-10 h-10" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-xl font-bold text-white">Password Updated!</h3>
+            <h3 className={`text-xl font-bold ${titleColor}`}>Password Updated!</h3>
             <p className="text-xs text-text-secondary">
               Your password has been changed successfully. Redirecting to login...
             </p>

@@ -10,6 +10,7 @@ import { PasswordField } from '../components/PasswordField';
 import { LoadingButton } from '../components/LoadingButton';
 import { SocialLoginButtons } from '../components/SocialLoginButtons';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 // Zod validation schema
 const loginSchema = z.object({
@@ -23,6 +24,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login, loginOAuth } = useAuth();
+  const { isDark } = useTheme();
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -75,6 +77,12 @@ export const LoginPage: React.FC = () => {
     }
   };
 
+  const successTitleColor = isDark ? 'text-white' : 'text-[#0F172A]';
+  const dividerBorder = isDark ? 'border-[#2D3748]' : 'border-[#E2E8F0]';
+  const dividerBg = isDark ? 'bg-[#161B22]' : 'bg-[#FFFFFF]';
+  const checkboxBg = isDark ? 'bg-[#0D1117] border-[#2D3748]' : 'bg-white border-[#CBD5E1]';
+  const subBorder = isDark ? 'border-[#2D3748]/50' : 'border-[#E2E8F0]';
+
   return (
     <AuthLayout
       title="Welcome Back"
@@ -86,7 +94,7 @@ export const LoginPage: React.FC = () => {
           <div className="w-16 h-16 rounded-full bg-status-success/20 border border-status-success flex items-center justify-center text-status-success animate-bounce">
             <CheckCircle2 className="w-10 h-10" />
           </div>
-          <h3 className="text-xl font-bold text-white">Authenticated Successfully!</h3>
+          <h3 className={`text-xl font-bold ${successTitleColor}`}>Authenticated Successfully!</h3>
           <p className="text-xs text-text-secondary">Redirecting to your copilot dashboard...</p>
         </div>
       ) : (
@@ -100,8 +108,8 @@ export const LoginPage: React.FC = () => {
 
           {/* Divider */}
           <div className="relative flex items-center justify-center my-4">
-            <div className="w-full border-t border-[#2D3748]"></div>
-            <span className="absolute px-3 bg-[#161B22] text-xs font-semibold text-text-muted uppercase tracking-wider">
+            <div className={`w-full border-t ${dividerBorder}`}></div>
+            <span className={`absolute px-3 text-xs font-semibold text-text-muted uppercase tracking-wider ${dividerBg}`}>
               OR
             </span>
           </div>
@@ -138,7 +146,7 @@ export const LoginPage: React.FC = () => {
               <label className="flex items-center gap-2 text-text-secondary cursor-pointer hover:text-text-primary transition-colors">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 rounded bg-[#0D1117] border-[#2D3748] text-primary focus:ring-primary/40 focus:ring-offset-0"
+                  className={`w-4 h-4 rounded text-primary focus:ring-primary/40 focus:ring-offset-0 ${checkboxBg}`}
                   {...register('rememberMe')}
                 />
                 <span>Remember Me</span>
@@ -165,7 +173,7 @@ export const LoginPage: React.FC = () => {
           </form>
 
           {/* Footer Navigation */}
-          <div className="text-center text-xs text-text-secondary pt-2 border-t border-[#2D3748]/50">
+          <div className={`text-center text-xs text-text-secondary pt-2 border-t ${subBorder}`}>
             <span>Don't have an account? </span>
             <Link to="/register" className="text-primary hover:text-primary-light font-bold transition-colors">
               Create Account
