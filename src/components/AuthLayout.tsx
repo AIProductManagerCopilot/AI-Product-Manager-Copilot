@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Logo } from './Logo';
 import { Sparkles, Bot, LineChart, FileText, CheckCircle2, Zap, Layers, BarChart3 } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
+import { useTheme } from '../context/ThemeContext';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -10,10 +12,24 @@ interface AuthLayoutProps {
 }
 
 export const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) => {
+  const { isDark } = useTheme();
+
+  const cardBg = isDark
+    ? 'glass-panel border-[#2D3748]'
+    : 'bg-white border-[#E2E8F0] shadow-2xl';
+
+  const titleClass   = isDark ? 'text-white' : 'text-[#0F172A]';
+  const subtitleClass = isDark ? 'text-text-secondary' : 'text-[#64748B]';
+
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row items-center justify-center p-4 sm:p-6 lg:p-0">
-      
-      {/* LEFT SIDE: AI-themed Split Screen Visual (Desktop & Large Screens) */}
+    <div className="min-h-screen w-full flex flex-col lg:flex-row items-center justify-center p-4 sm:p-6 lg:p-0 relative">
+
+      {/* Theme Toggle — top-right corner on all screen sizes */}
+      <div className="absolute top-4 right-4 z-50">
+        <ThemeToggle variant="auth" />
+      </div>
+
+      {/* LEFT SIDE */}
       <div className="hidden lg:flex lg:w-1/2 min-h-screen flex-col justify-between p-12 relative border-r border-[#2D3748]/50 bg-gradient-to-br from-[#0D1117] via-[#161B22]/60 to-[#0D1117] overflow-hidden">
         
         {/* Header Logo */}
@@ -158,18 +174,18 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitl
             <Logo size="md" />
           </div>
 
-          {/* Main Glassmorphism Auth Card */}
-          <div className="glass-panel rounded-card p-6 sm:p-8 border border-[#2D3748] shadow-2xl relative overflow-hidden">
+          {/* Main Auth Card */}
+          <div className={`rounded-card p-6 sm:p-8 border relative overflow-hidden ${cardBg}`}>
             
             {/* Top Subtle Card Glow Accent Line */}
             <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-80" />
 
             {/* Card Title & Subtitle */}
             <div className="mb-6 space-y-1">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+              <h2 className={`text-xl sm:text-2xl font-extrabold tracking-tight ${titleClass}`}>
                 {title}
               </h2>
-              <p className="text-xs sm:text-sm text-text-secondary">
+              <p className={`text-xs sm:text-sm ${subtitleClass}`}>
                 {subtitle}
               </p>
             </div>
