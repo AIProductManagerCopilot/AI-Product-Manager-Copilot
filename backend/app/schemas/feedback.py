@@ -1,6 +1,6 @@
 # backend/app/schemas/feedback.py
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Dict, Any, Optional
 
 class FeedbackCreate(BaseModel):
     content: str = Field(..., min_length=5, description="The raw customer feedback, review, or ticket text.")
@@ -10,10 +10,11 @@ class FeedbackCreate(BaseModel):
 class FeedbackResponse(BaseModel):
     id: str
     project_id: str
-    content: str
-    cleaned_content: str
     source: str
-    status: str
+    content: str = Field(..., description="The original raw feedback text.")
+    cleaned_content: str = Field(..., description="The preprocessed, tag-free feedback text.")
+    status: str = "Processed"
+    ai_insights: Optional[Dict[str, Any]] = Field(None, description="Structured intelligence insights returned by Gemini API.")
 
     class Config:
         from_attributes = True

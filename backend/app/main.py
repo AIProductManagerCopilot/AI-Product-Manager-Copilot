@@ -1,7 +1,13 @@
 # backend/app/main.py
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.v1 import feedback  # Import our new router file
+from dotenv import load_dotenv
+
+# Force load the .env file explicitly from the directory root
+load_dotenv()
+
+from app.api.v1 import feedback  # Registered right after env setup to prevent early initialization drops
 
 app = FastAPI(
     title="AI Product Manager Copilot API",
@@ -23,4 +29,4 @@ app.include_router(feedback.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():
-    return {"status": "Online", "engine": "FastAPI on Docker isolated port 5433"}
+    return {"status": "Online", "engine": "FastAPI on Docker isolated port 5433 (Gemini Engine Active)"}
