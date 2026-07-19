@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 import json
 import uuid
+from backend.app.services.ai_engine import AIOrchestratorServicePipeline
 
 from app.schemas.feedback import FeedbackCreate, FeedbackResponse
 from app.services.preprocess import clean_customer_feedback
