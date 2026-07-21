@@ -229,3 +229,5 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 pgdata_fresh/ 
+qdrant_db/ 
+backend/qdrant_db/ 
