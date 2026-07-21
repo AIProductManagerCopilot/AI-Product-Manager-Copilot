@@ -1,4 +1,3 @@
-# backend/app/main.py
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,7 +6,13 @@ from dotenv import load_dotenv
 # Force load the .env file explicitly from the directory root
 load_dotenv()
 
-from app.api.v1 import feedback  # Registered right after env setup to prevent early initialization drops
+# Initialize structured logging on application boot
+from app.core.logging import setup_logging
+setup_logging(json_format=False, log_level="INFO")
+
+# Registered right after env and logging setup to prevent early initialization drops
+from app.api.v1 import feedback  
+from app.api.v1 import copilot
 
 app = FastAPI(
     title="AI Product Manager Copilot API",
@@ -24,9 +29,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register the new ingestion pipeline router
+# Register core application routers
 app.include_router(feedback.router, prefix="/api/v1")
+app.include_router(copilot.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():
-    return {"status": "Online", "engine": "FastAPI on Docker isolated port 5433 (Gemini Engine Active)"}
+    return {
+        "status": "Online", 
+        "engine": "FastAPI on Docker isolated port 5433 (Gemini Engine Active)"
+    }

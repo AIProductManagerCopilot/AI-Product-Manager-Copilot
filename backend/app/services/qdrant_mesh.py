@@ -4,24 +4,35 @@ from typing import List
 import structlog
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qmodels
-from qdrant_client.errors import UnexpectedResponse
+from qdrant_client.http.exceptions import UnexpectedResponse
 
-from backend.app.services.schemas import VectorPayloadModel, RAGContextSnippet, RAGContextResponse
+from app.services.schemas import VectorPayloadModel, RAGContextSnippet, RAGContextResponse
 
 logger = structlog.get_logger(__name__)
 
 class QdrantVectorMeshClient:
     def __init__(self):
-        self.url = os.environ["QDRANT_URL"]
-        self.collection_name = os.environ["QDRANT_COLLECTION"]
+        self.url = os.environ.get("QDRANT_URL", "./qdrant_db")
+        self.collection_name = os.environ.get("QDRANT_COLLECTION", "product_context")
         self.api_key = os.environ.get("QDRANT_API_KEY")
-        self.allow_init = os.environ.get("ALLOW_QDRANT_INIT", "false").lower() == "true"
+        self.allow_init = os.environ.get("ALLOW_QDRANT_INIT", "true").lower() == "true"
         
-        # Pinned configuration setting target embedding dimension constraint
-        self.target_dimension = 768  
+        # Updated dimension constraint to match Gemini gemini-embedding-001 model output
+        self.target_dimension = 3072  
         
-        # Initialize thread-safe synchronization connection pool architecture
-        self.client = QdrantClient(url=self.url, api_key=self.api_key, timeout=10.0)
+        # Handle in-memory fallback, remote HTTP, and local directory paths explicitly
+        if self.url == ":memory:":
+            logger.info("Initializing in-memory Qdrant Client instance")
+            self.client = QdrantClient(location=":memory:")
+            self.allow_init = True
+        elif self.url.startswith("http://") or self.url.startswith("https://"):
+            logger.info("Connecting to remote Qdrant cluster instance", url=self.url)
+            self.client = QdrantClient(url=self.url, api_key=self.api_key, timeout=10.0)
+        else:
+            logger.info("Connecting to local disk-persisted Qdrant storage", path=self.url)
+            self.client = QdrantClient(path=self.url)
+            self.allow_init = True
+            
         self._ensure_collection_bootstrapped()
 
     def _ensure_collection_bootstrapped(self) -> None:
@@ -57,7 +68,11 @@ class QdrantVectorMeshClient:
         log = logger.bind(correlation_id=correlation_id, workspace_id=workspace_id)
         
         if len(vector) != self.target_dimension:
-            log.error("Vector write operations barred due to dimension mismatch", engine_dim=len(vector), expected=self.target_dimension)
+            log.error(
+                "Vector write operations barred due to dimension mismatch", 
+                engine_dim=len(vector), 
+                expected=self.target_dimension
+            )
             raise ValueError("Provided semantic search payload dimensions fail layout compatibility rules")
 
         log.debug("Executing isolated semantic search over vector partition space")
@@ -83,15 +98,18 @@ class QdrantVectorMeshClient:
             snippets = []
             for hit in search_result:
                 payload_data = hit.payload or {}
-                # Map payload safely into inner domain schema bounds
+                
+                # Map payload safely with fallback for keys populated by seeding scripts
+                text_content = payload_data.get("text_chunk") or payload_data.get("text", "")
+                
                 validated_payload = VectorPayloadModel(
-                    text_chunk=payload_data.get("text_chunk", ""),
+                    text_chunk=text_content,
                     source_id=payload_data.get("source_id", ""),
                     document_id=payload_data.get("document_id", ""),
                     chunk_index=payload_data.get("chunk_index", 0),
-                    source_type=payload_data.get("source_type", "unknown"),
+                    source_type=payload_data.get("source_type", "ticket"),
                     sentiment=payload_data.get("sentiment", "neutral"),
-                    created_at=payload_data.get("created_at", os.utils.utcnow() if hasattr(os, 'utils') else None),
+                    created_at=payload_data.get("created_at", None),
                     workspace_id=payload_data.get("workspace_id", workspace_id)
                 )
                 

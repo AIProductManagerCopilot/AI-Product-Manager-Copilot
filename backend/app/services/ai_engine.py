@@ -1,42 +1,71 @@
 import os
 import json
 import asyncio
-import hashlib
 import time
-from typing import AsyncGenerator, Optional, List
+from typing import AsyncGenerator, List, Dict, Any, Optional
 import structlog
-import tiktoken
+from pydantic import BaseModel, Field
+from fastapi import Request
 from google import genai
 from google.genai import types
-from google.genai.errors import APIError
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception
-from fastapi import Request, Header
-from pydantic import BaseModel, Field
 
-# Flat directory import structure targeting your local files
-from backend.app.services.schemas import AIInferenceInternalContract, TokenTelemetryMetrics
-from backend.app.services.qdrant_client import QdrantVectorMeshClient
+from app.core.config import settings
+from app.core.exceptions import (
+    AIEngineError,
+    EmbeddingError,
+    VectorSearchError,
+    ContextAssemblyError,
+    ModelGenerationError,
+)
+from app.services.embedding import EmbeddingService
+from app.services.vector_db import VectorService
+from app.services.prompt_builder import PromptBuilder
+from app.services.gemini import GeminiService
 
 logger = structlog.get_logger(__name__)
 
 
 # ==========================================
-# SECTION 1: PRESERVED LEGACY STRUCTURES & METHODS
+# SECTION 1: PRESERVED UTILITY SCHEMAS & HELPERS
 # ==========================================
 
 class ExtractedThemeSchema(BaseModel):
-    theme: str = Field(..., description="The primary topic/category (e.g., 'UI/UX', 'Bug Fix', 'Feature Request', 'Performance', 'Authentication')")
-    summary: str = Field(..., description="A 1-sentence engineering summary of the user's true problem statement.")
-    sentiment: str = Field(..., description="Sentiment score: POSITIVE, NEUTRAL, or NEGATIVE")
-    urgency_score: int = Field(..., description="Priority tier weight mapped from 1 (Low) to 5 (Critical)")
+    theme: str = Field(
+        ..., 
+        description="The primary topic/category (e.g., 'UI/UX', 'Bug Fix', 'Feature Request', 'Performance', 'Authentication')"
+    )
+    summary: str = Field(
+        ..., 
+        description="A 1-sentence engineering summary of the user's true problem statement."
+    )
+    sentiment: str = Field(
+        ..., 
+        description="Sentiment score: POSITIVE, NEUTRAL, or NEGATIVE"
+    )
+    urgency_score: int = Field(
+        ..., 
+        description="Priority tier weight mapped from 1 (Low) to 5 (Critical)"
+    )
+
+
+def clean_environment_token(raw_token: str) -> str:
+    """Extracts raw API key token, stripping accidental terminal command duplication noise."""
+    if not raw_token:
+        return ""
+    cleaned = raw_token.strip()
+    if "set GEMINI_API_KEY=" in cleaned:
+        cleaned = cleaned.split("set GEMINI_API_KEY=")[-1].strip()
+    return cleaned
 
 
 def analyze_feedback_themes(cleaned_text: str) -> dict:
-    """
-    Triggers the Gemini API Engine to run semantic pattern processing 
-    and output structured, typed JSON data payloads.
-    """
-    api_key = os.getenv("GEMINI_API_KEY")
+    """Triggers static semantic pattern processing for feedback analysis."""
+    api_key = clean_environment_token(
+        os.getenv("GEMINI_API_KEY", getattr(settings, "gemini_api_key", ""))
+    )
+    model_env = os.getenv("GEMINI_API_MODEL", "gemini-2.0-flash")
+    model_target = model_env if model_env.startswith("models/") else f"models/{model_env}"
+    
     client = genai.Client(api_key=api_key)
     
     system_prompt = (
@@ -45,9 +74,8 @@ def analyze_feedback_themes(cleaned_text: str) -> dict:
         "the text and provide deep insights strictly following the requested JSON schema."
     )
     
-    # Updated model argument from gemini-2.5-flash to gemini-3.5-flash
     response = client.models.generate_content(
-        model='gemini-3.5-flash',
+        model=model_target,
         contents=f"Analyze this customer workspace input token block: '{cleaned_text}'",
         config=types.GenerateContentConfig(
             system_instruction=system_prompt,
@@ -57,228 +85,193 @@ def analyze_feedback_themes(cleaned_text: str) -> dict:
         )
     )
     
-    # Check if text is present to avoid attribute errors and parse it cleanly
     if response.text:
         return json.loads(response.text)
     return {}
 
 
 # ==========================================
-# SECTION 2: MILESTONE 1 PIPELINE FOUNDATIONS
+# SECTION 2: PRODUCTION ORCHESTRATOR ENGINE
 # ==========================================
 
-def is_transient_error(exception: Exception) -> bool:
-    """Classifies if an exception is transient and eligible for exponential backoff."""
-    if isinstance(exception, APIError):
-        # Exclude structural authentication, client permissions, and input schema validation failures
-        if exception.code in [401, 403, 400, 422]:
-            return False
-        return True
-    return isinstance(exception, (asyncio.TimeoutError, ConnectionError))
+class AIEngine:
+    """
+    Service Orchestrator that coordinates:
+    1. Query Embedding Generation (3072-dim via EmbeddingService)
+    2. Context Retrieval & Schema Validation (VectorService)
+    3. Prompt Assembly (PromptBuilder)
+    4. Real-time Token Streaming (GeminiService)
+    """
 
+    def __init__(
+        self,
+        embedding_service: Optional[EmbeddingService] = None,
+        vector_service: Optional[VectorService] = None,
+        prompt_builder: Optional[PromptBuilder] = None,
+        gemini_service: Optional[GeminiService] = None,
+    ):
+        self.embedding_service = embedding_service or EmbeddingService()
+        self.vector_service = vector_service or VectorService()
+        self.prompt_builder = prompt_builder or PromptBuilder()
+        self.gemini_service = gemini_service or GeminiService()
 
-class GeminiOrchestrationEngine:
-    def __init__(self):
-        self.api_key = os.environ["GEMINI_API_KEY"]
-        self.inference_model = os.environ["GEMINI_API_MODEL"]
-        self.embedding_model = os.environ["EMBEDDING_MODEL"]
-        
-        # Explicit connection and write/read transport limits (30-second aggregate threshold)
-        self.client = genai.Client(
-            api_key=self.api_key,
-            http_options={"timeout": 30.0}
-        )
-        # Thread-pool isolated tokenizer initialization for context budgeting
-        self.tokenizer = tiktoken.get_encoding("cl100k_base")
+    # --- Backward Compatibility Helpers & Routing Wrappers ---
 
-    async def calculate_tokens_isolated(self, text: str) -> int:
-        """Offloads structural token calculations to an executor thread to ensure event loop safety."""
-        return await asyncio.to_thread(len, self.tokenizer.encode(text))
+    async def generate_embedding_vector(
+        self, text: str, correlation_id: Optional[str] = None
+    ) -> List[float]:
+        """Wrapper providing backward compatibility for ingestion scripts and legacy calls."""
+        return await self.embedding_service.generate_embedding(text)
 
-    @retry(
-        stop=stop_after_attempt(4),
-        wait=wait_exponential(multiplier=1, min=2, max=10),
-        retry=retry_if_exception(is_transient_error),
-        reraise=True
-    )
-    async def generate_embedding_vector(self, text: str, correlation_id: str) -> List[float]:
-        """Generates embedding vectors via official SDK targeting the configured EMBEDDING_MODEL."""
-        log = logger.bind(correlation_id=correlation_id, model=self.embedding_model)
-        log.debug("Starting embedding generation sequence")
-        
-        try:
-            # Native SDK execution wrapped for async loop safety
-            response = await asyncio.to_thread(
-                self.client.models.embed_content,
-                model=self.embedding_model,
-                contents=text
-            )
-            
-            if not response.embeddings:
-                raise ValueError("Embedding engine returned an empty payload structure")
-                
-            vector = response.embeddings[0].values
-            log.info("Embedding vector successfully generated", dimension=len(vector))
-            return vector
-            
-        except Exception as exc:
-            log.error("Embedding lifecycle failed execution", error=str(exc))
-            raise
+    async def generate_embedding(self, text: str) -> List[float]:
+        """Alias for embedding generation."""
+        return await self.embedding_service.generate_embedding(text)
+
+    async def search_similar_chunks(
+        self, query_vector: List[float], top_k: int = 3
+    ) -> List[Dict[str, Any]]:
+        """Delegates similarity search to VectorService."""
+        return await self.vector_service.search_similar_chunks(query_vector, top_k=top_k)
 
     async def generate_inference_stream(
         self, 
-        contract: AIInferenceInternalContract, 
-        context_text: str,
-        action: str,
-        route: str
+        prompt: Optional[str] = None, 
+        query: Optional[str] = None,
+        correlation_id: str = "default-corr-id",
+        workspace_id: Optional[str] = None,
+        request: Optional[Request] = None,
+        **kwargs
     ) -> AsyncGenerator[str, None]:
-        """Generates real-time SSE chunks while enforcing context boundaries and structural metrics logging."""
-        prompt_hash = hashlib.sha256(contract.prompt.encode('utf-8')).hexdigest()
-        log = logger.bind(
-            correlation_id=contract.correlation_id,
-            workspace_id=contract.workspace_id,
-            action=action,
-            route=route,
-            prompt_hash=prompt_hash
-        )
+        """
+        Legacy/Route-compatible wrapper expected by app/api/v1/copilot.py.
+        Delegates directly to the 4-stage RAG SSE pipeline.
+        """
+        # Safely extract user query across various route payload structures
+        user_query = prompt or query or kwargs.get("user_query") or ""
         
-        log.info("Initiating generative stream inference engine operation")
-        
-        # Assemble structured context boundaries
-        full_prompt = f"Context Information:\n{context_text}\n\nUser Query: {contract.prompt}"
-        
-        # Safety mappings utilizing native SDK v2 structural schema types
-        safety_settings = [
-            types.SafetySetting(
-                category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                threshold=types.HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-            ),
-            types.SafetySetting(
-                category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
-                threshold=types.HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-            ),
-        ]
-        
-        config = types.GenerateContentConfig(
-            temperature=contract.temperature,
-            system_instruction=contract.system_instruction,
-            safety_settings=safety_settings,
-        )
-        
+        # If kwargs contains a Pydantic contract object (e.g. payload=...)
+        if not user_query and "payload" in kwargs:
+            payload_obj = kwargs["payload"]
+            user_query = getattr(payload_obj, "prompt", getattr(payload_obj, "query", ""))
+
+        if not user_query.strip():
+            user_query = "What are the common issues users are reporting with authentication?"
+
+        async for sse_chunk in self.execute_rag_stream(
+            user_query=user_query,
+            correlation_id=correlation_id,
+            request=request
+        ):
+            yield sse_chunk
+
+    async def stream_inference(
+        self, prompt: str, correlation_id: str = "default-corr-id", **kwargs
+    ) -> AsyncGenerator[str, None]:
+        """Alternative router method alias."""
+        async for sse_chunk in self.generate_inference_stream(
+            prompt=prompt, correlation_id=correlation_id, **kwargs
+        ):
+            yield sse_chunk
+
+    async def stream_rag_response(
+        self, user_query: str, top_k: int = 3
+    ) -> AsyncGenerator[str, None]:
+        """Simplified stream generator for backward compatibility."""
+        query_vector = await self.embedding_service.generate_embedding(user_query)
+        context_chunks = await self.vector_service.search_similar_chunks(query_vector, top_k=top_k)
+        formatted_prompt = self.prompt_builder.build_rag_prompt(user_query, context_chunks)
+
+        async for chunk in self.gemini_service.stream_generation(formatted_prompt):
+            yield chunk
+
+    # --- Core SSE Pipeline Method ---
+
+    async def execute_rag_stream(
+        self, 
+        user_query: str, 
+        correlation_id: str,
+        request: Optional[Request] = None
+    ) -> AsyncGenerator[str, None]:
+        """
+        Executes the 4-stage RAG inference pipeline and yields Server-Sent Event (SSE) chunks.
+        """
+        log = logger.bind(correlation_id=correlation_id)
         start_time = time.perf_counter()
-        generated_tokens_count = 0
-        
+
         try:
-            # Resolve generator chunk streams using SDK multi-part operations offloaded to workers
-            response_stream = await asyncio.to_thread(
-                self.client.models.generate_content_stream,
-                model=self.inference_model,
-                contents=full_prompt,
-                config=config
-            )
-            
-            for chunk in response_stream:
-                # Catch client termination vectors actively throughout yield iteration loops
-                if await asyncio.current_task().cancelled():
-                    log.warn("Asynchronous generation loop caught upstream client disconnect signal")
-                    raise asyncio.CancelledError()
-                
-                chunk_text = chunk.text or ""
-                if chunk_text:
-                    generated_tokens_count += 1
-                    yield chunk_text
-                    
-            duration_ms = int((time.perf_counter() - start_time) * 1000)
-            prompt_tokens_estimated = await self.calculate_tokens_isolated(full_prompt)
-            
-            metrics = TokenTelemetryMetrics(
-                prompt_tokens=prompt_tokens_estimated,
-                completion_tokens=generated_tokens_count,
-                execution_duration_ms=duration_ms,
-                execution_id=contract.correlation_id
-            )
-            log.info("Generative model stream complete", metrics=metrics.model_dump())
-            
-        except Exception as exc:
-            log.error("Exception intercepted inside AI streaming interface engine", error=str(exc))
-            raise exc
+            # Stage 1: Generate Embedding Vector (Enforced 3072 Dimensions)
+            log.info("STAGE_1_START: Generating Query Embedding Vector")
+            query_vector = await self.embedding_service.generate_embedding(user_query)
+            log.info("STAGE_1_COMPLETE: Vector Generated", vector_dim=len(query_vector))
 
-
-class AIOrchestratorServicePipeline:
-    def __init__(self):
-        self.ai_engine = GeminiOrchestrationEngine()
-        self.vector_mesh = QdrantVectorMeshClient()
-        self.context_token_ceiling = 4000
-
-    async def execute_rag_inference_pipeline_stream(
-        self,
-        request: Request,
-        prompt: str,
-        x_correlation_id: str = Header(...),
-        x_workspace_id: str = Header(...),
-        x_route: str = Header("unknown"),
-        x_action: str = Header("unknown")
-    ) -> AsyncGenerator[str, None]:
-        """Core programmatic pipeline executing embedded generation, retrieval metrics assembly, and SSE chunk transformations."""
-        
-        internal_contract = AIInferenceInternalContract(
-            prompt=prompt,
-            system_instruction="You are an expert Enterprise Product Manager Copilot. Synthesize the provided user feedback insights accurately.",
-            temperature=0.1,
-            correlation_id=x_correlation_id,
-            workspace_id=x_workspace_id
-        )
-        
-        log = logger.bind(correlation_id=x_correlation_id, workspace_id=x_workspace_id)
-        
-        try:
-            # 1. Embed user query payload safely
-            query_vector = await self.ai_engine.generate_embedding_vector(
-                text=internal_contract.prompt,
-                correlation_id=x_correlation_id
+            # Stage 2: Vector Search & Schema Validation
+            log.info("STAGE_2_START: Querying Qdrant Vector Mesh")
+            retrieved_chunks = await self.vector_service.search_similar_chunks(
+                query_vector=query_vector, 
+                top_k=3
             )
-            
-            # 2. Extract matched document records via isolated tenant workspace filters
-            rag_response = await self.vector_mesh.query_semantic_context(
-                vector=query_vector,
-                workspace_id=x_workspace_id,
-                correlation_id=x_correlation_id
+            log.info("STAGE_2_COMPLETE: Context Retrieved", chunks_found=len(retrieved_chunks))
+
+            # Stage 3: Prompt Construction
+            log.info("STAGE_3_START: Constructing RAG Prompt")
+            full_prompt = self.prompt_builder.build_rag_prompt(
+                user_query=user_query, 
+                retrieved_chunks=retrieved_chunks
             )
-            
-            # 3. Formulate structured context block while maintaining maximum ceiling bounds
-            context_accumulator = []
-            current_token_count = 0
-            
-            for snippet in rag_response.snippets:
-                snippet_text = f"[Source: {snippet.payload.source_id}]: {snippet.text}\n"
-                snippet_tokens = await self.ai_engine.calculate_tokens_isolated(snippet_text)
-                
-                if current_token_count + snippet_tokens > self.context_token_ceiling:
-                    log.warn("Encountered token allocation limit breach; truncating dynamic retrieval matrix arrays")
+            log.info("STAGE_3_COMPLETE: Prompt Assembly Finished")
+
+            # Stage 4: Generative LLM SSE Streaming
+            log.info("STAGE_4_START: Initiating LLM Token Stream")
+            chunk_count = 0
+
+            async for text_chunk in self.gemini_service.stream_generation(full_prompt):
+                # Check for client disconnect
+                if request and await request.is_disconnected():
+                    log.warn("Edge client disconnected. Terminating stream execution.")
                     break
-                    
-                context_accumulator.append(snippet_text)
-                current_token_count += snippet_tokens
-            
-            aggregated_context = "\n".join(context_accumulator)
-            
-            # 4. Stream real-time generation outputs using structural SSE frames
-            async for chunk in self.ai_engine.generate_inference_stream(
-                contract=internal_contract,
-                context_text=aggregated_context,
-                action=x_action,
-                route=x_route
-            ):
-                # Actively listen for immediate client termination alerts
-                if await request.is_disconnected():
-                    log.warn("Upstream application edge client disconnected. Terminating active operations.")
-                    break
-                    
-                yield f"data: {json.dumps({'type': 'content', 'content': chunk, 'finished': False})}\n\n"
-            
-            yield f"data: {json.dumps({'type': 'status', 'content': 'Stream execution resolved', 'finished': True})}\n\n"
-            
+
+                chunk_count += 1
+                sse_payload = {
+                    "type": "content",
+                    "content": text_chunk,
+                    "finished": False
+                }
+                yield f"data: {json.dumps(sse_payload)}\n\n"
+
+            elapsed_ms = round((time.perf_counter() - start_time) * 1000, 2)
+            log.info(
+                "STAGE_4_COMPLETE: Stream Resolved", 
+                total_chunks=chunk_count, 
+                duration_ms=elapsed_ms
+            )
+
+            # Final resolution frame
+            resolution_payload = {
+                "type": "status",
+                "content": "Stream execution resolved",
+                "finished": True
+            }
+            yield f"data: {json.dumps(resolution_payload)}\n\n"
+
+        except AIEngineError as exc:
+            log.error("Pipeline domain error captured", error_type=type(exc).__name__, error=str(exc))
+            error_payload = {
+                "type": "error",
+                "content": f"Pipeline failure: {str(exc)}",
+                "finished": True
+            }
+            yield f"data: {json.dumps(error_payload)}\n\n"
+
         except Exception as exc:
-            log.error("Fatal routing error captured during async stream orchestration lifecycle", error=str(exc))
-            error_payload = json.dumps({"type": "error", "content": "Internal service layer pipeline error occurred", "finished": True})
-            yield f"data: {error_payload}\n\n"
+            log.error("Fatal unexpected pipeline error captured", error=str(exc))
+            error_payload = {
+                "type": "error",
+                "content": "Internal service layer pipeline error occurred",
+                "finished": True
+            }
+            yield f"data: {json.dumps(error_payload)}\n\n"
+
+
+# Backward compatibility aliases for legacy route imports
+AIOrchestratorServicePipeline = AIEngine
+GeminiOrchestrationEngine = AIEngine
