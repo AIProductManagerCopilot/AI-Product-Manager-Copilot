@@ -1,0 +1,251 @@
+project_id,workspace_id,project_name,project_type,description,owner_user_id,technology_stack,status,budget_usd,start_date,end_date
+PROJ000001,WS0018,Project-1,AI Product,Eye ago total itself watch. Know fact mission car art blue voice entire.,USR000547,Java Spring,On Hold,308576,2024-10-28,2025-03-18
+PROJ000002,WS0017,Project-2,CRM System,Order consider number four body. Between much ahead choose single difficult study.,USR000769,Vue,On Hold,329461,2025-12-15,2026-01-31
+PROJ000003,WS0003,Project-3,CRM System,Shake listen worry east director economy candidate outside. Possible glass be. Team movie purpose interview from.,USR000010,React,Active,127998,2024-04-26,2025-03-18
+PROJ000004,WS0019,Project-4,Web Application,Miss lay area charge mean. Development performance difficult your top according future.,USR000242,Django,Completed,383949,2026-03-04,2026-04-03
+PROJ000005,WS0005,Project-5,Cloud Platform,Age rate week hit see peace. Training involve form future law discussion. Green story accept.,USR000371,Angular,Planning,75611,2024-07-02,2027-06-07
+PROJ000006,WS0022,Project-6,AI Product,Officer either nothing too letter resource answer.,USR000021,Node.js,On Hold,302841,2025-05-19,2025-11-06
+PROJ000007,WS0013,Project-7,AI Product,Ground official color college.,USR000473,React,Planning,469362,2023-10-15,2026-05-31
+PROJ000008,WS0009,Project-8,Web Application,Home toward national possible artist. Want good serve local family.,USR000640,React,Planning,149501,2026-04-21,2027-06-02
+PROJ000009,WS0028,Project-9,Web Application,Shake enough leg likely leave. Southern product development officer right weight.,USR000579,Vue,Completed,271388,2024-11-29,2027-06-06
+PROJ000010,WS0030,Project-10,AI Product,Beyond wife billion exactly family. Entire group election civil much allow interesting this. Despite sometimes defense wind wide.,USR000437,Django,Active,444983,2023-10-23,2025-03-25
+PROJ000011,WS0020,Project-11,Web Application,Million law Congress dream the whole. Can care together many play money respond. Character let hold morning.,USR000514,React,Planning,492263,2025-12-18,2027-01-12
+PROJ000012,WS0004,Project-12,Analytics Dashboard,Attorney listen see pick respond difference.,USR000179,Node.js,Active,275273,2023-11-24,2026-09-29
+PROJ000013,WS0022,Project-13,AI Product,Kid sport message long able owner. Suggest school nation expert media. Would organization pick rise difference.,USR000647,Python/FastAPI,Planning,413311,2023-09-30,2026-09-02
+PROJ000014,WS0006,Project-14,AI Product,Claim debate quality middle success. Population point know business early above. Financial friend across none that heavy condition past.,USR000350,Node.js,Active,334210,2025-01-21,2025-04-04
+PROJ000015,WS0019,Project-15,Web Application,Care reflect might pick far. Scientist wrong trip expert staff miss speech. By choose guy get raise point once.,USR000534,Angular,Active,259958,2025-03-06,2025-06-23
+PROJ000016,WS0001,Project-16,Cloud Platform,Stock hot others organization evening success task. Network safe even series wrong. Tv charge probably develop time day.,USR000172,Node.js,On Hold,286404,2025-03-23,2026-02-27
+PROJ000017,WS0025,Project-17,ERP System,Defense game by whole between chair. Green door agent both for far.,USR000288,Angular,Planning,393304,2025-02-03,2025-06-06
+PROJ000018,WS0023,Project-18,Internal Tool,Product bit analysis. Firm minute sometimes. Indeed check impact thus once present.,USR000230,Python/FastAPI,Active,249314,2024-06-01,2024-06-06
+PROJ000019,WS0015,Project-19,Mobile Application,Bank buy by cultural. Store staff check enter as herself social.,USR000771,Java Spring,Planning,407665,2023-12-10,2025-01-24
+PROJ000020,WS0016,Project-20,Cloud Platform,Color phone popular want nothing future.,USR000165,Flutter,Planning,499877,2025-06-27,2026-03-03
+PROJ000021,WS0008,Project-21,CRM System,Little situation but whatever continue country.,USR000217,Angular,Completed,267281,2026-06-03,2027-03-06
+PROJ000022,WS0003,Project-22,Analytics Dashboard,Name street tend opportunity. Report discussion central require mean. Yard war evening system.,USR000646,Angular,On Hold,232465,2025-11-20,2026-06-05
+PROJ000023,WS0025,Project-23,Analytics Dashboard,Tend economic among simply leave life right. Little responsibility indicate special. Serve hair manager find some wish.,USR000442,Python/FastAPI,On Hold,167026,2026-02-20,2026-07-12
+PROJ000024,WS0019,Project-24,Mobile Application,Skill ahead rule debate individual whom open two. Leave idea coach. Theory less to nearly ground next where know.,USR000110,Vue,Completed,109365,2026-03-01,2027-03-21
+PROJ000025,WS0018,Project-25,Analytics Dashboard,Clearly teacher within case front child.,USR000526,React,Planning,275929,2024-01-07,2024-04-19
+PROJ000026,WS0021,Project-26,Cloud Platform,Conference performance event realize either first beat. During us democratic wrong along large pressure. Nothing because short two work before. Ten wonder clearly involve until weight figure.,USR000253,Flutter,Active,437344,2025-09-06,2026-03-13
+PROJ000027,WS0025,Project-27,Mobile Application,Market protect stand increase drop which. Determine would technology once. Fear company staff.,USR000280,Vue,Active,317017,2023-09-11,2025-03-24
+PROJ000028,WS0007,Project-28,ERP System,Home city college people event change under town. Fast population him indeed information. Determine food science teach.,USR000603,Angular,Planning,254432,2026-01-25,2026-02-11
+PROJ000029,WS0011,Project-29,Analytics Dashboard,Last talk model step. Cell knowledge team. Meeting foot end.,USR000462,React,On Hold,383721,2023-10-27,2026-05-27
+PROJ000030,WS0010,Project-30,Web Application,Onto consumer factor former. Home north manager fear sign unit.,USR000001,Angular,On Hold,175799,2026-05-02,2026-10-18
+PROJ000031,WS0028,Project-31,Analytics Dashboard,Audience military blue receive. Forward seat along red rather team. Material owner war season place. Strategy popular suggest sing for example.,USR000738,Django,Planning,18959,2025-08-16,2026-03-18
+PROJ000032,WS0030,Project-32,Cloud Platform,Thing standard situation no. Whole year Republican go far instead major. Position let coach law real year. Try fine eye change experience day way.,USR000232,React,Completed,413014,2023-11-24,2024-05-19
+PROJ000033,WS0002,Project-33,Internal Tool,Close Democrat line consider. Prepare pay from treatment forward so yet. Firm kid training administration experience candidate. Continue range science since development this southern.,USR000612,React,Planning,183593,2024-08-17,2027-03-16
+PROJ000034,WS0004,Project-34,Internal Tool,State wonder seat throw. Call sure medical kind hot maybe. Small then should onto still share perhaps oil. Heavy wait purpose reality stage plan.,USR000181,Python/FastAPI,On Hold,397417,2024-11-29,2026-01-04
+PROJ000035,WS0018,Project-35,Mobile Application,Paper type game year. Way hospital commercial situation country than. Practice music mind prepare voice.,USR000375,Flutter,On Hold,110842,2023-09-21,2024-04-07
+PROJ000036,WS0011,Project-36,Web Application,There everything their rather. Low official thought military require usually consider. Apply rate more decision.,USR000333,Django,Completed,64239,2024-07-14,2025-01-26
+PROJ000037,WS0012,Project-37,Mobile Application,Suggest fire establish executive. Apply reveal also bed much window ground.,USR000126,Flutter,Completed,122402,2024-12-15,2027-03-16
+PROJ000038,WS0010,Project-38,Web Application,Require factor same coach together. Foot too such plant born.,USR000272,Node.js,On Hold,395464,2024-02-29,2025-08-15
+PROJ000039,WS0018,Project-39,Analytics Dashboard,Wonder fly realize lawyer collection something get. Early strategy pretty four everyone property.,USR000455,Django,On Hold,242107,2026-03-20,2026-08-09
+PROJ000040,WS0008,Project-40,Internal Tool,Option guy after rich school choose election nothing. Around travel nation believe success computer.,USR000472,Vue,Planning,249920,2025-07-25,2027-06-25
+PROJ000041,WS0024,Project-41,Cloud Platform,Human next thus share difference issue subject. Much whole measure report night.,USR000098,Flutter,Completed,16044,2026-05-06,2026-07-31
+PROJ000042,WS0023,Project-42,Web Application,Resource truth old. Relationship since resource effort. Huge policy consumer can now least.,USR000799,React,On Hold,458468,2024-10-18,2025-11-26
+PROJ000043,WS0029,Project-43,Internal Tool,May few machine reduce hold. Site color whole what full. Shoulder color indicate wall large.,USR000058,Django,Planning,497776,2026-03-26,2026-06-26
+PROJ000044,WS0016,Project-44,ERP System,Bank hear large amount discuss head adult choose. Eat everything garden do. Fact would nature tonight direction family where. Job government decision sea.,USR000487,Node.js,Active,406273,2025-08-14,2026-11-22
+PROJ000045,WS0013,Project-45,Web Application,Inside low fly value baby.,USR000364,Angular,On Hold,365908,2024-07-17,2026-12-29
+PROJ000046,WS0018,Project-46,CRM System,Back forward front science a old.,USR000270,React,On Hold,147703,2024-01-24,2025-04-14
+PROJ000047,WS0029,Project-47,AI Product,Indeed responsibility war message week.,USR000545,Flutter,Completed,396903,2025-11-23,2027-06-24
+PROJ000048,WS0024,Project-48,Web Application,Shoulder couple seek rather. Few while whom consumer somebody water. Note red true establish hear.,USR000042,Java Spring,On Hold,80829,2025-10-31,2026-10-05
+PROJ000049,WS0030,Project-49,Mobile Application,Action see nothing education happen color music. Wide he big range dark nothing. Story design return produce voice read.,USR000532,Angular,Active,378463,2025-05-05,2025-09-08
+PROJ000050,WS0017,Project-50,ERP System,Add power official those. Buy red TV few media television mouth. Leader almost computer miss.,USR000706,React,Planning,154867,2025-08-05,2026-04-19
+PROJ000051,WS0012,Project-51,Mobile Application,Dinner seven step no ground guess. Physical apply according color dinner cell.,USR000502,Vue,Completed,361410,2023-10-01,2024-06-19
+PROJ000052,WS0020,Project-52,Analytics Dashboard,Across either nation. Type physical spend his.,USR000431,Flutter,Completed,191238,2025-04-25,2026-02-27
+PROJ000053,WS0021,Project-53,CRM System,Back without blue hand relate animal bank player. Focus them song throughout with. Majority close increase evening raise she you. Energy picture rise organization.,USR000410,Node.js,Planning,246824,2024-01-09,2026-06-06
+PROJ000054,WS0003,Project-54,AI Product,Majority bring skin call benefit picture. Section read deal career.,USR000684,Vue,Completed,106154,2026-04-20,2027-07-01
+PROJ000055,WS0001,Project-55,Cloud Platform,Describe good simple another who away. Key hope phone contain while his.,USR000570,Node.js,Planning,281949,2025-08-21,2026-12-17
+PROJ000056,WS0015,Project-56,Mobile Application,Maybe far increase light animal. Loss drug voice professor finish. Along organization book main open nearly.,USR000645,React,On Hold,165056,2025-04-06,2025-08-03
+PROJ000057,WS0022,Project-57,Web Application,Design those grow new occur them. Side put best Mrs western represent sometimes.,USR000756,Java Spring,Active,149493,2024-10-23,2025-07-16
+PROJ000058,WS0002,Project-58,CRM System,Employee interview face. Where woman after protect this quickly almost thus. Side quality the traditional entire.,USR000730,Java Spring,Planning,298402,2024-10-08,2025-11-04
+PROJ000059,WS0001,Project-59,Analytics Dashboard,Need material reveal also not. Anything try enter various truth. Among word house them difference best personal.,USR000484,React,Planning,491966,2026-05-30,2026-06-25
+PROJ000060,WS0016,Project-60,ERP System,Ago thus of class affect occur news. Candidate wish at loss product career. Environmental or answer opportunity responsibility while.,USR000251,Python/FastAPI,Completed,119230,2026-05-15,2027-02-21
+PROJ000061,WS0008,Project-61,AI Product,Miss serve lay education friend miss test. Yard middle produce character.,USR000279,Node.js,Completed,71001,2023-11-11,2024-05-19
+PROJ000062,WS0018,Project-62,CRM System,Field these happen response participant shoulder. Something all behavior agreement few fire tell. Door agree senior policy much send herself.,USR000102,Vue,Planning,243585,2024-11-16,2026-02-19
+PROJ000063,WS0028,Project-63,Web Application,Cup about star grow care leave. Future than number fine life food second.,USR000040,Vue,Planning,497412,2025-12-20,2027-04-18
+PROJ000064,WS0014,Project-64,CRM System,Agency kitchen hold arm wall movie put. Stock debate want feeling. Office so maybe war trade security.,USR000658,Vue,Completed,452450,2024-08-19,2026-02-14
+PROJ000065,WS0004,Project-65,Analytics Dashboard,Capital take turn. Campaign nation much.,USR000758,React,On Hold,131551,2025-03-30,2025-07-21
+PROJ000066,WS0013,Project-66,ERP System,Plant thousand add effort notice. Safe community number hotel.,USR000164,Java Spring,On Hold,129982,2023-10-16,2024-07-20
+PROJ000067,WS0010,Project-67,AI Product,Television science real.,USR000774,Vue,On Hold,59723,2026-01-02,2027-01-27
+PROJ000068,WS0009,Project-68,Analytics Dashboard,Activity east leg lay. End once price professor water many. Center community structure part wall case. Control kid style less price world everyone.,USR000751,React,On Hold,198117,2026-04-26,2026-05-31
+PROJ000069,WS0006,Project-69,Internal Tool,Describe left hot pattern. In prepare pull range. World role tough card.,USR000249,React,Completed,301054,2024-05-08,2024-10-15
+PROJ000070,WS0015,Project-70,Web Application,Car all attack analysis. Song option model.,USR000376,Node.js,Planning,200459,2026-04-15,2026-12-04
+PROJ000071,WS0020,Project-71,Internal Tool,South hotel budget couple. Father rest themselves southern attack performance turn.,USR000059,Vue,Planning,372738,2024-06-28,2026-05-13
+PROJ000072,WS0008,Project-72,Mobile Application,Here take foreign shake system firm painting consider. Wall involve big behavior wall ago. Suffer real class. Especially cold past.,USR000100,Python/FastAPI,Active,369119,2025-08-18,2026-12-14
+PROJ000073,WS0029,Project-73,CRM System,Soon let yet nearly physical message agency. While investment face.,USR000411,React,Planning,136110,2025-03-22,2025-10-20
+PROJ000074,WS0024,Project-74,Web Application,Even view have collection often increase. Day as model itself industry thank. Six also much.,USR000686,Flutter,On Hold,98850,2025-05-30,2027-04-09
+PROJ000075,WS0025,Project-75,Mobile Application,Eye moment number fill off level nice either. Of anything relationship that night voice.,USR000468,Angular,Completed,190985,2026-02-23,2026-12-08
+PROJ000076,WS0023,Project-76,Internal Tool,Pull hair this. Another area above back rich here a. Player condition both catch talk before store.,USR000747,Java Spring,On Hold,443839,2024-11-30,2025-11-21
+PROJ000077,WS0025,Project-77,Analytics Dashboard,Security yourself goal head. Suddenly focus my interview.,USR000487,Django,Completed,35555,2025-09-15,2026-10-23
+PROJ000078,WS0019,Project-78,Mobile Application,Here suggest save it. Fund measure medical forward.,USR000237,Java Spring,Completed,55776,2024-06-02,2027-05-28
+PROJ000079,WS0021,Project-79,CRM System,Way level cultural. Hot always red opportunity near appear. Computer class keep just interest recognize. Second sense difference land.,USR000315,Python/FastAPI,Active,359484,2023-09-17,2025-08-25
+PROJ000080,WS0014,Project-80,ERP System,Field across process sound hope before. Direction daughter nor field economy trial. Thank impact discussion she light easy more cultural.,USR000149,Python/FastAPI,Completed,482970,2023-08-08,2025-09-14
+PROJ000081,WS0030,Project-81,Mobile Application,Imagine Republican under cell account.,USR000050,Vue,Planning,440404,2026-06-04,2026-11-10
+PROJ000082,WS0015,Project-82,Analytics Dashboard,Difference child happy suffer out. Walk once for together police.,USR000714,Django,Active,308957,2026-05-05,2026-10-29
+PROJ000083,WS0024,Project-83,ERP System,List loss brother someone understand. Meet phone painting more. Beyond human night baby party eye our.,USR000549,Python/FastAPI,Completed,102463,2024-03-06,2025-12-07
+PROJ000084,WS0020,Project-84,Internal Tool,Line still light morning. Power edge information possible. Certainly pick care other.,USR000062,Java Spring,Completed,256758,2024-08-21,2025-12-01
+PROJ000085,WS0019,Project-85,ERP System,Each American difference feel whatever. Base campaign lead human out.,USR000025,Node.js,On Hold,37135,2023-08-03,2023-10-07
+PROJ000086,WS0006,Project-86,AI Product,Skin various loss when.,USR000010,Django,Completed,279010,2025-10-01,2025-11-04
+PROJ000087,WS0013,Project-87,Analytics Dashboard,Environment everything no. Though a capital grow. Into meet successful decade wife participant.,USR000276,Vue,Planning,137866,2026-06-21,2027-05-09
+PROJ000088,WS0009,Project-88,CRM System,Page difference forget TV perhaps big answer. Writer avoid size represent want beautiful. House win high section gas out training.,USR000338,Java Spring,On Hold,389114,2025-01-24,2025-12-20
+PROJ000089,WS0011,Project-89,Cloud Platform,Same get Democrat. Look else from question choice agree blood event. Consider night reveal nature.,USR000621,Java Spring,On Hold,266692,2025-02-05,2026-01-13
+PROJ000090,WS0029,Project-90,Internal Tool,Term cut energy car. Always growth pretty direction require.,USR000650,Vue,Completed,43666,2024-01-12,2026-11-02
+PROJ000091,WS0030,Project-91,Analytics Dashboard,Listen rich deep physical.,USR000214,Node.js,Planning,297568,2026-04-13,2026-08-11
+PROJ000092,WS0008,Project-92,Analytics Dashboard,Glass church sense drug expert despite former. Detail relate particular.,USR000387,Node.js,On Hold,484314,2023-12-18,2026-03-31
+PROJ000093,WS0003,Project-93,Mobile Application,Team catch sell statement moment herself movie. Value history factor suffer firm office like.,USR000787,Node.js,Planning,194002,2025-12-09,2027-05-15
+PROJ000094,WS0028,Project-94,Web Application,Billion green begin cold century key actually.,USR000226,Flutter,On Hold,421689,2025-06-25,2027-05-14
+PROJ000095,WS0008,Project-95,CRM System,Memory player end each. Board hour wrong blood traditional loss draw. Still some former six history. Blood out everyone blue worker hope.,USR000106,Django,On Hold,440350,2024-06-08,2025-09-28
+PROJ000096,WS0008,Project-96,ERP System,International or officer daughter. Behavior walk heavy rest.,USR000709,Angular,Planning,110227,2025-03-12,2026-07-31
+PROJ000097,WS0022,Project-97,Analytics Dashboard,Pattern arrive while score could decade administration. First feel ago her system by. Option some particularly employee agree rule join. Service nothing little group.,USR000209,Node.js,Planning,60866,2025-09-26,2026-01-11
+PROJ000098,WS0016,Project-98,Mobile Application,East fine industry modern former federal also. Pattern discover anything attorney thank society red.,USR000513,Angular,Completed,149238,2025-08-22,2026-05-08
+PROJ000099,WS0014,Project-99,ERP System,Agency early page step. Without nothing my police still involve response.,USR000617,Flutter,Completed,242508,2025-11-01,2026-08-31
+PROJ000100,WS0023,Project-100,CRM System,Simply game behind eight age alone positive. Father both indicate relate. Someone statement authority nor operation.,USR000263,Java Spring,Completed,252987,2024-07-13,2027-05-24
+PROJ000101,WS0021,Project-101,Analytics Dashboard,Push letter health market. Our toward process attorney question.,USR000406,Django,On Hold,396177,2024-07-30,2024-10-04
+PROJ000102,WS0021,Project-102,Internal Tool,Situation travel focus unit. Manage TV left protect fact defense. Animal whom citizen join so leave evening a.,USR000147,Vue,Active,379189,2025-10-16,2026-08-03
+PROJ000103,WS0019,Project-103,Analytics Dashboard,Idea lawyer perhaps better model would show its. Draw ability nearly treat toward loss rate mouth. Girl have soldier senior consider serve.,USR000053,Django,On Hold,344461,2024-09-21,2025-07-03
+PROJ000104,WS0022,Project-104,AI Product,Idea report benefit our. Me policy cup. Require thus worry where. General crime knowledge leg dream want.,USR000191,React,Active,266848,2024-03-04,2026-11-02
+PROJ000105,WS0022,Project-105,Web Application,Face piece trip play fly find almost. Teacher four local gun team explain week.,USR000625,Django,Planning,299976,2024-12-25,2026-05-09
+PROJ000106,WS0019,Project-106,ERP System,Rise value young every interest lot animal house. Area offer drug head. Industry far billion discover.,USR000462,Node.js,On Hold,485444,2023-08-09,2027-07-11
+PROJ000107,WS0027,Project-107,ERP System,President firm magazine region what. Try all my join.,USR000124,React,Completed,102328,2024-01-10,2027-02-13
+PROJ000108,WS0029,Project-108,Web Application,Represent trip suggest peace direction better mention. Peace station traditional common report order box yard.,USR000069,Python/FastAPI,Completed,298071,2023-08-23,2027-02-16
+PROJ000109,WS0018,Project-109,CRM System,Major attention southern. Them wonder much either drop character. Stock hear defense loss vote room create.,USR000397,Angular,Planning,396103,2024-12-05,2025-06-01
+PROJ000110,WS0015,Project-110,ERP System,Part shoulder fly wide here professional star. Difficult car court standard political. Return may pattern protect us purpose enough relate. Prepare would drop tax entire fight actually.,USR000609,Node.js,Planning,331882,2025-01-01,2026-11-04
+PROJ000111,WS0005,Project-111,Internal Tool,First start later. Interview guy idea during trade record.,USR000716,Django,Active,226670,2026-01-25,2026-02-09
+PROJ000112,WS0024,Project-112,Analytics Dashboard,Cover moment gun study everything arm area. Than senior like each interest treatment.,USR000133,Python/FastAPI,Planning,197523,2026-01-07,2026-09-29
+PROJ000113,WS0027,Project-113,Analytics Dashboard,Level without soon really man rather. Space air total life mother theory grow structure.,USR000323,Java Spring,Completed,438808,2025-05-28,2026-10-27
+PROJ000114,WS0010,Project-114,ERP System,Must already job manager. Nor meet from.,USR000604,Angular,Active,143826,2024-12-28,2027-05-02
+PROJ000115,WS0014,Project-115,CRM System,Form city ball. True method wonder institution nothing ever. Before decide pattern.,USR000431,Flutter,Planning,431481,2024-03-30,2026-08-25
+PROJ000116,WS0029,Project-116,AI Product,Sure major reach model specific prepare ask. Theory matter music issue fish couple focus grow. Above including spend know tell form production.,USR000563,Django,Completed,198173,2025-04-16,2026-07-05
+PROJ000117,WS0029,Project-117,ERP System,Choice say military reflect record. Local threat room them author.,USR000461,Java Spring,Completed,36417,2023-12-10,2026-02-10
+PROJ000118,WS0014,Project-118,Analytics Dashboard,Effort site growth people these. Scene go woman course. Local language soldier top method professional.,USR000617,Flutter,On Hold,284887,2024-09-09,2024-10-12
+PROJ000119,WS0006,Project-119,Analytics Dashboard,Writer impact pick blue. Water vote policy change culture yourself build. Trouble simple man truth support believe once. Nearly each scientist huge.,USR000166,Django,Planning,451652,2025-09-02,2026-04-05
+PROJ000120,WS0023,Project-120,Web Application,Second will think investment. About machine bit.,USR000433,React,Active,190877,2026-06-13,2027-06-16
+PROJ000121,WS0009,Project-121,Analytics Dashboard,Policy shoulder build firm. Technology local meet use.,USR000149,Angular,Planning,263993,2024-09-08,2026-09-28
+PROJ000122,WS0019,Project-122,Cloud Platform,Safe officer billion mention wind production a. Result two beyond.,USR000652,React,Planning,31521,2025-03-05,2026-06-17
+PROJ000123,WS0023,Project-123,Web Application,Cell whose join believe order. Way pattern beautiful former foreign set once.,USR000078,Java Spring,Planning,327911,2024-12-23,2026-10-20
+PROJ000124,WS0018,Project-124,Analytics Dashboard,Attention candidate I onto. Avoid here major.,USR000121,Vue,On Hold,191819,2025-07-21,2025-10-02
+PROJ000125,WS0012,Project-125,Mobile Application,Represent else win walk suggest its. Its degree similar natural place. Explain same oil win world.,USR000677,Java Spring,Completed,481595,2025-01-07,2027-02-03
+PROJ000126,WS0022,Project-126,CRM System,Ok over professor listen statement senior country. Step month take painting else southern local. Notice rest play smile than.,USR000736,Python/FastAPI,Completed,220727,2026-02-02,2026-05-25
+PROJ000127,WS0021,Project-127,Cloud Platform,Over medical amount indeed how apply. Reveal significant me politics late include or camera. Community measure off.,USR000188,Vue,Active,331207,2024-12-30,2026-10-14
+PROJ000128,WS0029,Project-128,Internal Tool,Reach until run improve where already less over. Material officer before defense tell.,USR000484,React,Active,100601,2025-11-19,2026-04-14
+PROJ000129,WS0015,Project-129,Internal Tool,Media meeting month car. Arm pay size beautiful. Amount already million apply prepare fine.,USR000697,Vue,Planning,419083,2025-12-27,2026-08-19
+PROJ000130,WS0017,Project-130,ERP System,Goal down including benefit. Know deep whose consider beat ball window.,USR000780,Java Spring,Completed,26348,2026-03-14,2026-07-26
+PROJ000131,WS0025,Project-131,Mobile Application,Join pressure decision customer line goal. Subject fine without check.,USR000391,Flutter,On Hold,109310,2026-05-14,2027-01-29
+PROJ000132,WS0005,Project-132,Internal Tool,Force less dinner now ago serve dinner. Hope white full box. Page his government popular fine Mrs value.,USR000634,Django,Completed,450949,2024-10-04,2025-09-15
+PROJ000133,WS0010,Project-133,ERP System,Message forget take. Direction bank child whatever a.,USR000479,Vue,Completed,349573,2023-10-05,2025-04-14
+PROJ000134,WS0019,Project-134,Mobile Application,Decide bag evening must conference. Short turn campaign away help million international international. Within wonder tough.,USR000704,Flutter,Planning,29943,2024-06-05,2026-08-26
+PROJ000135,WS0006,Project-135,ERP System,Help grow north short training certainly arm drive. Reflect sound likely. Collection thank ever four peace majority.,USR000513,Django,Active,156650,2026-05-30,2027-02-15
+PROJ000136,WS0023,Project-136,ERP System,Eight blood set ground five. Front sister challenge stage. Remain other do long manager.,USR000607,Node.js,Planning,302700,2024-07-13,2025-06-06
+PROJ000137,WS0020,Project-137,Internal Tool,Magazine occur couple nothing. Page purpose himself soon.,USR000712,Python/FastAPI,Completed,493530,2024-02-24,2026-06-14
+PROJ000138,WS0013,Project-138,Mobile Application,Develop pretty successful teacher do buy various expect. Successful sit guy people sound specific.,USR000220,Vue,Planning,446499,2025-01-08,2027-06-23
+PROJ000139,WS0003,Project-139,AI Product,Boy need as rich. Get describe soon since. Hair sense man line present.,USR000490,Java Spring,Planning,218594,2025-10-04,2026-04-19
+PROJ000140,WS0028,Project-140,Internal Tool,Others identify race lay. Town culture trial west sometimes response goal and.,USR000139,Java Spring,Completed,191606,2025-07-15,2027-06-04
+PROJ000141,WS0004,Project-141,ERP System,Attack education our purpose case administration military. Event four couple morning find whose. Available remember art act travel nation.,USR000110,Django,Completed,81186,2026-05-02,2026-09-18
+PROJ000142,WS0007,Project-142,CRM System,National teacher how language. Development least avoid central never concern.,USR000714,Vue,Planning,220775,2023-08-02,2024-07-07
+PROJ000143,WS0009,Project-143,CRM System,Learn close throughout.,USR000224,React,Planning,338407,2025-07-08,2027-03-24
+PROJ000144,WS0005,Project-144,Web Application,Around establish image expect most off drop. Attorney draw rule although. Ready talk far full ball break realize say.,USR000275,Flutter,Active,222519,2023-08-15,2027-03-14
+PROJ000145,WS0011,Project-145,AI Product,Analysis break early war about blood thought our. Animal build woman modern store.,USR000016,Angular,Planning,16263,2026-04-09,2027-07-09
+PROJ000146,WS0017,Project-146,Cloud Platform,Only water century. Respond range beautiful health her wind choose whose. Institution morning enjoy from law across difficult.,USR000026,Flutter,Completed,152736,2024-03-30,2026-04-09
+PROJ000147,WS0017,Project-147,Internal Tool,Address though recent two cold forward. Allow cause possible continue common wonder magazine.,USR000619,React,Active,484144,2024-11-03,2027-03-21
+PROJ000148,WS0029,Project-148,Mobile Application,First degree allow radio its. Maintain country deal machine.,USR000093,React,Active,92138,2025-06-28,2026-05-11
+PROJ000149,WS0028,Project-149,CRM System,Series actually second follow population issue. Republican majority together television want. People message role nearly.,USR000740,Vue,Completed,434813,2023-09-17,2027-01-13
+PROJ000150,WS0030,Project-150,Cloud Platform,Opportunity see education ability dark candidate tonight. Our institution church after. Unit sing heavy hair toward.,USR000060,Flutter,Active,197464,2025-12-31,2026-07-23
+PROJ000151,WS0029,Project-151,Internal Tool,Drop star wish standard way. Whole truth spring many air.,USR000477,Java Spring,Planning,244947,2024-01-26,2024-08-24
+PROJ000152,WS0030,Project-152,Analytics Dashboard,Morning wife assume doctor near alone provide tough. Owner continue specific people later. Instead eye likely piece by seem three. Instead million blue beautiful use.,USR000711,Node.js,Completed,235987,2023-11-14,2025-10-31
+PROJ000153,WS0013,Project-153,ERP System,Prevent environmental range member try seem. Than success process remain. Size space foot word. Very lot total.,USR000727,Java Spring,Planning,178237,2026-03-23,2027-01-04
+PROJ000154,WS0003,Project-154,CRM System,Skin such magazine identify learn. Future leave remain happen yourself. Know teacher commercial war.,USR000274,Django,Planning,123112,2026-03-11,2027-06-23
+PROJ000155,WS0009,Project-155,ERP System,Power late both heart week party. Democrat happy peace gas guy involve. Type performance understand edge close class.,USR000461,React,Active,380747,2025-04-21,2026-11-03
+PROJ000156,WS0005,Project-156,Web Application,Make poor door response record. Without according determine difficult yeah something scene last.,USR000717,Vue,Planning,154242,2025-01-28,2025-07-21
+PROJ000157,WS0024,Project-157,Web Application,Health situation themselves. Continue college never. Hear usually serve news dinner listen discussion.,USR000079,Python/FastAPI,Planning,259659,2026-04-11,2026-10-03
+PROJ000158,WS0003,Project-158,Analytics Dashboard,Likely power address dark return. Amount ready purpose could compare represent. Understand attack political senior responsibility. Plant however rest.,USR000091,Flutter,On Hold,473492,2025-04-22,2025-05-28
+PROJ000159,WS0016,Project-159,Web Application,Color down ahead collection. White age sign fall TV effect. Administration religious despite show none treat month.,USR000025,Django,On Hold,255364,2024-05-02,2024-07-10
+PROJ000160,WS0015,Project-160,CRM System,Positive they include mention industry above. Computer arrive do.,USR000437,Node.js,Active,451320,2023-07-31,2024-11-20
+PROJ000161,WS0021,Project-161,AI Product,Later exist five ball kid team line. Window popular indicate imagine. Outside require than scene medical key his.,USR000701,Node.js,Planning,296807,2024-08-06,2025-04-07
+PROJ000162,WS0026,Project-162,CRM System,Our recognize politics teacher safe year base.,USR000488,Python/FastAPI,Planning,457058,2026-02-26,2027-01-25
+PROJ000163,WS0009,Project-163,CRM System,Work executive if. Herself mind exist rise would source include movie. Couple enough play after matter important.,USR000594,Django,Active,24457,2023-09-20,2024-10-10
+PROJ000164,WS0013,Project-164,Cloud Platform,Factor statement end because wonder resource next. Both make green particular. Source my game program star.,USR000524,Node.js,Active,15580,2025-09-25,2026-10-06
+PROJ000165,WS0008,Project-165,Analytics Dashboard,People key office. Strong group develop second rule pay. Management upon send administration candidate place.,USR000349,Python/FastAPI,On Hold,398531,2024-06-28,2024-07-21
+PROJ000166,WS0007,Project-166,CRM System,Evening or health paper police. Power number group model front maybe whom. System reality operation discover whether this.,USR000187,Vue,Planning,112870,2024-11-02,2027-06-28
+PROJ000167,WS0020,Project-167,Analytics Dashboard,Expect cover hotel hotel author. Past challenge tonight probably official day.,USR000529,Node.js,Completed,184242,2026-02-01,2027-07-21
+PROJ000168,WS0014,Project-168,CRM System,Box toward money he relate test financial arrive. Three keep machine.,USR000047,Flutter,Completed,198603,2025-08-16,2026-08-25
+PROJ000169,WS0016,Project-169,ERP System,Job record just space realize us position. Piece teacher by. Entire local interview owner these.,USR000144,Django,Completed,496186,2025-11-22,2026-03-16
+PROJ000170,WS0026,Project-170,Cloud Platform,Low provide authority too. Green increase though bank upon record whole. Rich board compare one result shake method.,USR000131,Python/FastAPI,Completed,443016,2025-01-28,2025-08-23
+PROJ000171,WS0019,Project-171,Internal Tool,Single member down. Marriage low apply above seek model.,USR000048,Flutter,Active,200355,2025-11-29,2026-12-09
+PROJ000172,WS0016,Project-172,Mobile Application,Commercial bar inside former fear glass. Positive him general push bill. Send her player.,USR000555,Flutter,Active,270665,2025-03-26,2027-01-04
+PROJ000173,WS0024,Project-173,AI Product,Land discussion method argue interest close. West suddenly also adult decade woman deep wait. Present safe church voice form author young.,USR000294,Vue,Active,197512,2025-02-10,2026-11-24
+PROJ000174,WS0018,Project-174,Analytics Dashboard,Myself fine hotel college. Movement movement eye performance itself. Player maybe ground everything growth card military other.,USR000480,Django,Planning,101757,2024-03-14,2027-02-02
+PROJ000175,WS0011,Project-175,Web Application,Usually purpose read give thousand see describe value. Sure industry anything. Various action help today training so. Charge kitchen style actually medical stuff.,USR000311,Vue,Completed,87930,2023-09-01,2025-12-25
+PROJ000176,WS0011,Project-176,ERP System,People keep doctor military through including measure maintain. Doctor build story kitchen such.,USR000417,Angular,Active,361279,2026-06-10,2027-05-01
+PROJ000177,WS0009,Project-177,Internal Tool,Condition analysis rule property. Continue fine real how.,USR000115,Python/FastAPI,On Hold,355086,2025-01-22,2025-02-01
+PROJ000178,WS0019,Project-178,CRM System,No very themselves morning guy trial door have. Third machine myself and item note concern.,USR000177,Java Spring,On Hold,251381,2025-02-10,2025-02-12
+PROJ000179,WS0017,Project-179,Web Application,Protect trade thus perform theory organization. Final beyond of week line five.,USR000414,Django,Active,340172,2025-10-13,2027-02-02
+PROJ000180,WS0011,Project-180,Internal Tool,Space contain site eight effort child tend argue. Environment science least size anyone data else.,USR000697,Django,On Hold,157999,2024-03-14,2025-10-21
+PROJ000181,WS0018,Project-181,Analytics Dashboard,Without not whose moment. Prevent open bank current. Blue bad but six.,USR000592,Node.js,Completed,177269,2026-02-16,2026-06-21
+PROJ000182,WS0024,Project-182,Analytics Dashboard,Race college after cost green military knowledge. People color account south on.,USR000463,Python/FastAPI,Active,345860,2024-12-01,2026-09-01
+PROJ000183,WS0010,Project-183,CRM System,While without significant according spring entire collection enjoy. Either whatever evening pattern cultural.,USR000332,Node.js,Planning,319799,2025-10-31,2026-04-26
+PROJ000184,WS0005,Project-184,AI Product,Civil area analysis forward win listen share. Wish new name might before stay beat the.,USR000418,React,Planning,81600,2024-03-30,2025-03-22
+PROJ000185,WS0006,Project-185,CRM System,Suddenly for dark pick. Act election trade camera large.,USR000078,Angular,Completed,325392,2025-05-28,2026-07-15
+PROJ000186,WS0027,Project-186,ERP System,Explain appear other success stock country course. Character game popular myself significant teacher say.,USR000081,Angular,Completed,489790,2025-03-22,2027-05-04
+PROJ000187,WS0003,Project-187,Cloud Platform,Main from commercial ago key. Get blue writer take.,USR000790,Node.js,Completed,192914,2024-12-29,2026-07-02
+PROJ000188,WS0015,Project-188,ERP System,Foreign process pull discover. Threat fact human tell on ready fire.,USR000170,Node.js,Active,301018,2024-10-07,2025-12-28
+PROJ000189,WS0003,Project-189,AI Product,Piece about room. Speech do close response.,USR000199,Django,Completed,426736,2024-12-20,2026-06-04
+PROJ000190,WS0013,Project-190,ERP System,Crime middle offer minute local buy reflect. Home food record each.,USR000446,Vue,On Hold,473302,2024-03-03,2024-06-12
+PROJ000191,WS0006,Project-191,AI Product,High process strategy special at crime technology. Very provide camera must move church fire.,USR000513,Python/FastAPI,Completed,105500,2023-10-03,2025-03-17
+PROJ000192,WS0023,Project-192,Cloud Platform,Vote car organization space. Modern policy teacher major bill economic. What kid glass. While building nature and upon tree help social.,USR000564,Node.js,Planning,358302,2025-01-25,2025-11-06
+PROJ000193,WS0015,Project-193,AI Product,Dog can debate happen force person. Machine just song. As city find the.,USR000340,Python/FastAPI,On Hold,328613,2024-06-19,2026-11-26
+PROJ000194,WS0025,Project-194,ERP System,Perhaps suggest sound notice agent. Allow contain get onto win eight. You he audience improve.,USR000394,React,Active,452211,2025-12-10,2026-02-20
+PROJ000195,WS0027,Project-195,Internal Tool,Direction special however actually ask. Us recently environmental wife attorney. Worker interview point until enough just already piece.,USR000344,Flutter,Planning,43258,2025-08-19,2026-05-06
+PROJ000196,WS0018,Project-196,Analytics Dashboard,Local success less buy ahead until. Different attack mission attack necessary. Money human month note accept or no economic.,USR000285,Django,Completed,330202,2026-06-22,2027-02-09
+PROJ000197,WS0025,Project-197,Mobile Application,Together operation particularly customer else special. Skin cell color then water both.,USR000300,Java Spring,Active,451778,2024-10-29,2026-04-16
+PROJ000198,WS0003,Project-198,Analytics Dashboard,Serve safe able wish eight official recently.,USR000487,React,Planning,255441,2023-08-28,2027-05-05
+PROJ000199,WS0012,Project-199,ERP System,Pretty whole mention whether material source. Know how choice also. After hope situation myself fill. Authority let message everything story purpose rich difference.,USR000265,Node.js,Planning,450615,2025-09-04,2025-10-18
+PROJ000200,WS0022,Project-200,Mobile Application,Interest computer thought four. Under seem should.,USR000799,Python/FastAPI,Active,172594,2024-04-24,2027-05-11
+PROJ000201,WS0018,Project-201,Cloud Platform,Kind already program pick conference. White culture summer.,USR000443,Flutter,On Hold,244839,2024-11-11,2027-06-14
+PROJ000202,WS0025,Project-202,Mobile Application,Group how team give.,USR000324,Django,Planning,178743,2023-09-11,2024-10-10
+PROJ000203,WS0020,Project-203,ERP System,Later beyond Democrat over build remain significant team. Third investment provide owner actually. Another raise maybe treat together tell. Computer know also himself those.,USR000276,Angular,Active,251130,2024-02-14,2024-10-26
+PROJ000204,WS0003,Project-204,Internal Tool,Design within accept account. Year country certain trouble reveal however education course. Born to treat relate high.,USR000131,React,Planning,238733,2023-07-29,2025-04-27
+PROJ000205,WS0001,Project-205,Web Application,We sing wide future.,USR000120,React,Active,300523,2025-11-18,2027-03-25
+PROJ000206,WS0004,Project-206,Internal Tool,Must there interest occur. Recognize Congress guy detail mention thus instead.,USR000273,Angular,On Hold,417531,2024-02-06,2024-09-16
+PROJ000207,WS0028,Project-207,Mobile Application,Outside determine evening country. Wait ground major never. Also ready arrive impact learn protect stay.,USR000456,Django,Planning,241115,2025-12-07,2026-06-23
+PROJ000208,WS0008,Project-208,Cloud Platform,Cup difficult society cultural wall rather student. Thus option kid painting we. Fact skin million between pay stand concern politics.,USR000433,Vue,Active,156663,2025-01-10,2027-07-13
+PROJ000209,WS0028,Project-209,ERP System,Key citizen phone. Agency pull painting somebody. Life some she gas represent today.,USR000223,Flutter,On Hold,55387,2024-11-04,2025-11-02
+PROJ000210,WS0021,Project-210,AI Product,Girl war claim collection per Congress. Coach operation attorney when. Either politics fund them.,USR000623,Angular,Completed,183467,2025-09-08,2026-01-24
+PROJ000211,WS0012,Project-211,CRM System,Benefit yes clear or second. Entire once ok day as describe. Surface single bank fill truth. History particularly during different sort something.,USR000315,Java Spring,Planning,222409,2024-11-20,2024-12-01
+PROJ000212,WS0009,Project-212,AI Product,Meet development best those. Population change tend fire century spend foot.,USR000012,Angular,Completed,265495,2026-02-13,2026-03-04
+PROJ000213,WS0009,Project-213,AI Product,Between break six. Carry certainly series lead test physical this. Ok into despite ground produce.,USR000671,Flutter,Active,263767,2025-12-26,2027-04-16
+PROJ000214,WS0017,Project-214,AI Product,Garden us fly hope hair government probably. Couple recent eat claim.,USR000336,Vue,Completed,406174,2026-06-16,2026-06-24
+PROJ000215,WS0013,Project-215,Internal Tool,Protect team light former field away. Street position whose writer camera drug work of.,USR000338,Angular,Active,314907,2024-08-23,2025-01-23
+PROJ000216,WS0002,Project-216,ERP System,Entire nearly understand morning program. With shake recently main nor guess teacher.,USR000015,Java Spring,Planning,204866,2023-11-08,2024-11-07
+PROJ000217,WS0015,Project-217,Cloud Platform,Nice agency loss many bill together. They situation career test. Affect almost central always join deal. Scientist into simply all group production.,USR000014,Node.js,Planning,45781,2026-02-02,2026-11-19
+PROJ000218,WS0019,Project-218,Mobile Application,Child one require affect cultural. History be nice sort about amount.,USR000177,React,Completed,65900,2023-09-18,2026-06-30
+PROJ000219,WS0010,Project-219,CRM System,Mr whose and such move build note citizen. Ability if home picture within director water. Player wear tonight.,USR000390,Node.js,Planning,391419,2024-08-05,2024-09-17
+PROJ000220,WS0014,Project-220,AI Product,Cold east interesting Democrat. Attack hair work player pick. Data especially suffer argue gun.,USR000575,Flutter,On Hold,415761,2025-03-06,2027-01-19
+PROJ000221,WS0018,Project-221,Web Application,Enough heart particularly clearly. Late represent would you already one fine room. Back person center painting consider position subject.,USR000640,Django,Planning,60043,2025-07-13,2026-02-16
+PROJ000222,WS0016,Project-222,AI Product,Institution find resource these generation himself hospital themselves. Table report approach.,USR000513,Java Spring,On Hold,48583,2025-03-24,2025-08-10
+PROJ000223,WS0005,Project-223,Cloud Platform,Ago long western north late. Shoulder live situation other deal production.,USR000377,Flutter,On Hold,178933,2026-01-31,2026-12-04
+PROJ000224,WS0026,Project-224,AI Product,We identify sure risk.,USR000444,Angular,On Hold,490150,2026-02-03,2027-01-05
+PROJ000225,WS0021,Project-225,Web Application,Firm toward simple moment adult set his. College race with college receive. Record sit manage arrive.,USR000074,Angular,Completed,212428,2025-04-14,2025-09-23
+PROJ000226,WS0015,Project-226,Analytics Dashboard,Keep Congress why. Although pay police continue line.,USR000175,Django,Active,70944,2024-12-20,2025-05-31
+PROJ000227,WS0020,Project-227,Internal Tool,Song claim appear. Consumer him thought how wear decade.,USR000090,Vue,Active,224376,2024-09-19,2025-05-02
+PROJ000228,WS0027,Project-228,Cloud Platform,Rock you use each total cell rich. Woman gas understand individual. Wrong nearly sort anyone.,USR000694,Angular,Completed,393397,2024-06-20,2024-08-08
+PROJ000229,WS0005,Project-229,CRM System,Magazine customer per leader air we so. Now impact instead listen one base suddenly.,USR000342,Java Spring,Planning,371679,2025-06-30,2026-05-20
+PROJ000230,WS0013,Project-230,Web Application,Art common move fear phone various stop throughout. There explain loss financial better national oil lot. Mouth health fire what pattern.,USR000027,Java Spring,Planning,215518,2024-11-09,2026-02-10
+PROJ000231,WS0029,Project-231,Analytics Dashboard,Commercial address environment really until teach play more. Only interest before deal several.,USR000035,Django,Planning,491841,2024-02-02,2025-03-24
+PROJ000232,WS0026,Project-232,Cloud Platform,Through billion authority student figure especially. War write performance skin clearly goal tax. Wind alone myself participant increase even.,USR000391,Angular,Active,206333,2023-10-23,2023-11-10
+PROJ000233,WS0025,Project-233,ERP System,Seek leave top term question leave case our. Guy decade be mission which most. War check age answer size.,USR000498,Vue,Active,436607,2025-10-02,2026-05-23
+PROJ000234,WS0013,Project-234,Internal Tool,Seat would poor professor fire. Professor medical report else appear data range. Production bag save understand nice discover save body. Case assume usually evening find we recognize shake.,USR000654,React,Completed,365649,2024-01-29,2027-07-02
+PROJ000235,WS0006,Project-235,Analytics Dashboard,Hear name society keep each. Yourself huge fast fact low. Military former perform.,USR000464,Django,On Hold,310506,2023-08-12,2025-03-09
+PROJ000236,WS0030,Project-236,Cloud Platform,End property security serious claim whole think. Country figure everyone.,USR000095,Node.js,Planning,14637,2024-07-02,2026-08-04
+PROJ000237,WS0003,Project-237,CRM System,Still subject between develop. Company result common still into executive market. Product receive behavior explain truth yet. Close bed big.,USR000277,Flutter,On Hold,499254,2025-09-09,2026-07-22
+PROJ000238,WS0026,Project-238,Cloud Platform,Attorney wish must into authority rather our. Various cultural development exist election may.,USR000344,React,On Hold,69154,2025-06-15,2026-05-30
+PROJ000239,WS0003,Project-239,CRM System,Week choose relationship and. Rather support total technology front feeling available anyone. Character face couple ago safe music modern team.,USR000007,Java Spring,Active,250438,2025-10-03,2026-02-14
+PROJ000240,WS0028,Project-240,Analytics Dashboard,Station memory treatment report work computer these. A into of condition.,USR000279,Java Spring,Active,350617,2024-03-10,2025-08-13
+PROJ000241,WS0002,Project-241,Analytics Dashboard,Drop down including effort decade government. Official when charge blood necessary group world.,USR000456,Vue,Active,489124,2026-03-21,2026-06-20
+PROJ000242,WS0027,Project-242,Cloud Platform,Society why practice carry finally behavior serious. Admit discuss test concern control. What I reality spend so.,USR000276,Node.js,Active,456759,2023-10-31,2025-12-26
+PROJ000243,WS0021,Project-243,Cloud Platform,Tree message test team. Idea responsibility sense. Data rest American still finish fall participant figure. Soldier reach power blood cup poor bed.,USR000381,Java Spring,Completed,175272,2023-09-10,2026-12-13
+PROJ000244,WS0010,Project-244,ERP System,Happy artist three turn. Read other another activity teacher.,USR000148,Vue,Planning,483880,2026-04-04,2027-06-07
+PROJ000245,WS0018,Project-245,ERP System,Debate clearly size much through open. Store past agreement growth military particularly. Lawyer cup increase issue management score sell sort.,USR000162,Flutter,Completed,443697,2024-03-13,2026-11-20
+PROJ000246,WS0025,Project-246,ERP System,Laugh feeling growth without tell imagine wife risk. Fall pay any their human.,USR000520,Python/FastAPI,On Hold,411313,2026-04-29,2026-12-28
+PROJ000247,WS0012,Project-247,Web Application,Share table company practice she response. Loss field effort other body animal.,USR000611,Django,On Hold,404136,2024-08-11,2024-11-04
+PROJ000248,WS0006,Project-248,Internal Tool,Summer attorney off once alone along the.,USR000634,Django,On Hold,452042,2023-08-11,2026-10-15
+PROJ000249,WS0012,Project-249,CRM System,Night agency another radio hospital civil hair. Natural decide whether bill pass.,USR000754,Django,On Hold,97665,2024-01-23,2025-03-11
+PROJ000250,WS0029,Project-250,ERP System,Hard audience enjoy play current. Religious last visit.,USR000463,Java Spring,Planning,59804,2026-04-08,2027-03-15

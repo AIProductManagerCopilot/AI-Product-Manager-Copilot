@@ -1,0 +1,2501 @@
+feature_id,project_id,feature_name,priority,status,estimated_story_points,created_at
+FEAT000001,PROJ000046,Multi-language Support,Medium,Planned,7,2025-04-09
+FEAT000002,PROJ000206,PDF Export,High,Released,4,2024-10-21
+FEAT000003,PROJ000052,Workflow Automation,Low,Released,6,2026-05-24
+FEAT000004,PROJ000176,API Enhancements,High,Released,15,2026-01-30
+FEAT000005,PROJ000209,Custom Reports,High,Testing,7,2026-07-02
+FEAT000006,PROJ000213,Advanced Dashboard,Critical,Planned,5,2024-10-17
+FEAT000007,PROJ000242,Slack Integration,Medium,In Development,11,2026-03-18
+FEAT000008,PROJ000188,Search Improvements,Low,Testing,6,2024-09-05
+FEAT000009,PROJ000059,PDF Export,High,Testing,14,2026-07-21
+FEAT000010,PROJ000001,Mobile Optimization,High,Backlog,7,2024-09-24
+FEAT000011,PROJ000214,Role Based Access,Low,Planned,17,2024-12-16
+FEAT000012,PROJ000227,Mobile Optimization,Medium,Released,10,2025-09-02
+FEAT000013,PROJ000086,Workflow Automation,Low,Planned,9,2026-03-16
+FEAT000014,PROJ000188,Role Based Access,Low,Planned,21,2024-08-29
+FEAT000015,PROJ000028,Analytics Widgets,High,Planned,8,2024-11-24
+FEAT000016,PROJ000071,Slack Integration,High,Released,6,2026-02-19
+FEAT000017,PROJ000109,API Enhancements,Critical,In Development,16,2025-05-14
+FEAT000018,PROJ000237,Workflow Automation,High,Testing,7,2025-01-14
+FEAT000019,PROJ000008,Slack Integration,High,Testing,3,2026-03-15
+FEAT000020,PROJ000085,Roadmap View,High,Testing,3,2026-05-21
+FEAT000021,PROJ000143,Multi-language Support,Medium,Testing,7,2025-08-06
+FEAT000022,PROJ000250,Search Improvements,Medium,In Development,19,2024-10-08
+FEAT000023,PROJ000018,Role Based Access,Medium,Planned,20,2025-07-02
+FEAT000024,PROJ000154,Analytics Widgets,High,Testing,10,2025-07-23
+FEAT000025,PROJ000130,Mobile Optimization,High,Testing,6,2026-06-13
+FEAT000026,PROJ000219,Multi-language Support,Critical,Planned,21,2026-07-17
+FEAT000027,PROJ000247,Slack Integration,Low,In Development,20,2025-10-05
+FEAT000028,PROJ000102,Search Improvements,Low,Testing,5,2025-01-23
+FEAT000029,PROJ000159,Multi-language Support,Critical,Released,17,2025-06-23
+FEAT000030,PROJ000108,Analytics Widgets,Low,In Development,19,2026-07-04
+FEAT000031,PROJ000046,Notification Center,Medium,Testing,15,2026-04-26
+FEAT000032,PROJ000119,Notification Center,Medium,Planned,12,2025-10-29
+FEAT000033,PROJ000136,PDF Export,Critical,In Development,8,2024-08-31
+FEAT000034,PROJ000041,Roadmap View,High,Planned,9,2025-10-30
+FEAT000035,PROJ000202,Analytics Widgets,Critical,Testing,17,2026-01-17
+FEAT000036,PROJ000063,Analytics Widgets,Critical,In Development,4,2025-05-26
+FEAT000037,PROJ000057,PDF Export,Medium,In Development,11,2026-02-03
+FEAT000038,PROJ000132,Mobile Optimization,Medium,Planned,6,2025-10-20
+FEAT000039,PROJ000180,Notification Center,Medium,In Development,17,2025-07-01
+FEAT000040,PROJ000106,Slack Integration,High,Testing,2,2024-10-13
+FEAT000041,PROJ000045,Mobile Optimization,Low,Testing,7,2026-06-08
+FEAT000042,PROJ000065,Mobile Optimization,Medium,Planned,20,2025-12-19
+FEAT000043,PROJ000083,PDF Export,Medium,Backlog,19,2024-11-15
+FEAT000044,PROJ000229,Analytics Widgets,High,In Development,20,2025-12-04
+FEAT000045,PROJ000213,API Enhancements,Medium,In Development,21,2025-08-16
+FEAT000046,PROJ000245,Search Improvements,High,Released,10,2024-09-24
+FEAT000047,PROJ000127,AI Insights,High,Planned,10,2025-06-11
+FEAT000048,PROJ000115,Custom Reports,Low,Testing,14,2025-08-04
+FEAT000049,PROJ000197,Custom Reports,Critical,Planned,7,2026-03-23
+FEAT000050,PROJ000007,Search Improvements,High,Planned,18,2026-01-02
+FEAT000051,PROJ000221,Custom Reports,High,Planned,2,2025-04-09
+FEAT000052,PROJ000097,Role Based Access,Medium,In Development,6,2026-04-19
+FEAT000053,PROJ000175,AI Insights,Medium,Testing,9,2025-10-22
+FEAT000054,PROJ000019,Role Based Access,Critical,Planned,3,2025-02-03
+FEAT000055,PROJ000229,Search Improvements,Medium,Testing,11,2025-05-31
+FEAT000056,PROJ000164,Notification Center,Low,Planned,17,2026-04-24
+FEAT000057,PROJ000004,API Enhancements,High,Backlog,18,2024-09-18
+FEAT000058,PROJ000154,PDF Export,High,Backlog,17,2026-07-06
+FEAT000059,PROJ000024,Roadmap View,Low,Backlog,6,2025-12-19
+FEAT000060,PROJ000104,Dark Mode,Low,Backlog,7,2024-08-07
+FEAT000061,PROJ000091,Notification Center,Medium,Testing,18,2025-07-24
+FEAT000062,PROJ000081,Dark Mode,Medium,Released,10,2025-04-24
+FEAT000063,PROJ000204,Multi-language Support,Medium,Released,18,2025-06-18
+FEAT000064,PROJ000092,Mobile Optimization,Critical,Planned,8,2026-04-14
+FEAT000065,PROJ000183,Notification Center,Critical,Planned,3,2026-05-27
+FEAT000066,PROJ000101,Roadmap View,Medium,In Development,14,2026-01-19
+FEAT000067,PROJ000212,Analytics Widgets,Medium,Backlog,21,2024-12-03
+FEAT000068,PROJ000063,Custom Reports,High,Backlog,18,2025-04-29
+FEAT000069,PROJ000220,Mobile Optimization,Medium,Testing,3,2026-05-13
+FEAT000070,PROJ000025,Dark Mode,High,Planned,9,2025-08-13
+FEAT000071,PROJ000235,Roadmap View,Low,Planned,3,2025-03-25
+FEAT000072,PROJ000068,Custom Reports,Medium,Testing,21,2025-10-16
+FEAT000073,PROJ000149,Mobile Optimization,Medium,Backlog,12,2024-10-15
+FEAT000074,PROJ000234,Custom Reports,High,Released,19,2025-05-24
+FEAT000075,PROJ000022,API Enhancements,Medium,Released,3,2025-12-22
+FEAT000076,PROJ000237,Workflow Automation,High,Planned,8,2024-10-03
+FEAT000077,PROJ000078,Slack Integration,High,In Development,16,2025-06-07
+FEAT000078,PROJ000228,Role Based Access,Low,Released,19,2025-03-29
+FEAT000079,PROJ000043,Dark Mode,Medium,Testing,3,2025-10-05
+FEAT000080,PROJ000193,Notification Center,Low,In Development,19,2025-03-28
+FEAT000081,PROJ000003,Notification Center,Medium,Released,10,2024-10-02
+FEAT000082,PROJ000013,API Enhancements,High,In Development,20,2025-10-04
+FEAT000083,PROJ000078,AI Insights,High,Planned,18,2026-03-15
+FEAT000084,PROJ000138,Search Improvements,Low,Released,6,2024-11-23
+FEAT000085,PROJ000122,API Enhancements,Low,Backlog,10,2026-02-15
+FEAT000086,PROJ000183,Analytics Widgets,Critical,Released,9,2025-02-15
+FEAT000087,PROJ000119,Search Improvements,Low,In Development,5,2025-06-14
+FEAT000088,PROJ000249,Dark Mode,Low,Planned,19,2025-06-23
+FEAT000089,PROJ000144,API Enhancements,Medium,Planned,15,2024-09-20
+FEAT000090,PROJ000187,Mobile Optimization,High,Backlog,6,2026-01-08
+FEAT000091,PROJ000147,Custom Reports,Critical,Testing,16,2025-03-11
+FEAT000092,PROJ000116,Dark Mode,Medium,Testing,3,2026-02-11
+FEAT000093,PROJ000055,Custom Reports,Low,Planned,17,2026-02-15
+FEAT000094,PROJ000191,Notification Center,High,Testing,5,2025-11-25
+FEAT000095,PROJ000177,Roadmap View,Low,Planned,17,2026-01-23
+FEAT000096,PROJ000112,Workflow Automation,Low,Planned,14,2025-11-09
+FEAT000097,PROJ000057,Roadmap View,High,Backlog,12,2026-02-06
+FEAT000098,PROJ000074,Workflow Automation,Low,Testing,15,2025-12-12
+FEAT000099,PROJ000165,Roadmap View,High,In Development,1,2025-11-16
+FEAT000100,PROJ000001,Custom Reports,Critical,Backlog,3,2025-10-18
+FEAT000101,PROJ000177,PDF Export,Medium,Released,18,2025-05-19
+FEAT000102,PROJ000046,Search Improvements,High,In Development,20,2024-08-22
+FEAT000103,PROJ000161,Dark Mode,Low,In Development,4,2026-03-26
+FEAT000104,PROJ000165,Slack Integration,Critical,Planned,11,2024-10-05
+FEAT000105,PROJ000161,Analytics Widgets,Critical,In Development,17,2026-03-13
+FEAT000106,PROJ000183,AI Insights,Critical,Backlog,14,2026-06-23
+FEAT000107,PROJ000038,Role Based Access,Low,Backlog,11,2026-06-17
+FEAT000108,PROJ000159,Analytics Widgets,Low,Released,11,2025-02-16
+FEAT000109,PROJ000030,Advanced Dashboard,Critical,Backlog,13,2026-06-28
+FEAT000110,PROJ000155,Advanced Dashboard,Critical,In Development,20,2025-06-26
+FEAT000111,PROJ000022,Workflow Automation,High,Backlog,13,2025-08-03
+FEAT000112,PROJ000109,Slack Integration,Critical,In Development,2,2024-11-27
+FEAT000113,PROJ000034,API Enhancements,Critical,Testing,11,2025-11-30
+FEAT000114,PROJ000201,Advanced Dashboard,Low,In Development,5,2025-03-29
+FEAT000115,PROJ000220,Mobile Optimization,Medium,Released,18,2025-01-05
+FEAT000116,PROJ000133,Multi-language Support,High,Released,2,2025-08-25
+FEAT000117,PROJ000140,AI Insights,Critical,In Development,20,2026-04-10
+FEAT000118,PROJ000010,API Enhancements,High,Planned,16,2025-02-13
+FEAT000119,PROJ000149,Mobile Optimization,Medium,Released,8,2025-08-19
+FEAT000120,PROJ000023,Slack Integration,Low,Backlog,17,2026-04-10
+FEAT000121,PROJ000139,Workflow Automation,High,Backlog,4,2025-03-16
+FEAT000122,PROJ000072,Search Improvements,Low,Testing,17,2025-04-27
+FEAT000123,PROJ000013,Analytics Widgets,High,Planned,18,2025-11-04
+FEAT000124,PROJ000233,Notification Center,Critical,Planned,18,2026-04-19
+FEAT000125,PROJ000180,Dark Mode,Critical,Testing,3,2024-12-13
+FEAT000126,PROJ000033,Role Based Access,Low,Released,13,2025-02-17
+FEAT000127,PROJ000145,Analytics Widgets,Critical,Planned,12,2026-07-08
+FEAT000128,PROJ000245,Notification Center,Medium,Planned,11,2026-06-23
+FEAT000129,PROJ000057,Slack Integration,High,Released,7,2024-12-18
+FEAT000130,PROJ000127,AI Insights,Low,In Development,17,2025-10-19
+FEAT000131,PROJ000004,AI Insights,High,Planned,4,2024-10-30
+FEAT000132,PROJ000094,Dark Mode,Medium,Planned,5,2025-11-07
+FEAT000133,PROJ000145,Mobile Optimization,High,In Development,20,2025-02-18
+FEAT000134,PROJ000018,Custom Reports,High,Released,13,2024-08-24
+FEAT000135,PROJ000131,Roadmap View,Critical,In Development,9,2025-05-18
+FEAT000136,PROJ000056,Analytics Widgets,High,Backlog,4,2024-11-14
+FEAT000137,PROJ000156,Role Based Access,Medium,Testing,16,2025-01-14
+FEAT000138,PROJ000147,Dark Mode,Critical,Released,7,2025-07-23
+FEAT000139,PROJ000021,PDF Export,High,In Development,19,2025-06-17
+FEAT000140,PROJ000113,Custom Reports,Low,Planned,9,2025-12-10
+FEAT000141,PROJ000230,PDF Export,Low,Testing,18,2024-10-09
+FEAT000142,PROJ000210,Mobile Optimization,High,Backlog,10,2025-01-01
+FEAT000143,PROJ000169,Roadmap View,Low,Backlog,15,2025-11-08
+FEAT000144,PROJ000108,Slack Integration,Low,Released,5,2025-04-12
+FEAT000145,PROJ000162,Custom Reports,Medium,In Development,20,2025-09-07
+FEAT000146,PROJ000136,Dark Mode,Low,Testing,12,2026-07-03
+FEAT000147,PROJ000050,Dark Mode,High,Planned,18,2025-05-04
+FEAT000148,PROJ000071,AI Insights,Critical,In Development,1,2025-09-16
+FEAT000149,PROJ000084,PDF Export,High,Planned,8,2025-05-24
+FEAT000150,PROJ000057,API Enhancements,High,Planned,2,2025-07-14
+FEAT000151,PROJ000106,Dark Mode,Low,Planned,14,2024-10-21
+FEAT000152,PROJ000098,Analytics Widgets,Critical,Planned,4,2025-01-29
+FEAT000153,PROJ000162,Advanced Dashboard,Low,Testing,1,2025-10-15
+FEAT000154,PROJ000203,Notification Center,High,Planned,18,2025-11-17
+FEAT000155,PROJ000003,Advanced Dashboard,Medium,Testing,8,2024-07-26
+FEAT000156,PROJ000239,API Enhancements,Medium,In Development,17,2026-04-26
+FEAT000157,PROJ000241,API Enhancements,Critical,Released,4,2026-04-26
+FEAT000158,PROJ000228,Multi-language Support,High,Testing,20,2025-01-03
+FEAT000159,PROJ000247,Search Improvements,Critical,In Development,2,2026-05-01
+FEAT000160,PROJ000095,Mobile Optimization,High,Backlog,18,2025-11-03
+FEAT000161,PROJ000242,Mobile Optimization,High,Released,19,2025-04-27
+FEAT000162,PROJ000222,Roadmap View,High,Testing,20,2024-10-12
+FEAT000163,PROJ000239,PDF Export,Low,In Development,8,2025-11-13
+FEAT000164,PROJ000014,Workflow Automation,Critical,Released,15,2025-11-14
+FEAT000165,PROJ000215,Multi-language Support,Medium,Released,3,2025-10-14
+FEAT000166,PROJ000222,Roadmap View,High,Backlog,7,2026-06-06
+FEAT000167,PROJ000111,Role Based Access,Low,Backlog,8,2024-11-19
+FEAT000168,PROJ000230,Role Based Access,Critical,Backlog,18,2024-10-27
+FEAT000169,PROJ000135,Search Improvements,Critical,Released,15,2026-04-10
+FEAT000170,PROJ000245,Slack Integration,Low,Released,6,2026-02-19
+FEAT000171,PROJ000149,Search Improvements,Low,In Development,8,2024-11-02
+FEAT000172,PROJ000080,Role Based Access,Low,Testing,15,2025-08-25
+FEAT000173,PROJ000133,Workflow Automation,Critical,Testing,6,2026-01-08
+FEAT000174,PROJ000052,Search Improvements,Medium,Backlog,19,2025-09-04
+FEAT000175,PROJ000016,Roadmap View,Low,In Development,14,2026-07-17
+FEAT000176,PROJ000171,Role Based Access,High,In Development,15,2025-03-16
+FEAT000177,PROJ000168,Slack Integration,High,Backlog,7,2026-02-03
+FEAT000178,PROJ000124,Slack Integration,Low,Planned,21,2026-05-20
+FEAT000179,PROJ000169,Custom Reports,Medium,Released,15,2025-11-23
+FEAT000180,PROJ000104,PDF Export,Critical,Testing,21,2026-05-05
+FEAT000181,PROJ000083,Role Based Access,Critical,Planned,17,2024-12-29
+FEAT000182,PROJ000155,Roadmap View,Medium,Planned,6,2026-05-15
+FEAT000183,PROJ000021,Custom Reports,Critical,In Development,13,2026-04-10
+FEAT000184,PROJ000225,AI Insights,Critical,Backlog,7,2026-04-28
+FEAT000185,PROJ000099,Custom Reports,High,In Development,17,2026-02-09
+FEAT000186,PROJ000222,Dark Mode,Critical,In Development,7,2026-01-14
+FEAT000187,PROJ000244,Notification Center,Medium,Testing,13,2026-05-11
+FEAT000188,PROJ000138,Role Based Access,Critical,Released,21,2025-02-19
+FEAT000189,PROJ000142,Custom Reports,Medium,Backlog,15,2025-10-31
+FEAT000190,PROJ000142,Role Based Access,Low,Released,18,2025-11-08
+FEAT000191,PROJ000175,Search Improvements,Low,Released,4,2025-12-06
+FEAT000192,PROJ000214,PDF Export,Medium,In Development,1,2025-07-11
+FEAT000193,PROJ000077,API Enhancements,High,Backlog,19,2026-03-25
+FEAT000194,PROJ000173,AI Insights,Medium,Planned,9,2025-04-09
+FEAT000195,PROJ000125,AI Insights,Medium,Testing,21,2026-05-11
+FEAT000196,PROJ000217,Multi-language Support,Medium,In Development,11,2025-12-22
+FEAT000197,PROJ000169,Notification Center,Critical,Backlog,19,2025-08-19
+FEAT000198,PROJ000045,Mobile Optimization,Low,Testing,5,2024-08-14
+FEAT000199,PROJ000019,API Enhancements,Medium,Backlog,8,2025-10-16
+FEAT000200,PROJ000062,AI Insights,Low,In Development,18,2025-05-18
+FEAT000201,PROJ000112,Dark Mode,High,Backlog,13,2025-10-01
+FEAT000202,PROJ000149,Analytics Widgets,Low,Planned,17,2025-12-11
+FEAT000203,PROJ000088,Mobile Optimization,Medium,Planned,16,2025-05-13
+FEAT000204,PROJ000093,Role Based Access,Medium,In Development,9,2025-07-20
+FEAT000205,PROJ000182,Roadmap View,Low,Released,21,2025-07-27
+FEAT000206,PROJ000037,Roadmap View,Low,Released,16,2025-06-11
+FEAT000207,PROJ000142,PDF Export,Medium,Backlog,7,2024-08-21
+FEAT000208,PROJ000077,Mobile Optimization,Low,Testing,8,2024-12-04
+FEAT000209,PROJ000149,AI Insights,High,Testing,9,2025-03-22
+FEAT000210,PROJ000108,Multi-language Support,Low,Released,2,2024-10-22
+FEAT000211,PROJ000113,Advanced Dashboard,Medium,Backlog,14,2025-09-26
+FEAT000212,PROJ000041,API Enhancements,High,In Development,10,2024-09-19
+FEAT000213,PROJ000120,Slack Integration,High,Released,7,2025-10-15
+FEAT000214,PROJ000229,Mobile Optimization,Low,Planned,14,2026-01-17
+FEAT000215,PROJ000032,Workflow Automation,High,Backlog,10,2024-10-26
+FEAT000216,PROJ000157,PDF Export,Low,Testing,11,2025-05-31
+FEAT000217,PROJ000008,Custom Reports,High,Released,17,2026-02-05
+FEAT000218,PROJ000171,Search Improvements,Critical,In Development,6,2026-05-20
+FEAT000219,PROJ000182,Analytics Widgets,Medium,Backlog,4,2024-09-09
+FEAT000220,PROJ000088,PDF Export,Medium,Testing,18,2025-08-30
+FEAT000221,PROJ000102,Multi-language Support,Medium,Backlog,16,2026-03-16
+FEAT000222,PROJ000124,Mobile Optimization,High,In Development,7,2024-08-22
+FEAT000223,PROJ000161,Custom Reports,High,Planned,5,2025-12-12
+FEAT000224,PROJ000192,Search Improvements,High,Planned,18,2025-06-14
+FEAT000225,PROJ000164,Search Improvements,Low,Backlog,11,2025-12-03
+FEAT000226,PROJ000101,Analytics Widgets,High,Testing,16,2025-11-25
+FEAT000227,PROJ000189,Role Based Access,Critical,Testing,19,2025-07-25
+FEAT000228,PROJ000179,API Enhancements,Low,Planned,6,2026-05-04
+FEAT000229,PROJ000016,Slack Integration,Critical,Released,20,2025-12-13
+FEAT000230,PROJ000182,Custom Reports,Critical,In Development,21,2025-10-01
+FEAT000231,PROJ000092,Mobile Optimization,Medium,Planned,20,2026-05-06
+FEAT000232,PROJ000144,Advanced Dashboard,Low,Testing,16,2025-09-24
+FEAT000233,PROJ000124,Notification Center,Low,Backlog,19,2025-01-06
+FEAT000234,PROJ000135,Analytics Widgets,Low,In Development,18,2025-03-23
+FEAT000235,PROJ000191,Advanced Dashboard,High,Planned,3,2025-01-04
+FEAT000236,PROJ000179,API Enhancements,Critical,Planned,17,2025-09-07
+FEAT000237,PROJ000126,Multi-language Support,Critical,In Development,1,2026-03-06
+FEAT000238,PROJ000096,AI Insights,Low,Released,21,2024-08-27
+FEAT000239,PROJ000250,AI Insights,Critical,Planned,17,2025-10-28
+FEAT000240,PROJ000076,PDF Export,Low,Testing,6,2026-02-17
+FEAT000241,PROJ000159,Roadmap View,Medium,In Development,4,2025-12-09
+FEAT000242,PROJ000197,Workflow Automation,Low,Testing,17,2025-10-11
+FEAT000243,PROJ000196,Advanced Dashboard,Medium,Backlog,9,2025-08-21
+FEAT000244,PROJ000168,Notification Center,High,Backlog,7,2025-06-30
+FEAT000245,PROJ000092,Analytics Widgets,Critical,In Development,17,2026-03-04
+FEAT000246,PROJ000004,Slack Integration,High,Testing,18,2024-07-30
+FEAT000247,PROJ000142,Mobile Optimization,Critical,In Development,17,2026-07-10
+FEAT000248,PROJ000066,Search Improvements,High,Planned,11,2025-09-19
+FEAT000249,PROJ000021,Multi-language Support,High,Planned,16,2025-03-31
+FEAT000250,PROJ000242,Workflow Automation,High,In Development,16,2025-10-21
+FEAT000251,PROJ000128,Custom Reports,High,In Development,20,2026-03-07
+FEAT000252,PROJ000181,Dark Mode,Medium,Released,7,2026-06-10
+FEAT000253,PROJ000171,Workflow Automation,Low,Backlog,7,2024-10-08
+FEAT000254,PROJ000163,Notification Center,Low,In Development,8,2026-07-10
+FEAT000255,PROJ000167,Dark Mode,Medium,Released,8,2024-10-13
+FEAT000256,PROJ000098,PDF Export,Critical,Released,4,2024-08-28
+FEAT000257,PROJ000204,Slack Integration,Medium,Released,2,2024-10-27
+FEAT000258,PROJ000177,Workflow Automation,Medium,In Development,21,2026-02-11
+FEAT000259,PROJ000245,Workflow Automation,Critical,Released,18,2026-06-18
+FEAT000260,PROJ000226,Multi-language Support,Medium,Backlog,9,2025-06-03
+FEAT000261,PROJ000100,PDF Export,Medium,Planned,2,2025-08-25
+FEAT000262,PROJ000131,Custom Reports,Critical,Backlog,18,2025-08-17
+FEAT000263,PROJ000130,Slack Integration,Medium,Released,19,2025-01-08
+FEAT000264,PROJ000151,Custom Reports,Low,Testing,18,2026-03-06
+FEAT000265,PROJ000195,Role Based Access,Low,Backlog,13,2025-06-30
+FEAT000266,PROJ000143,Dark Mode,High,In Development,15,2025-07-07
+FEAT000267,PROJ000133,PDF Export,Low,Released,21,2026-02-07
+FEAT000268,PROJ000203,Workflow Automation,Medium,In Development,19,2025-07-06
+FEAT000269,PROJ000062,Roadmap View,High,Testing,12,2026-03-22
+FEAT000270,PROJ000154,Roadmap View,Critical,Backlog,13,2026-03-19
+FEAT000271,PROJ000188,Analytics Widgets,Critical,Backlog,12,2026-02-21
+FEAT000272,PROJ000047,Mobile Optimization,Low,Backlog,18,2025-11-08
+FEAT000273,PROJ000212,Search Improvements,Critical,Planned,1,2025-03-20
+FEAT000274,PROJ000026,AI Insights,High,Backlog,18,2025-04-07
+FEAT000275,PROJ000016,Notification Center,Medium,Released,15,2026-01-27
+FEAT000276,PROJ000193,Role Based Access,Low,Released,13,2025-09-05
+FEAT000277,PROJ000039,PDF Export,Medium,Released,17,2026-03-16
+FEAT000278,PROJ000037,API Enhancements,High,Backlog,5,2025-11-12
+FEAT000279,PROJ000141,Custom Reports,Critical,Testing,16,2025-09-02
+FEAT000280,PROJ000003,Multi-language Support,High,Testing,10,2025-10-07
+FEAT000281,PROJ000191,Advanced Dashboard,High,In Development,2,2026-05-28
+FEAT000282,PROJ000231,Analytics Widgets,High,Testing,21,2024-08-18
+FEAT000283,PROJ000047,Mobile Optimization,Medium,In Development,12,2024-12-10
+FEAT000284,PROJ000057,Workflow Automation,Critical,In Development,6,2024-10-25
+FEAT000285,PROJ000041,PDF Export,Low,Backlog,3,2025-03-31
+FEAT000286,PROJ000246,Workflow Automation,Low,Planned,13,2025-12-01
+FEAT000287,PROJ000054,Workflow Automation,Medium,In Development,15,2026-02-24
+FEAT000288,PROJ000171,Workflow Automation,Low,Planned,3,2025-08-10
+FEAT000289,PROJ000154,Slack Integration,Critical,Testing,7,2025-01-03
+FEAT000290,PROJ000173,Mobile Optimization,Low,Planned,19,2024-12-21
+FEAT000291,PROJ000109,Roadmap View,Low,Planned,12,2026-03-13
+FEAT000292,PROJ000237,PDF Export,Low,Planned,5,2024-08-19
+FEAT000293,PROJ000180,API Enhancements,Critical,In Development,2,2026-01-04
+FEAT000294,PROJ000196,Role Based Access,Critical,Testing,8,2025-11-09
+FEAT000295,PROJ000188,Analytics Widgets,Critical,Backlog,1,2025-04-04
+FEAT000296,PROJ000087,Advanced Dashboard,Low,In Development,7,2026-05-24
+FEAT000297,PROJ000043,Advanced Dashboard,Low,Backlog,2,2026-07-11
+FEAT000298,PROJ000234,AI Insights,Low,Released,11,2025-06-06
+FEAT000299,PROJ000204,PDF Export,Low,Released,2,2026-05-18
+FEAT000300,PROJ000055,PDF Export,Low,In Development,2,2026-03-11
+FEAT000301,PROJ000060,Advanced Dashboard,Low,Planned,6,2025-02-11
+FEAT000302,PROJ000010,AI Insights,Low,Planned,8,2026-01-21
+FEAT000303,PROJ000148,Advanced Dashboard,High,Planned,14,2025-07-26
+FEAT000304,PROJ000116,Custom Reports,Medium,Planned,6,2025-02-04
+FEAT000305,PROJ000121,Advanced Dashboard,High,Released,1,2024-12-05
+FEAT000306,PROJ000213,Advanced Dashboard,Critical,Released,2,2024-09-24
+FEAT000307,PROJ000181,Workflow Automation,High,Testing,11,2026-01-11
+FEAT000308,PROJ000088,Mobile Optimization,High,In Development,6,2024-08-11
+FEAT000309,PROJ000123,Search Improvements,Low,Planned,3,2025-07-24
+FEAT000310,PROJ000100,Search Improvements,Medium,Released,1,2025-04-06
+FEAT000311,PROJ000067,Roadmap View,Medium,In Development,11,2025-03-29
+FEAT000312,PROJ000017,Slack Integration,Medium,Planned,15,2025-02-26
+FEAT000313,PROJ000166,Advanced Dashboard,Low,Released,13,2025-01-31
+FEAT000314,PROJ000229,AI Insights,Critical,Backlog,6,2024-12-25
+FEAT000315,PROJ000019,AI Insights,Low,Testing,10,2025-06-11
+FEAT000316,PROJ000028,API Enhancements,Low,Released,1,2026-04-06
+FEAT000317,PROJ000249,Search Improvements,Medium,Backlog,13,2025-05-25
+FEAT000318,PROJ000055,Roadmap View,Critical,Testing,19,2025-07-07
+FEAT000319,PROJ000140,API Enhancements,High,Backlog,10,2025-09-08
+FEAT000320,PROJ000213,Advanced Dashboard,High,Testing,10,2024-07-29
+FEAT000321,PROJ000199,AI Insights,Low,In Development,5,2025-11-21
+FEAT000322,PROJ000085,AI Insights,Low,Released,7,2025-09-05
+FEAT000323,PROJ000019,Role Based Access,High,Backlog,13,2024-10-24
+FEAT000324,PROJ000031,AI Insights,High,In Development,3,2026-02-04
+FEAT000325,PROJ000095,Custom Reports,High,Planned,21,2026-04-17
+FEAT000326,PROJ000035,Mobile Optimization,Medium,Testing,14,2026-04-26
+FEAT000327,PROJ000108,Role Based Access,Critical,Testing,5,2026-07-16
+FEAT000328,PROJ000029,API Enhancements,Low,Released,9,2025-10-20
+FEAT000329,PROJ000012,Slack Integration,Critical,Planned,16,2026-06-07
+FEAT000330,PROJ000165,Custom Reports,High,Planned,4,2026-02-13
+FEAT000331,PROJ000056,Role Based Access,Low,Released,20,2024-09-17
+FEAT000332,PROJ000032,Analytics Widgets,Low,Planned,3,2024-10-11
+FEAT000333,PROJ000162,Notification Center,Medium,Testing,17,2026-01-30
+FEAT000334,PROJ000079,Role Based Access,Medium,Released,7,2025-04-27
+FEAT000335,PROJ000100,Advanced Dashboard,Critical,Planned,11,2026-07-12
+FEAT000336,PROJ000171,PDF Export,Low,Planned,10,2024-08-18
+FEAT000337,PROJ000215,Slack Integration,Medium,Released,1,2026-05-05
+FEAT000338,PROJ000193,Analytics Widgets,High,Released,4,2026-01-13
+FEAT000339,PROJ000006,PDF Export,Low,In Development,5,2024-08-04
+FEAT000340,PROJ000094,Multi-language Support,High,Released,1,2025-04-16
+FEAT000341,PROJ000077,Analytics Widgets,Critical,Testing,5,2025-06-22
+FEAT000342,PROJ000137,Multi-language Support,Medium,In Development,4,2025-03-19
+FEAT000343,PROJ000084,Custom Reports,High,In Development,4,2025-07-27
+FEAT000344,PROJ000095,Mobile Optimization,Low,Backlog,4,2025-07-10
+FEAT000345,PROJ000178,Mobile Optimization,Low,In Development,9,2026-06-03
+FEAT000346,PROJ000002,Roadmap View,Low,In Development,11,2025-10-01
+FEAT000347,PROJ000117,AI Insights,Medium,Released,11,2026-04-08
+FEAT000348,PROJ000118,Multi-language Support,High,Testing,5,2025-02-16
+FEAT000349,PROJ000141,PDF Export,Low,Testing,7,2026-03-30
+FEAT000350,PROJ000102,Advanced Dashboard,Critical,Planned,2,2026-02-28
+FEAT000351,PROJ000022,Roadmap View,Critical,Planned,14,2025-08-23
+FEAT000352,PROJ000170,Multi-language Support,Low,Planned,15,2025-10-15
+FEAT000353,PROJ000118,Slack Integration,Medium,Testing,3,2025-02-05
+FEAT000354,PROJ000249,AI Insights,Low,Backlog,1,2026-04-13
+FEAT000355,PROJ000090,Multi-language Support,Critical,Testing,9,2025-04-06
+FEAT000356,PROJ000024,Dark Mode,High,In Development,16,2024-09-09
+FEAT000357,PROJ000015,Search Improvements,Medium,Testing,9,2026-04-26
+FEAT000358,PROJ000141,API Enhancements,Medium,Released,15,2025-11-12
+FEAT000359,PROJ000018,Analytics Widgets,Critical,Released,4,2026-07-04
+FEAT000360,PROJ000075,Search Improvements,High,Released,3,2026-02-08
+FEAT000361,PROJ000069,Custom Reports,Low,Testing,20,2024-09-20
+FEAT000362,PROJ000156,Role Based Access,Low,Planned,13,2025-06-24
+FEAT000363,PROJ000165,Custom Reports,Low,Planned,10,2026-07-13
+FEAT000364,PROJ000040,AI Insights,Medium,In Development,13,2025-10-03
+FEAT000365,PROJ000085,Analytics Widgets,Low,Testing,14,2025-03-22
+FEAT000366,PROJ000011,Slack Integration,Critical,In Development,6,2025-09-03
+FEAT000367,PROJ000092,Search Improvements,Low,Testing,7,2025-04-25
+FEAT000368,PROJ000026,Dark Mode,High,Testing,13,2025-01-27
+FEAT000369,PROJ000215,Notification Center,High,Backlog,3,2026-01-05
+FEAT000370,PROJ000007,Analytics Widgets,Medium,Testing,6,2025-10-16
+FEAT000371,PROJ000236,Notification Center,Medium,Backlog,1,2024-12-30
+FEAT000372,PROJ000115,API Enhancements,High,Testing,12,2026-07-07
+FEAT000373,PROJ000232,Multi-language Support,High,Released,19,2025-10-21
+FEAT000374,PROJ000109,Search Improvements,High,Backlog,15,2026-06-08
+FEAT000375,PROJ000041,Workflow Automation,High,Testing,4,2026-02-06
+FEAT000376,PROJ000243,Analytics Widgets,Medium,Backlog,9,2026-01-25
+FEAT000377,PROJ000133,Role Based Access,High,Testing,17,2026-02-24
+FEAT000378,PROJ000112,API Enhancements,Critical,Released,11,2026-06-21
+FEAT000379,PROJ000203,Mobile Optimization,Low,Released,20,2026-05-22
+FEAT000380,PROJ000080,AI Insights,Medium,Planned,12,2025-10-03
+FEAT000381,PROJ000153,Workflow Automation,Critical,Backlog,2,2025-01-06
+FEAT000382,PROJ000141,Multi-language Support,Critical,In Development,20,2024-07-25
+FEAT000383,PROJ000174,Roadmap View,Low,In Development,19,2024-08-10
+FEAT000384,PROJ000033,Custom Reports,Low,Planned,18,2026-05-10
+FEAT000385,PROJ000053,Workflow Automation,High,Planned,16,2026-07-11
+FEAT000386,PROJ000103,Workflow Automation,High,In Development,14,2025-03-15
+FEAT000387,PROJ000030,Custom Reports,Low,Testing,14,2026-02-03
+FEAT000388,PROJ000238,Workflow Automation,High,Released,15,2024-12-24
+FEAT000389,PROJ000073,Custom Reports,Medium,Testing,14,2025-11-30
+FEAT000390,PROJ000115,Custom Reports,High,In Development,16,2025-10-30
+FEAT000391,PROJ000033,Custom Reports,Critical,Testing,10,2025-06-14
+FEAT000392,PROJ000099,Analytics Widgets,Medium,Released,9,2025-06-25
+FEAT000393,PROJ000101,Advanced Dashboard,Medium,In Development,16,2026-04-17
+FEAT000394,PROJ000137,Mobile Optimization,Medium,Planned,12,2026-03-08
+FEAT000395,PROJ000129,Role Based Access,Critical,Testing,14,2025-06-14
+FEAT000396,PROJ000153,Dark Mode,Critical,Planned,8,2024-09-03
+FEAT000397,PROJ000242,PDF Export,Low,Released,19,2024-12-23
+FEAT000398,PROJ000078,Advanced Dashboard,Critical,Testing,1,2025-06-07
+FEAT000399,PROJ000157,Roadmap View,Medium,Released,2,2026-06-25
+FEAT000400,PROJ000137,Analytics Widgets,Low,Testing,4,2025-09-18
+FEAT000401,PROJ000012,Advanced Dashboard,Medium,Testing,11,2024-10-05
+FEAT000402,PROJ000134,PDF Export,Medium,Backlog,16,2026-03-06
+FEAT000403,PROJ000050,Dark Mode,Low,Planned,5,2025-09-20
+FEAT000404,PROJ000151,Role Based Access,Medium,Testing,20,2025-12-21
+FEAT000405,PROJ000009,Notification Center,Medium,Testing,19,2026-07-19
+FEAT000406,PROJ000213,Dark Mode,Critical,Released,7,2024-11-16
+FEAT000407,PROJ000218,PDF Export,Medium,In Development,2,2025-07-21
+FEAT000408,PROJ000174,Roadmap View,Medium,Planned,11,2024-09-21
+FEAT000409,PROJ000213,PDF Export,High,In Development,15,2025-11-28
+FEAT000410,PROJ000213,Advanced Dashboard,High,Released,5,2026-03-10
+FEAT000411,PROJ000207,AI Insights,Low,Planned,14,2026-04-09
+FEAT000412,PROJ000051,Analytics Widgets,Low,Testing,4,2025-04-12
+FEAT000413,PROJ000151,Role Based Access,Medium,Planned,1,2024-10-19
+FEAT000414,PROJ000162,PDF Export,Low,Released,17,2025-05-25
+FEAT000415,PROJ000214,Notification Center,Medium,In Development,6,2026-05-10
+FEAT000416,PROJ000028,Mobile Optimization,Medium,In Development,2,2025-08-22
+FEAT000417,PROJ000016,Roadmap View,Critical,In Development,5,2026-04-05
+FEAT000418,PROJ000024,Notification Center,Critical,Released,20,2024-10-31
+FEAT000419,PROJ000236,Custom Reports,Low,Planned,7,2025-03-21
+FEAT000420,PROJ000136,API Enhancements,High,Released,11,2025-03-06
+FEAT000421,PROJ000131,Analytics Widgets,Medium,Backlog,15,2025-01-23
+FEAT000422,PROJ000041,Role Based Access,Critical,Backlog,8,2026-01-10
+FEAT000423,PROJ000217,Slack Integration,Medium,Testing,17,2025-06-23
+FEAT000424,PROJ000052,Custom Reports,Medium,Planned,13,2026-06-21
+FEAT000425,PROJ000241,Analytics Widgets,Medium,Backlog,21,2026-04-24
+FEAT000426,PROJ000210,Search Improvements,Medium,Backlog,17,2025-05-23
+FEAT000427,PROJ000058,PDF Export,Low,Released,3,2024-08-02
+FEAT000428,PROJ000015,AI Insights,Low,In Development,21,2025-07-16
+FEAT000429,PROJ000226,Multi-language Support,Medium,Testing,7,2026-01-23
+FEAT000430,PROJ000194,Workflow Automation,Low,In Development,18,2026-07-08
+FEAT000431,PROJ000002,Slack Integration,Critical,In Development,1,2024-11-24
+FEAT000432,PROJ000247,PDF Export,Low,Testing,4,2025-03-06
+FEAT000433,PROJ000013,Multi-language Support,High,In Development,18,2024-09-28
+FEAT000434,PROJ000181,Role Based Access,Low,Released,21,2025-04-17
+FEAT000435,PROJ000063,PDF Export,Medium,In Development,13,2025-05-02
+FEAT000436,PROJ000233,API Enhancements,Critical,In Development,21,2026-03-09
+FEAT000437,PROJ000077,Role Based Access,High,Testing,6,2025-02-02
+FEAT000438,PROJ000201,Advanced Dashboard,High,Testing,10,2025-12-28
+FEAT000439,PROJ000085,Roadmap View,Critical,Released,19,2026-01-07
+FEAT000440,PROJ000128,Slack Integration,Critical,In Development,12,2025-08-26
+FEAT000441,PROJ000037,Roadmap View,Low,Testing,3,2025-02-23
+FEAT000442,PROJ000027,Slack Integration,High,Testing,12,2025-09-13
+FEAT000443,PROJ000004,Mobile Optimization,Critical,In Development,21,2024-08-10
+FEAT000444,PROJ000040,Workflow Automation,Medium,Released,16,2025-09-27
+FEAT000445,PROJ000003,API Enhancements,Medium,Testing,9,2025-04-07
+FEAT000446,PROJ000125,Roadmap View,High,Backlog,13,2026-04-03
+FEAT000447,PROJ000136,Mobile Optimization,High,Testing,20,2026-01-16
+FEAT000448,PROJ000169,API Enhancements,Medium,In Development,5,2025-07-31
+FEAT000449,PROJ000226,Custom Reports,Low,Planned,16,2025-03-05
+FEAT000450,PROJ000243,Search Improvements,Critical,In Development,15,2026-06-20
+FEAT000451,PROJ000018,Roadmap View,Low,Planned,12,2025-05-02
+FEAT000452,PROJ000244,API Enhancements,Medium,In Development,17,2026-01-23
+FEAT000453,PROJ000105,Search Improvements,Critical,In Development,13,2024-08-04
+FEAT000454,PROJ000226,PDF Export,Low,Testing,1,2024-09-30
+FEAT000455,PROJ000185,Multi-language Support,Critical,Backlog,8,2026-05-21
+FEAT000456,PROJ000085,Multi-language Support,Low,Backlog,21,2026-05-12
+FEAT000457,PROJ000112,Mobile Optimization,Medium,Backlog,11,2025-12-07
+FEAT000458,PROJ000120,Multi-language Support,Medium,Backlog,6,2026-06-15
+FEAT000459,PROJ000055,AI Insights,Medium,Released,17,2025-11-21
+FEAT000460,PROJ000058,Multi-language Support,Critical,Testing,15,2026-02-05
+FEAT000461,PROJ000160,Role Based Access,Critical,Backlog,8,2025-07-17
+FEAT000462,PROJ000184,Notification Center,Low,Backlog,10,2026-07-19
+FEAT000463,PROJ000008,AI Insights,High,Released,10,2026-05-13
+FEAT000464,PROJ000126,Role Based Access,High,Backlog,14,2026-06-16
+FEAT000465,PROJ000234,PDF Export,Low,Planned,9,2024-10-06
+FEAT000466,PROJ000058,Multi-language Support,Critical,Released,18,2025-08-28
+FEAT000467,PROJ000138,Analytics Widgets,Critical,Planned,4,2026-01-26
+FEAT000468,PROJ000113,Slack Integration,Low,Testing,6,2024-10-23
+FEAT000469,PROJ000246,Custom Reports,High,Backlog,17,2025-05-21
+FEAT000470,PROJ000016,Mobile Optimization,Low,Backlog,16,2024-08-02
+FEAT000471,PROJ000122,Advanced Dashboard,High,Testing,9,2025-02-18
+FEAT000472,PROJ000092,Analytics Widgets,High,Backlog,17,2024-11-28
+FEAT000473,PROJ000037,Advanced Dashboard,Medium,Released,13,2024-09-23
+FEAT000474,PROJ000133,Workflow Automation,Low,Planned,1,2025-12-24
+FEAT000475,PROJ000124,PDF Export,Critical,In Development,14,2025-06-16
+FEAT000476,PROJ000031,AI Insights,High,Planned,17,2026-04-03
+FEAT000477,PROJ000204,Dark Mode,Critical,In Development,10,2024-08-10
+FEAT000478,PROJ000250,Role Based Access,Critical,Released,15,2025-05-22
+FEAT000479,PROJ000077,Role Based Access,High,In Development,18,2025-12-11
+FEAT000480,PROJ000078,Multi-language Support,Critical,Released,13,2026-06-01
+FEAT000481,PROJ000062,Notification Center,High,Backlog,18,2026-04-27
+FEAT000482,PROJ000195,Mobile Optimization,Critical,Released,2,2026-05-08
+FEAT000483,PROJ000182,Advanced Dashboard,High,In Development,3,2025-10-27
+FEAT000484,PROJ000101,Role Based Access,Critical,Released,18,2026-03-24
+FEAT000485,PROJ000082,Dark Mode,Medium,Released,7,2025-06-07
+FEAT000486,PROJ000131,PDF Export,Low,Testing,2,2026-02-10
+FEAT000487,PROJ000054,Role Based Access,Medium,Planned,11,2025-07-01
+FEAT000488,PROJ000192,Role Based Access,Medium,Planned,3,2024-10-08
+FEAT000489,PROJ000210,Multi-language Support,Low,Backlog,4,2025-06-17
+FEAT000490,PROJ000093,Mobile Optimization,High,Backlog,17,2025-01-27
+FEAT000491,PROJ000007,Advanced Dashboard,High,In Development,7,2025-11-28
+FEAT000492,PROJ000230,Workflow Automation,Medium,Backlog,16,2025-12-05
+FEAT000493,PROJ000007,Analytics Widgets,Low,Released,7,2024-12-31
+FEAT000494,PROJ000237,API Enhancements,Medium,In Development,11,2024-08-21
+FEAT000495,PROJ000204,Custom Reports,Critical,Backlog,9,2025-01-25
+FEAT000496,PROJ000196,Search Improvements,Low,Released,10,2026-05-29
+FEAT000497,PROJ000187,Mobile Optimization,Medium,In Development,10,2025-12-28
+FEAT000498,PROJ000150,Notification Center,Medium,In Development,9,2024-08-15
+FEAT000499,PROJ000236,Role Based Access,High,Released,18,2024-11-29
+FEAT000500,PROJ000170,Dark Mode,Critical,In Development,1,2026-02-25
+FEAT000501,PROJ000136,AI Insights,High,Released,8,2025-12-23
+FEAT000502,PROJ000160,Notification Center,Medium,Planned,14,2024-12-01
+FEAT000503,PROJ000211,Analytics Widgets,Critical,Released,13,2026-01-22
+FEAT000504,PROJ000065,Search Improvements,Low,Backlog,3,2025-02-17
+FEAT000505,PROJ000167,PDF Export,Medium,Backlog,19,2026-05-17
+FEAT000506,PROJ000165,PDF Export,Low,Released,17,2025-08-31
+FEAT000507,PROJ000130,PDF Export,Low,Backlog,14,2024-10-28
+FEAT000508,PROJ000165,Slack Integration,Low,Released,18,2025-02-10
+FEAT000509,PROJ000080,Multi-language Support,Critical,Released,1,2025-01-18
+FEAT000510,PROJ000125,Custom Reports,Medium,Testing,20,2026-02-18
+FEAT000511,PROJ000221,Mobile Optimization,High,Backlog,9,2025-02-07
+FEAT000512,PROJ000131,API Enhancements,High,Testing,7,2025-08-16
+FEAT000513,PROJ000067,AI Insights,Medium,Testing,9,2025-08-06
+FEAT000514,PROJ000114,Mobile Optimization,High,Released,2,2024-08-19
+FEAT000515,PROJ000021,Role Based Access,High,Backlog,4,2025-12-25
+FEAT000516,PROJ000152,Workflow Automation,Low,Planned,2,2025-05-22
+FEAT000517,PROJ000052,Multi-language Support,Critical,Released,17,2026-06-01
+FEAT000518,PROJ000058,Dark Mode,Medium,Released,21,2026-04-29
+FEAT000519,PROJ000144,Workflow Automation,Medium,Released,6,2024-10-07
+FEAT000520,PROJ000247,Slack Integration,Low,In Development,5,2026-03-01
+FEAT000521,PROJ000218,AI Insights,Critical,Released,7,2025-09-02
+FEAT000522,PROJ000224,Workflow Automation,Critical,Backlog,12,2026-01-24
+FEAT000523,PROJ000019,Dark Mode,High,In Development,20,2025-11-17
+FEAT000524,PROJ000059,API Enhancements,Critical,Backlog,5,2026-03-14
+FEAT000525,PROJ000204,API Enhancements,High,Testing,2,2026-01-24
+FEAT000526,PROJ000054,Dark Mode,Critical,Planned,21,2025-03-22
+FEAT000527,PROJ000158,Notification Center,Critical,Released,4,2026-05-24
+FEAT000528,PROJ000012,Multi-language Support,Medium,In Development,2,2026-03-21
+FEAT000529,PROJ000122,Workflow Automation,Critical,Planned,18,2024-09-14
+FEAT000530,PROJ000221,Multi-language Support,Medium,Backlog,15,2025-09-14
+FEAT000531,PROJ000053,Workflow Automation,Critical,Backlog,12,2025-04-15
+FEAT000532,PROJ000224,Workflow Automation,Low,Testing,4,2025-09-08
+FEAT000533,PROJ000249,Role Based Access,High,Planned,5,2025-02-05
+FEAT000534,PROJ000063,Custom Reports,Medium,Backlog,1,2025-09-30
+FEAT000535,PROJ000237,Custom Reports,High,In Development,21,2026-06-25
+FEAT000536,PROJ000163,PDF Export,Critical,Testing,3,2026-06-04
+FEAT000537,PROJ000158,Workflow Automation,Low,Released,3,2025-05-30
+FEAT000538,PROJ000007,Slack Integration,Critical,In Development,15,2025-02-02
+FEAT000539,PROJ000123,Role Based Access,Low,Planned,7,2024-10-29
+FEAT000540,PROJ000205,Analytics Widgets,High,In Development,17,2026-06-11
+FEAT000541,PROJ000091,Roadmap View,Medium,Backlog,2,2026-04-06
+FEAT000542,PROJ000203,Advanced Dashboard,Low,Released,13,2025-01-15
+FEAT000543,PROJ000195,API Enhancements,Low,Planned,12,2026-03-26
+FEAT000544,PROJ000132,Roadmap View,Critical,Testing,13,2025-02-22
+FEAT000545,PROJ000072,Search Improvements,Medium,Released,10,2026-02-14
+FEAT000546,PROJ000074,Multi-language Support,Medium,Planned,21,2026-06-08
+FEAT000547,PROJ000186,Advanced Dashboard,High,Released,10,2026-06-15
+FEAT000548,PROJ000148,Role Based Access,Medium,In Development,10,2026-02-03
+FEAT000549,PROJ000026,Search Improvements,Medium,Backlog,5,2024-08-12
+FEAT000550,PROJ000109,Analytics Widgets,Low,Testing,11,2024-12-07
+FEAT000551,PROJ000184,Notification Center,Medium,Planned,11,2026-01-05
+FEAT000552,PROJ000156,Mobile Optimization,Medium,Testing,20,2024-10-02
+FEAT000553,PROJ000115,AI Insights,Low,Planned,6,2024-12-24
+FEAT000554,PROJ000062,Mobile Optimization,High,Released,7,2024-11-13
+FEAT000555,PROJ000059,Advanced Dashboard,Medium,In Development,9,2025-03-12
+FEAT000556,PROJ000145,PDF Export,Critical,Planned,18,2026-03-04
+FEAT000557,PROJ000029,AI Insights,Critical,In Development,19,2026-05-21
+FEAT000558,PROJ000090,Mobile Optimization,Medium,Released,18,2025-11-22
+FEAT000559,PROJ000016,PDF Export,Critical,Testing,17,2025-05-15
+FEAT000560,PROJ000235,Slack Integration,Low,Backlog,18,2026-04-13
+FEAT000561,PROJ000143,API Enhancements,Critical,Released,15,2026-06-07
+FEAT000562,PROJ000184,Custom Reports,Critical,Released,17,2026-05-02
+FEAT000563,PROJ000131,Multi-language Support,Low,Released,6,2024-10-27
+FEAT000564,PROJ000069,AI Insights,Low,Released,8,2026-07-03
+FEAT000565,PROJ000037,AI Insights,Low,Backlog,20,2025-12-01
+FEAT000566,PROJ000031,Workflow Automation,Low,In Development,3,2026-06-20
+FEAT000567,PROJ000242,Role Based Access,Critical,In Development,10,2026-04-14
+FEAT000568,PROJ000173,Multi-language Support,Critical,In Development,17,2026-04-03
+FEAT000569,PROJ000023,Slack Integration,Low,Backlog,6,2025-08-26
+FEAT000570,PROJ000154,Role Based Access,Medium,Released,3,2026-06-27
+FEAT000571,PROJ000047,Workflow Automation,Medium,In Development,20,2024-09-02
+FEAT000572,PROJ000091,Search Improvements,Medium,Testing,3,2025-02-21
+FEAT000573,PROJ000028,Slack Integration,Medium,Backlog,20,2026-07-17
+FEAT000574,PROJ000046,Notification Center,High,In Development,19,2024-10-19
+FEAT000575,PROJ000116,Role Based Access,Low,Planned,18,2024-11-20
+FEAT000576,PROJ000019,Notification Center,Low,Planned,13,2025-10-13
+FEAT000577,PROJ000199,Custom Reports,Low,Released,21,2025-05-02
+FEAT000578,PROJ000073,Search Improvements,Low,Testing,21,2025-06-09
+FEAT000579,PROJ000214,Advanced Dashboard,Low,Testing,21,2024-07-22
+FEAT000580,PROJ000217,Workflow Automation,Medium,In Development,21,2025-12-11
+FEAT000581,PROJ000135,Mobile Optimization,High,Testing,16,2024-08-26
+FEAT000582,PROJ000190,AI Insights,Low,Released,15,2025-05-17
+FEAT000583,PROJ000211,Slack Integration,Critical,In Development,10,2024-12-08
+FEAT000584,PROJ000083,Roadmap View,Critical,Backlog,1,2025-04-24
+FEAT000585,PROJ000107,Roadmap View,Critical,Released,16,2025-11-18
+FEAT000586,PROJ000025,PDF Export,High,Planned,2,2025-12-05
+FEAT000587,PROJ000049,API Enhancements,High,Released,21,2025-05-12
+FEAT000588,PROJ000231,Roadmap View,High,Testing,1,2026-03-15
+FEAT000589,PROJ000128,Search Improvements,High,In Development,1,2026-07-19
+FEAT000590,PROJ000052,Search Improvements,Critical,Testing,15,2025-12-17
+FEAT000591,PROJ000086,Role Based Access,Medium,Backlog,19,2026-05-31
+FEAT000592,PROJ000077,AI Insights,Medium,Released,11,2026-05-31
+FEAT000593,PROJ000233,API Enhancements,Critical,Released,14,2025-10-03
+FEAT000594,PROJ000215,Slack Integration,Low,In Development,20,2026-04-14
+FEAT000595,PROJ000133,API Enhancements,Low,Backlog,6,2025-05-20
+FEAT000596,PROJ000162,AI Insights,Medium,In Development,17,2024-10-18
+FEAT000597,PROJ000085,AI Insights,Medium,Testing,15,2024-12-11
+FEAT000598,PROJ000236,Slack Integration,High,Planned,12,2024-08-13
+FEAT000599,PROJ000143,PDF Export,Low,In Development,6,2025-08-14
+FEAT000600,PROJ000234,Slack Integration,Critical,Released,16,2026-03-01
+FEAT000601,PROJ000215,Dark Mode,High,Testing,16,2024-08-23
+FEAT000602,PROJ000186,Dark Mode,High,Planned,10,2025-03-24
+FEAT000603,PROJ000096,PDF Export,Critical,Testing,15,2026-06-13
+FEAT000604,PROJ000007,Advanced Dashboard,High,Backlog,8,2025-05-05
+FEAT000605,PROJ000230,Roadmap View,Critical,Testing,9,2025-06-10
+FEAT000606,PROJ000133,Workflow Automation,Medium,In Development,20,2026-05-16
+FEAT000607,PROJ000181,Custom Reports,Low,Backlog,3,2025-02-08
+FEAT000608,PROJ000063,Slack Integration,Medium,Planned,14,2025-03-10
+FEAT000609,PROJ000066,Search Improvements,High,Backlog,20,2025-02-08
+FEAT000610,PROJ000072,Custom Reports,High,Planned,21,2025-10-13
+FEAT000611,PROJ000122,Notification Center,High,Backlog,19,2024-11-28
+FEAT000612,PROJ000197,Search Improvements,Critical,Testing,8,2025-01-31
+FEAT000613,PROJ000225,Slack Integration,Critical,Released,5,2026-04-10
+FEAT000614,PROJ000013,Multi-language Support,Critical,Backlog,6,2026-04-22
+FEAT000615,PROJ000217,Roadmap View,Low,Released,9,2024-11-04
+FEAT000616,PROJ000101,Advanced Dashboard,High,Testing,6,2025-02-18
+FEAT000617,PROJ000024,API Enhancements,Low,Testing,1,2025-04-02
+FEAT000618,PROJ000039,Analytics Widgets,Low,Testing,20,2025-06-08
+FEAT000619,PROJ000052,Notification Center,High,Released,17,2025-12-12
+FEAT000620,PROJ000073,Custom Reports,Low,Released,11,2025-11-02
+FEAT000621,PROJ000096,Dark Mode,Critical,In Development,10,2026-01-23
+FEAT000622,PROJ000235,PDF Export,Low,Backlog,6,2024-11-02
+FEAT000623,PROJ000006,Multi-language Support,Low,Planned,19,2025-09-07
+FEAT000624,PROJ000222,PDF Export,Low,Planned,3,2025-09-23
+FEAT000625,PROJ000236,Notification Center,Critical,Testing,21,2024-11-18
+FEAT000626,PROJ000167,Role Based Access,Critical,In Development,20,2024-08-06
+FEAT000627,PROJ000018,AI Insights,High,Released,3,2026-05-18
+FEAT000628,PROJ000165,Notification Center,Low,Backlog,11,2024-10-30
+FEAT000629,PROJ000214,Mobile Optimization,High,Released,13,2025-03-14
+FEAT000630,PROJ000213,Dark Mode,Medium,Planned,13,2026-03-23
+FEAT000631,PROJ000139,Custom Reports,Critical,In Development,7,2024-09-17
+FEAT000632,PROJ000083,Search Improvements,Low,Planned,10,2024-09-16
+FEAT000633,PROJ000126,Search Improvements,Low,Planned,11,2024-09-20
+FEAT000634,PROJ000200,Roadmap View,High,Testing,15,2025-08-12
+FEAT000635,PROJ000108,Workflow Automation,Medium,Backlog,7,2025-05-13
+FEAT000636,PROJ000082,API Enhancements,Low,Released,7,2024-08-03
+FEAT000637,PROJ000205,Dark Mode,High,Released,2,2025-09-13
+FEAT000638,PROJ000219,Mobile Optimization,Medium,Testing,18,2024-10-07
+FEAT000639,PROJ000111,Roadmap View,Critical,In Development,10,2026-03-11
+FEAT000640,PROJ000208,Search Improvements,High,Planned,13,2026-05-18
+FEAT000641,PROJ000156,Roadmap View,Medium,In Development,5,2025-02-11
+FEAT000642,PROJ000026,PDF Export,Medium,Planned,5,2025-04-24
+FEAT000643,PROJ000007,Role Based Access,Low,In Development,4,2025-01-26
+FEAT000644,PROJ000043,Custom Reports,Medium,Released,19,2026-05-16
+FEAT000645,PROJ000187,Mobile Optimization,Critical,In Development,4,2024-09-24
+FEAT000646,PROJ000205,AI Insights,Critical,Backlog,18,2025-01-31
+FEAT000647,PROJ000224,PDF Export,Critical,Backlog,12,2025-02-15
+FEAT000648,PROJ000138,Role Based Access,Medium,Planned,2,2024-12-02
+FEAT000649,PROJ000091,Role Based Access,Low,Backlog,16,2026-05-05
+FEAT000650,PROJ000242,Multi-language Support,High,Testing,7,2026-05-12
+FEAT000651,PROJ000010,Custom Reports,High,Testing,19,2025-11-23
+FEAT000652,PROJ000087,Workflow Automation,Low,Backlog,1,2024-10-26
+FEAT000653,PROJ000087,Analytics Widgets,High,Backlog,17,2025-01-04
+FEAT000654,PROJ000068,Role Based Access,Medium,Released,21,2024-08-25
+FEAT000655,PROJ000050,Role Based Access,Low,Testing,18,2025-01-27
+FEAT000656,PROJ000240,Workflow Automation,High,Planned,7,2025-06-23
+FEAT000657,PROJ000011,PDF Export,Critical,Testing,13,2026-03-14
+FEAT000658,PROJ000071,Roadmap View,Critical,Planned,4,2026-03-17
+FEAT000659,PROJ000064,Analytics Widgets,High,Planned,1,2024-10-29
+FEAT000660,PROJ000002,Role Based Access,Medium,Planned,2,2024-08-27
+FEAT000661,PROJ000066,PDF Export,Low,Released,13,2024-08-24
+FEAT000662,PROJ000135,AI Insights,High,Testing,20,2024-08-28
+FEAT000663,PROJ000192,Roadmap View,Critical,In Development,5,2025-10-09
+FEAT000664,PROJ000181,Multi-language Support,Low,In Development,2,2026-02-03
+FEAT000665,PROJ000017,Custom Reports,High,Planned,16,2026-01-30
+FEAT000666,PROJ000038,Dark Mode,High,Released,12,2025-07-31
+FEAT000667,PROJ000156,AI Insights,Critical,In Development,10,2024-12-03
+FEAT000668,PROJ000175,Advanced Dashboard,High,Released,6,2024-12-29
+FEAT000669,PROJ000065,Mobile Optimization,Critical,Released,12,2026-01-09
+FEAT000670,PROJ000047,Role Based Access,High,Released,11,2025-07-23
+FEAT000671,PROJ000136,API Enhancements,Low,Planned,20,2026-03-20
+FEAT000672,PROJ000142,Mobile Optimization,Low,Planned,14,2025-05-09
+FEAT000673,PROJ000177,Analytics Widgets,High,In Development,11,2025-10-14
+FEAT000674,PROJ000165,PDF Export,Medium,Planned,18,2026-01-10
+FEAT000675,PROJ000058,Notification Center,Critical,Released,19,2025-05-30
+FEAT000676,PROJ000035,PDF Export,Critical,In Development,11,2025-09-03
+FEAT000677,PROJ000098,Advanced Dashboard,Low,Released,5,2026-01-24
+FEAT000678,PROJ000003,Custom Reports,Medium,In Development,15,2024-11-20
+FEAT000679,PROJ000226,Dark Mode,Medium,Planned,20,2025-04-07
+FEAT000680,PROJ000186,Slack Integration,Medium,Backlog,3,2025-04-11
+FEAT000681,PROJ000138,Notification Center,Medium,Backlog,21,2025-11-03
+FEAT000682,PROJ000083,API Enhancements,Critical,Backlog,11,2025-08-17
+FEAT000683,PROJ000008,API Enhancements,Critical,In Development,12,2026-05-17
+FEAT000684,PROJ000051,Analytics Widgets,Low,Planned,8,2025-12-12
+FEAT000685,PROJ000154,Slack Integration,Critical,Backlog,8,2026-01-08
+FEAT000686,PROJ000167,PDF Export,Medium,Testing,6,2025-07-24
+FEAT000687,PROJ000198,Analytics Widgets,Critical,Released,10,2026-04-09
+FEAT000688,PROJ000125,Notification Center,Low,Planned,10,2025-09-11
+FEAT000689,PROJ000037,Dark Mode,Low,Testing,16,2025-07-03
+FEAT000690,PROJ000172,Roadmap View,Medium,Backlog,21,2025-07-16
+FEAT000691,PROJ000013,Notification Center,Critical,Testing,6,2025-03-14
+FEAT000692,PROJ000003,Analytics Widgets,Low,In Development,13,2026-05-26
+FEAT000693,PROJ000041,Custom Reports,Critical,Testing,16,2024-10-05
+FEAT000694,PROJ000214,Advanced Dashboard,Low,In Development,7,2025-06-01
+FEAT000695,PROJ000124,API Enhancements,Low,Testing,2,2024-09-11
+FEAT000696,PROJ000248,Slack Integration,High,In Development,18,2025-05-20
+FEAT000697,PROJ000003,Roadmap View,Low,Testing,15,2026-03-24
+FEAT000698,PROJ000170,AI Insights,Critical,Released,11,2026-06-16
+FEAT000699,PROJ000102,Slack Integration,Medium,Released,20,2025-10-17
+FEAT000700,PROJ000015,Notification Center,Critical,In Development,2,2026-02-23
+FEAT000701,PROJ000063,Notification Center,High,Backlog,3,2024-08-29
+FEAT000702,PROJ000091,Advanced Dashboard,Critical,Testing,2,2025-02-19
+FEAT000703,PROJ000168,API Enhancements,Low,Planned,13,2025-09-25
+FEAT000704,PROJ000230,API Enhancements,High,Backlog,19,2025-11-30
+FEAT000705,PROJ000244,Slack Integration,Medium,Released,11,2025-01-09
+FEAT000706,PROJ000145,Mobile Optimization,Medium,Planned,19,2025-10-30
+FEAT000707,PROJ000239,Search Improvements,High,Planned,10,2025-05-17
+FEAT000708,PROJ000212,Slack Integration,Critical,Released,9,2026-01-28
+FEAT000709,PROJ000237,Mobile Optimization,High,In Development,10,2025-01-30
+FEAT000710,PROJ000141,Multi-language Support,Low,Backlog,11,2025-08-23
+FEAT000711,PROJ000104,Dark Mode,Critical,Planned,11,2026-07-16
+FEAT000712,PROJ000209,Custom Reports,High,In Development,14,2025-03-20
+FEAT000713,PROJ000085,Analytics Widgets,High,In Development,11,2026-06-03
+FEAT000714,PROJ000105,Roadmap View,High,Backlog,3,2025-01-28
+FEAT000715,PROJ000008,Roadmap View,High,Planned,6,2025-07-15
+FEAT000716,PROJ000033,Mobile Optimization,Medium,In Development,19,2024-11-08
+FEAT000717,PROJ000052,Workflow Automation,Medium,In Development,5,2025-08-14
+FEAT000718,PROJ000245,Role Based Access,Critical,Planned,19,2025-06-08
+FEAT000719,PROJ000117,Workflow Automation,Medium,In Development,21,2025-01-20
+FEAT000720,PROJ000125,Multi-language Support,Low,In Development,15,2026-04-23
+FEAT000721,PROJ000123,Analytics Widgets,Low,Released,14,2024-08-11
+FEAT000722,PROJ000142,Roadmap View,Medium,Released,16,2025-11-18
+FEAT000723,PROJ000131,Custom Reports,High,Backlog,5,2026-01-28
+FEAT000724,PROJ000176,Custom Reports,Critical,Planned,2,2026-02-24
+FEAT000725,PROJ000048,Search Improvements,Medium,Backlog,6,2025-04-28
+FEAT000726,PROJ000176,Search Improvements,Low,Testing,14,2025-11-05
+FEAT000727,PROJ000198,Role Based Access,High,In Development,20,2025-03-24
+FEAT000728,PROJ000081,Analytics Widgets,High,Released,5,2025-12-22
+FEAT000729,PROJ000227,Mobile Optimization,Medium,Released,1,2025-10-14
+FEAT000730,PROJ000032,Custom Reports,Medium,In Development,7,2026-05-09
+FEAT000731,PROJ000024,PDF Export,Critical,Testing,13,2026-03-21
+FEAT000732,PROJ000205,Workflow Automation,Low,Released,9,2024-12-29
+FEAT000733,PROJ000130,PDF Export,Medium,In Development,1,2026-03-17
+FEAT000734,PROJ000018,Custom Reports,High,Testing,14,2025-08-13
+FEAT000735,PROJ000126,Analytics Widgets,Critical,Testing,17,2026-01-29
+FEAT000736,PROJ000035,Search Improvements,Low,Testing,17,2024-11-15
+FEAT000737,PROJ000216,Dark Mode,Medium,Released,18,2025-01-16
+FEAT000738,PROJ000012,Mobile Optimization,Critical,Backlog,2,2025-05-05
+FEAT000739,PROJ000023,Notification Center,Low,Released,15,2025-03-07
+FEAT000740,PROJ000153,Workflow Automation,Medium,Released,7,2025-06-24
+FEAT000741,PROJ000237,API Enhancements,Low,Backlog,17,2026-07-09
+FEAT000742,PROJ000160,Advanced Dashboard,High,Released,2,2024-09-27
+FEAT000743,PROJ000058,Notification Center,Low,Released,7,2024-08-28
+FEAT000744,PROJ000175,Dark Mode,Medium,In Development,6,2024-12-17
+FEAT000745,PROJ000248,Role Based Access,Medium,Testing,7,2025-12-07
+FEAT000746,PROJ000192,Advanced Dashboard,High,In Development,3,2026-05-22
+FEAT000747,PROJ000036,Role Based Access,Low,Backlog,6,2025-02-08
+FEAT000748,PROJ000078,Workflow Automation,Critical,Backlog,3,2025-08-25
+FEAT000749,PROJ000062,Search Improvements,Critical,Backlog,16,2025-05-06
+FEAT000750,PROJ000161,Mobile Optimization,Critical,Testing,12,2025-09-12
+FEAT000751,PROJ000138,Search Improvements,Medium,Planned,5,2025-02-07
+FEAT000752,PROJ000154,Analytics Widgets,High,In Development,21,2026-03-16
+FEAT000753,PROJ000186,Dark Mode,Low,Backlog,19,2024-08-25
+FEAT000754,PROJ000216,Workflow Automation,Low,Released,10,2026-01-07
+FEAT000755,PROJ000111,AI Insights,Medium,In Development,21,2025-10-07
+FEAT000756,PROJ000104,Roadmap View,Low,Planned,19,2026-06-19
+FEAT000757,PROJ000206,Mobile Optimization,Medium,Planned,10,2024-08-10
+FEAT000758,PROJ000095,PDF Export,Critical,In Development,4,2025-09-19
+FEAT000759,PROJ000017,Roadmap View,Low,Testing,20,2025-05-25
+FEAT000760,PROJ000101,Workflow Automation,Medium,Planned,3,2025-04-12
+FEAT000761,PROJ000147,Role Based Access,High,Testing,1,2026-04-26
+FEAT000762,PROJ000171,Mobile Optimization,Medium,Released,12,2024-12-24
+FEAT000763,PROJ000166,Mobile Optimization,Low,Backlog,11,2024-12-04
+FEAT000764,PROJ000152,Notification Center,High,Released,9,2025-04-04
+FEAT000765,PROJ000039,Notification Center,Critical,Backlog,20,2026-06-18
+FEAT000766,PROJ000170,Slack Integration,Medium,In Development,20,2025-05-05
+FEAT000767,PROJ000029,Search Improvements,High,Planned,19,2024-10-14
+FEAT000768,PROJ000018,Notification Center,Low,Testing,13,2024-11-27
+FEAT000769,PROJ000100,Analytics Widgets,Low,Released,16,2026-04-12
+FEAT000770,PROJ000147,Multi-language Support,Medium,Testing,2,2026-07-14
+FEAT000771,PROJ000046,Roadmap View,Critical,Backlog,11,2024-10-11
+FEAT000772,PROJ000204,Workflow Automation,Medium,Planned,13,2026-05-05
+FEAT000773,PROJ000227,Custom Reports,Medium,In Development,12,2026-02-04
+FEAT000774,PROJ000026,Advanced Dashboard,Low,In Development,3,2025-02-05
+FEAT000775,PROJ000085,Role Based Access,Critical,Backlog,1,2025-10-02
+FEAT000776,PROJ000203,Analytics Widgets,Low,In Development,15,2024-11-27
+FEAT000777,PROJ000027,Advanced Dashboard,Low,Planned,21,2024-10-10
+FEAT000778,PROJ000164,Custom Reports,Low,Backlog,9,2025-05-13
+FEAT000779,PROJ000015,Slack Integration,Critical,Released,1,2024-11-15
+FEAT000780,PROJ000024,AI Insights,Critical,Testing,16,2025-03-18
+FEAT000781,PROJ000220,Workflow Automation,Medium,Backlog,16,2026-01-09
+FEAT000782,PROJ000230,Advanced Dashboard,Critical,In Development,14,2024-09-17
+FEAT000783,PROJ000080,Mobile Optimization,Medium,Backlog,18,2026-01-06
+FEAT000784,PROJ000098,Analytics Widgets,Critical,In Development,7,2024-07-29
+FEAT000785,PROJ000048,API Enhancements,Medium,Released,14,2025-03-18
+FEAT000786,PROJ000071,Analytics Widgets,Medium,In Development,12,2025-03-23
+FEAT000787,PROJ000216,AI Insights,Low,Backlog,6,2024-11-24
+FEAT000788,PROJ000089,PDF Export,High,Planned,11,2025-07-04
+FEAT000789,PROJ000149,Workflow Automation,High,Planned,17,2025-08-01
+FEAT000790,PROJ000157,PDF Export,Medium,Released,8,2024-10-06
+FEAT000791,PROJ000104,AI Insights,Medium,Backlog,9,2026-06-08
+FEAT000792,PROJ000055,API Enhancements,Low,Testing,3,2025-06-11
+FEAT000793,PROJ000135,PDF Export,Low,In Development,8,2026-02-11
+FEAT000794,PROJ000019,Dark Mode,Low,In Development,6,2026-04-12
+FEAT000795,PROJ000211,Custom Reports,High,Backlog,21,2026-05-23
+FEAT000796,PROJ000156,Dark Mode,High,Testing,13,2024-10-02
+FEAT000797,PROJ000210,AI Insights,Low,Planned,19,2026-04-09
+FEAT000798,PROJ000077,Analytics Widgets,High,Planned,8,2025-12-11
+FEAT000799,PROJ000239,PDF Export,High,Testing,13,2025-11-13
+FEAT000800,PROJ000151,Advanced Dashboard,Medium,Backlog,13,2026-02-02
+FEAT000801,PROJ000066,Slack Integration,Critical,Testing,13,2024-07-24
+FEAT000802,PROJ000140,Analytics Widgets,Low,Released,2,2025-11-20
+FEAT000803,PROJ000048,Advanced Dashboard,Medium,In Development,3,2025-08-27
+FEAT000804,PROJ000226,Custom Reports,Medium,In Development,1,2024-11-21
+FEAT000805,PROJ000100,Mobile Optimization,Critical,Backlog,18,2026-02-24
+FEAT000806,PROJ000033,AI Insights,High,Planned,6,2025-09-08
+FEAT000807,PROJ000121,Custom Reports,High,Planned,10,2025-05-02
+FEAT000808,PROJ000232,Dark Mode,Low,Testing,8,2024-11-13
+FEAT000809,PROJ000138,Advanced Dashboard,Critical,Testing,7,2026-05-17
+FEAT000810,PROJ000189,Search Improvements,Medium,Released,20,2025-04-23
+FEAT000811,PROJ000099,Slack Integration,Medium,Planned,1,2024-08-21
+FEAT000812,PROJ000049,Multi-language Support,Medium,In Development,20,2024-11-14
+FEAT000813,PROJ000195,Search Improvements,Medium,Released,16,2025-06-04
+FEAT000814,PROJ000205,Advanced Dashboard,High,Released,9,2026-01-09
+FEAT000815,PROJ000154,Advanced Dashboard,High,Backlog,1,2025-12-15
+FEAT000816,PROJ000063,Advanced Dashboard,Low,Released,6,2024-10-04
+FEAT000817,PROJ000188,Mobile Optimization,Critical,Planned,10,2025-06-21
+FEAT000818,PROJ000021,Analytics Widgets,Medium,Testing,9,2025-02-24
+FEAT000819,PROJ000123,Multi-language Support,Critical,Testing,17,2024-08-08
+FEAT000820,PROJ000123,Mobile Optimization,High,In Development,8,2026-04-23
+FEAT000821,PROJ000078,Notification Center,Low,Testing,16,2024-11-30
+FEAT000822,PROJ000220,Roadmap View,Low,Released,8,2025-09-21
+FEAT000823,PROJ000096,Analytics Widgets,Medium,Planned,1,2024-07-31
+FEAT000824,PROJ000241,Slack Integration,Medium,Backlog,18,2025-01-02
+FEAT000825,PROJ000081,API Enhancements,Medium,Testing,1,2025-12-25
+FEAT000826,PROJ000048,Notification Center,High,Released,21,2024-11-06
+FEAT000827,PROJ000029,Dark Mode,High,In Development,12,2025-01-01
+FEAT000828,PROJ000072,API Enhancements,Low,Backlog,10,2026-02-05
+FEAT000829,PROJ000159,Roadmap View,High,Backlog,13,2024-09-26
+FEAT000830,PROJ000035,Mobile Optimization,Critical,Planned,8,2024-10-25
+FEAT000831,PROJ000005,AI Insights,Critical,Planned,21,2024-10-31
+FEAT000832,PROJ000207,Dark Mode,Critical,Testing,11,2026-06-23
+FEAT000833,PROJ000081,Mobile Optimization,Low,In Development,13,2025-03-25
+FEAT000834,PROJ000229,Analytics Widgets,High,Testing,3,2026-02-03
+FEAT000835,PROJ000105,Advanced Dashboard,Low,Released,19,2025-02-16
+FEAT000836,PROJ000168,Analytics Widgets,Medium,Backlog,17,2025-01-14
+FEAT000837,PROJ000222,Role Based Access,Low,Planned,14,2025-03-07
+FEAT000838,PROJ000186,Dark Mode,Low,Backlog,12,2025-11-25
+FEAT000839,PROJ000248,Search Improvements,Medium,Testing,18,2024-10-17
+FEAT000840,PROJ000151,Roadmap View,Critical,Testing,14,2024-09-25
+FEAT000841,PROJ000050,Search Improvements,High,Backlog,8,2025-01-31
+FEAT000842,PROJ000184,Role Based Access,High,In Development,17,2025-05-08
+FEAT000843,PROJ000217,Notification Center,Low,Planned,4,2024-10-19
+FEAT000844,PROJ000243,Search Improvements,High,Testing,21,2026-03-08
+FEAT000845,PROJ000212,Search Improvements,Critical,Backlog,16,2025-02-19
+FEAT000846,PROJ000102,Dark Mode,High,Testing,20,2025-10-27
+FEAT000847,PROJ000075,Role Based Access,Medium,Backlog,12,2026-02-25
+FEAT000848,PROJ000121,AI Insights,Low,Testing,18,2026-05-19
+FEAT000849,PROJ000056,Slack Integration,Low,Backlog,10,2024-09-28
+FEAT000850,PROJ000121,API Enhancements,High,Planned,5,2026-05-09
+FEAT000851,PROJ000223,Notification Center,Medium,In Development,17,2026-05-05
+FEAT000852,PROJ000071,Roadmap View,High,In Development,3,2026-04-09
+FEAT000853,PROJ000062,Workflow Automation,High,Planned,5,2024-09-19
+FEAT000854,PROJ000127,Advanced Dashboard,Medium,In Development,18,2024-11-20
+FEAT000855,PROJ000247,Custom Reports,Low,Planned,17,2026-02-08
+FEAT000856,PROJ000215,PDF Export,Critical,Planned,10,2026-01-02
+FEAT000857,PROJ000147,Custom Reports,Medium,In Development,13,2025-02-21
+FEAT000858,PROJ000016,Analytics Widgets,Low,In Development,5,2025-12-29
+FEAT000859,PROJ000011,Roadmap View,Critical,Testing,3,2025-02-04
+FEAT000860,PROJ000049,Search Improvements,Low,Backlog,9,2025-01-27
+FEAT000861,PROJ000007,Role Based Access,Low,Planned,19,2024-10-15
+FEAT000862,PROJ000049,Roadmap View,Critical,Planned,7,2025-11-04
+FEAT000863,PROJ000190,Advanced Dashboard,Low,Testing,3,2026-05-20
+FEAT000864,PROJ000013,Custom Reports,High,Planned,17,2025-07-19
+FEAT000865,PROJ000109,Notification Center,Medium,Backlog,17,2025-05-22
+FEAT000866,PROJ000034,Role Based Access,Critical,In Development,3,2026-06-11
+FEAT000867,PROJ000122,Multi-language Support,Low,Backlog,19,2025-05-04
+FEAT000868,PROJ000068,Multi-language Support,High,Backlog,20,2025-01-29
+FEAT000869,PROJ000025,Notification Center,Critical,Backlog,2,2025-12-09
+FEAT000870,PROJ000035,Role Based Access,Low,Backlog,17,2025-05-11
+FEAT000871,PROJ000018,Mobile Optimization,Critical,In Development,12,2024-12-24
+FEAT000872,PROJ000064,Slack Integration,Medium,Released,10,2024-07-26
+FEAT000873,PROJ000196,Dark Mode,Critical,Released,1,2024-09-15
+FEAT000874,PROJ000165,Search Improvements,Critical,Backlog,9,2026-02-18
+FEAT000875,PROJ000106,Mobile Optimization,Low,Released,10,2026-01-09
+FEAT000876,PROJ000061,Role Based Access,Critical,In Development,9,2025-07-16
+FEAT000877,PROJ000024,API Enhancements,Low,Testing,4,2026-06-26
+FEAT000878,PROJ000060,Notification Center,Medium,Testing,15,2025-12-20
+FEAT000879,PROJ000122,Slack Integration,Low,Released,21,2026-07-22
+FEAT000880,PROJ000020,Multi-language Support,Medium,In Development,6,2026-03-27
+FEAT000881,PROJ000138,Slack Integration,Critical,Backlog,16,2024-09-04
+FEAT000882,PROJ000089,Workflow Automation,High,Planned,14,2025-01-16
+FEAT000883,PROJ000168,API Enhancements,Medium,Backlog,14,2026-06-05
+FEAT000884,PROJ000155,Role Based Access,Medium,Planned,21,2026-01-12
+FEAT000885,PROJ000119,Mobile Optimization,Medium,Testing,15,2025-12-14
+FEAT000886,PROJ000022,Custom Reports,Medium,Released,11,2026-06-09
+FEAT000887,PROJ000023,Analytics Widgets,Medium,Released,6,2025-05-29
+FEAT000888,PROJ000060,AI Insights,Low,Planned,16,2024-12-27
+FEAT000889,PROJ000100,Search Improvements,High,In Development,14,2024-11-23
+FEAT000890,PROJ000026,Search Improvements,Medium,Planned,16,2025-08-04
+FEAT000891,PROJ000191,Custom Reports,High,Released,18,2025-12-02
+FEAT000892,PROJ000033,Roadmap View,High,Planned,9,2025-11-28
+FEAT000893,PROJ000208,API Enhancements,High,Planned,7,2025-07-01
+FEAT000894,PROJ000119,AI Insights,Critical,Backlog,13,2024-09-25
+FEAT000895,PROJ000089,Multi-language Support,Low,Planned,9,2026-02-17
+FEAT000896,PROJ000237,Analytics Widgets,Low,Released,2,2025-01-17
+FEAT000897,PROJ000183,Search Improvements,Critical,Backlog,7,2026-07-18
+FEAT000898,PROJ000019,Custom Reports,Critical,Released,7,2025-12-31
+FEAT000899,PROJ000030,Analytics Widgets,Low,In Development,3,2026-04-15
+FEAT000900,PROJ000185,Roadmap View,Critical,Released,18,2026-06-18
+FEAT000901,PROJ000150,Notification Center,Critical,Testing,8,2026-02-13
+FEAT000902,PROJ000088,AI Insights,Low,Planned,10,2025-12-19
+FEAT000903,PROJ000109,Dark Mode,High,Backlog,10,2024-08-24
+FEAT000904,PROJ000066,Notification Center,Medium,Released,10,2025-11-17
+FEAT000905,PROJ000226,Custom Reports,Low,In Development,20,2025-12-03
+FEAT000906,PROJ000155,Advanced Dashboard,Low,Planned,14,2025-11-01
+FEAT000907,PROJ000137,Role Based Access,Low,Testing,2,2026-06-20
+FEAT000908,PROJ000186,API Enhancements,Critical,Backlog,6,2026-04-23
+FEAT000909,PROJ000169,Search Improvements,Low,Released,19,2025-08-18
+FEAT000910,PROJ000091,Advanced Dashboard,Critical,Testing,17,2025-03-03
+FEAT000911,PROJ000155,Search Improvements,Critical,In Development,17,2025-09-30
+FEAT000912,PROJ000153,Mobile Optimization,Critical,Planned,16,2025-07-07
+FEAT000913,PROJ000249,Advanced Dashboard,Critical,Testing,7,2024-11-15
+FEAT000914,PROJ000159,Custom Reports,Low,Planned,8,2024-10-03
+FEAT000915,PROJ000112,Search Improvements,Low,Testing,2,2024-09-12
+FEAT000916,PROJ000049,Multi-language Support,Low,Planned,11,2024-09-18
+FEAT000917,PROJ000167,AI Insights,Critical,Released,16,2025-07-24
+FEAT000918,PROJ000012,API Enhancements,Medium,Testing,12,2026-07-18
+FEAT000919,PROJ000211,API Enhancements,High,Planned,14,2026-06-20
+FEAT000920,PROJ000004,Role Based Access,Medium,Planned,4,2026-03-27
+FEAT000921,PROJ000114,Notification Center,High,Released,11,2026-04-11
+FEAT000922,PROJ000034,Workflow Automation,Critical,Planned,8,2025-11-03
+FEAT000923,PROJ000005,Multi-language Support,Critical,Planned,5,2026-07-06
+FEAT000924,PROJ000040,Search Improvements,Critical,Testing,16,2025-07-15
+FEAT000925,PROJ000076,Roadmap View,Critical,Planned,3,2025-06-27
+FEAT000926,PROJ000220,Roadmap View,Critical,Backlog,16,2024-09-17
+FEAT000927,PROJ000173,Notification Center,Critical,In Development,2,2025-10-11
+FEAT000928,PROJ000105,Advanced Dashboard,Low,Testing,8,2026-07-22
+FEAT000929,PROJ000010,Slack Integration,Low,Testing,9,2024-11-27
+FEAT000930,PROJ000009,Advanced Dashboard,High,Testing,10,2025-08-28
+FEAT000931,PROJ000192,API Enhancements,Medium,Backlog,9,2026-02-23
+FEAT000932,PROJ000025,Workflow Automation,Medium,Testing,12,2025-01-04
+FEAT000933,PROJ000229,Custom Reports,High,Backlog,10,2025-10-30
+FEAT000934,PROJ000199,Notification Center,High,Planned,17,2025-12-02
+FEAT000935,PROJ000046,Analytics Widgets,Critical,Planned,3,2026-01-13
+FEAT000936,PROJ000026,Workflow Automation,Low,Planned,6,2024-12-05
+FEAT000937,PROJ000210,Slack Integration,Low,Released,12,2025-11-08
+FEAT000938,PROJ000217,Analytics Widgets,High,Testing,5,2024-11-27
+FEAT000939,PROJ000119,Roadmap View,Medium,Testing,2,2025-02-07
+FEAT000940,PROJ000093,Role Based Access,Critical,Backlog,15,2025-06-12
+FEAT000941,PROJ000085,Dark Mode,Low,Released,16,2025-03-29
+FEAT000942,PROJ000217,PDF Export,High,Released,10,2026-02-21
+FEAT000943,PROJ000025,Mobile Optimization,High,In Development,9,2024-08-05
+FEAT000944,PROJ000143,Advanced Dashboard,Low,Planned,6,2025-01-15
+FEAT000945,PROJ000184,Advanced Dashboard,Low,Backlog,20,2026-06-24
+FEAT000946,PROJ000097,Multi-language Support,High,Backlog,20,2026-04-11
+FEAT000947,PROJ000097,Role Based Access,Low,Released,4,2024-08-21
+FEAT000948,PROJ000206,Role Based Access,Low,In Development,1,2025-05-09
+FEAT000949,PROJ000173,AI Insights,Medium,Testing,6,2025-10-15
+FEAT000950,PROJ000062,Custom Reports,Medium,Backlog,14,2024-10-12
+FEAT000951,PROJ000159,Role Based Access,High,Testing,14,2025-03-04
+FEAT000952,PROJ000230,Multi-language Support,Medium,Backlog,8,2025-10-20
+FEAT000953,PROJ000075,API Enhancements,High,Backlog,2,2026-05-10
+FEAT000954,PROJ000191,Search Improvements,High,In Development,18,2026-01-05
+FEAT000955,PROJ000209,Multi-language Support,Low,Testing,21,2025-12-31
+FEAT000956,PROJ000249,AI Insights,Medium,Planned,16,2025-01-27
+FEAT000957,PROJ000170,Workflow Automation,Low,Planned,18,2024-08-07
+FEAT000958,PROJ000115,Mobile Optimization,Medium,Testing,1,2026-02-25
+FEAT000959,PROJ000034,API Enhancements,High,Testing,20,2026-07-12
+FEAT000960,PROJ000102,Slack Integration,High,Testing,18,2026-03-23
+FEAT000961,PROJ000233,PDF Export,High,In Development,14,2026-02-02
+FEAT000962,PROJ000209,Advanced Dashboard,Critical,Backlog,15,2025-12-10
+FEAT000963,PROJ000237,Dark Mode,Low,Planned,17,2026-01-15
+FEAT000964,PROJ000172,Multi-language Support,High,Backlog,16,2025-01-29
+FEAT000965,PROJ000072,Multi-language Support,Medium,Released,13,2025-10-25
+FEAT000966,PROJ000159,Role Based Access,Critical,In Development,17,2026-01-19
+FEAT000967,PROJ000050,AI Insights,High,Testing,1,2026-07-21
+FEAT000968,PROJ000246,Multi-language Support,Medium,Released,11,2026-03-21
+FEAT000969,PROJ000066,AI Insights,Low,In Development,20,2025-11-17
+FEAT000970,PROJ000215,Multi-language Support,Critical,Released,18,2026-07-19
+FEAT000971,PROJ000058,Roadmap View,Low,Testing,8,2025-04-07
+FEAT000972,PROJ000146,Notification Center,High,In Development,4,2025-11-02
+FEAT000973,PROJ000170,Role Based Access,Critical,In Development,17,2025-11-28
+FEAT000974,PROJ000040,Role Based Access,Critical,Released,15,2024-08-29
+FEAT000975,PROJ000229,Slack Integration,Critical,In Development,15,2026-05-28
+FEAT000976,PROJ000115,Multi-language Support,Critical,In Development,21,2026-07-02
+FEAT000977,PROJ000060,Notification Center,Critical,Released,13,2024-08-24
+FEAT000978,PROJ000021,PDF Export,Medium,Released,17,2025-01-17
+FEAT000979,PROJ000032,Roadmap View,Critical,Planned,20,2024-08-27
+FEAT000980,PROJ000116,Dark Mode,High,Testing,16,2025-06-11
+FEAT000981,PROJ000092,Workflow Automation,Low,Released,10,2025-03-06
+FEAT000982,PROJ000112,PDF Export,Medium,Released,12,2024-11-01
+FEAT000983,PROJ000054,Multi-language Support,Low,Backlog,3,2024-09-29
+FEAT000984,PROJ000010,Role Based Access,Low,Testing,6,2025-01-22
+FEAT000985,PROJ000011,Advanced Dashboard,Critical,Released,8,2024-12-18
+FEAT000986,PROJ000200,Dark Mode,Low,Testing,12,2025-08-06
+FEAT000987,PROJ000226,PDF Export,Medium,Released,19,2026-05-22
+FEAT000988,PROJ000237,Multi-language Support,Medium,Planned,21,2026-01-03
+FEAT000989,PROJ000086,Workflow Automation,Critical,Released,21,2025-07-02
+FEAT000990,PROJ000150,PDF Export,Medium,Backlog,9,2025-07-08
+FEAT000991,PROJ000066,Multi-language Support,Medium,Planned,16,2025-04-27
+FEAT000992,PROJ000218,Advanced Dashboard,Critical,Planned,16,2026-05-25
+FEAT000993,PROJ000101,AI Insights,Critical,In Development,3,2026-04-18
+FEAT000994,PROJ000219,Notification Center,High,Released,10,2025-03-20
+FEAT000995,PROJ000004,Roadmap View,High,In Development,8,2025-07-06
+FEAT000996,PROJ000194,Dark Mode,Low,In Development,18,2024-10-27
+FEAT000997,PROJ000156,Search Improvements,Medium,Backlog,21,2025-05-12
+FEAT000998,PROJ000104,Roadmap View,Critical,Testing,16,2025-01-28
+FEAT000999,PROJ000239,Multi-language Support,Critical,Testing,16,2026-04-09
+FEAT001000,PROJ000121,Search Improvements,Medium,Backlog,13,2025-07-31
+FEAT001001,PROJ000245,Mobile Optimization,Low,Planned,15,2024-11-19
+FEAT001002,PROJ000029,Workflow Automation,Critical,Planned,8,2025-01-07
+FEAT001003,PROJ000044,Analytics Widgets,Low,Planned,5,2025-03-09
+FEAT001004,PROJ000036,Custom Reports,Medium,Testing,9,2026-01-21
+FEAT001005,PROJ000148,Workflow Automation,Medium,Released,2,2025-05-26
+FEAT001006,PROJ000023,Custom Reports,Medium,Released,18,2025-06-13
+FEAT001007,PROJ000025,Roadmap View,Medium,Backlog,3,2025-04-18
+FEAT001008,PROJ000237,AI Insights,Medium,Testing,21,2025-03-22
+FEAT001009,PROJ000194,Workflow Automation,Low,In Development,7,2025-04-27
+FEAT001010,PROJ000117,Notification Center,Low,Released,18,2026-02-04
+FEAT001011,PROJ000085,Mobile Optimization,Medium,Backlog,9,2024-12-07
+FEAT001012,PROJ000185,Mobile Optimization,High,Released,13,2024-10-24
+FEAT001013,PROJ000002,Slack Integration,High,In Development,5,2026-02-05
+FEAT001014,PROJ000103,Role Based Access,Critical,Planned,21,2026-04-01
+FEAT001015,PROJ000023,Advanced Dashboard,Low,Testing,5,2026-03-01
+FEAT001016,PROJ000164,Dark Mode,Medium,In Development,20,2025-01-08
+FEAT001017,PROJ000082,AI Insights,High,Testing,11,2025-07-17
+FEAT001018,PROJ000099,Multi-language Support,Critical,Released,14,2025-07-23
+FEAT001019,PROJ000051,Multi-language Support,Medium,Released,4,2025-09-13
+FEAT001020,PROJ000059,API Enhancements,Low,Testing,20,2025-11-15
+FEAT001021,PROJ000122,Search Improvements,High,Testing,1,2025-02-27
+FEAT001022,PROJ000195,Notification Center,High,Testing,20,2025-08-30
+FEAT001023,PROJ000022,AI Insights,Low,In Development,6,2025-10-10
+FEAT001024,PROJ000069,Analytics Widgets,Medium,Planned,13,2026-06-14
+FEAT001025,PROJ000086,Workflow Automation,Critical,Planned,19,2026-04-30
+FEAT001026,PROJ000236,Custom Reports,Critical,Planned,5,2025-02-20
+FEAT001027,PROJ000003,AI Insights,Critical,Backlog,13,2024-10-31
+FEAT001028,PROJ000099,AI Insights,High,Released,4,2026-04-22
+FEAT001029,PROJ000077,Custom Reports,Medium,Testing,5,2024-10-12
+FEAT001030,PROJ000151,Analytics Widgets,Medium,In Development,6,2026-03-04
+FEAT001031,PROJ000152,Notification Center,High,Released,12,2024-10-19
+FEAT001032,PROJ000230,PDF Export,Low,Released,5,2025-03-23
+FEAT001033,PROJ000132,Advanced Dashboard,Low,Planned,3,2025-10-11
+FEAT001034,PROJ000230,Role Based Access,Medium,Backlog,4,2024-08-29
+FEAT001035,PROJ000069,Roadmap View,Low,Backlog,11,2025-10-18
+FEAT001036,PROJ000119,Multi-language Support,Critical,Backlog,18,2025-03-13
+FEAT001037,PROJ000215,Advanced Dashboard,High,Released,16,2025-11-13
+FEAT001038,PROJ000126,Mobile Optimization,Low,Released,1,2025-02-26
+FEAT001039,PROJ000082,Multi-language Support,Critical,Released,14,2025-05-11
+FEAT001040,PROJ000088,Custom Reports,Low,In Development,3,2026-01-21
+FEAT001041,PROJ000160,Dark Mode,Medium,In Development,13,2025-12-01
+FEAT001042,PROJ000178,Notification Center,Medium,Planned,6,2025-06-05
+FEAT001043,PROJ000136,Analytics Widgets,Low,Testing,3,2025-10-08
+FEAT001044,PROJ000051,Mobile Optimization,High,Planned,5,2026-04-25
+FEAT001045,PROJ000230,Roadmap View,Medium,Released,16,2026-01-01
+FEAT001046,PROJ000148,Role Based Access,Medium,In Development,8,2025-02-16
+FEAT001047,PROJ000003,Roadmap View,Low,Testing,17,2025-12-31
+FEAT001048,PROJ000141,Workflow Automation,Critical,Released,16,2025-07-07
+FEAT001049,PROJ000122,Roadmap View,Medium,Backlog,16,2025-02-22
+FEAT001050,PROJ000221,Slack Integration,High,Released,8,2025-06-30
+FEAT001051,PROJ000017,Analytics Widgets,High,Testing,18,2024-09-05
+FEAT001052,PROJ000106,PDF Export,Medium,In Development,11,2025-05-06
+FEAT001053,PROJ000052,Advanced Dashboard,High,Planned,4,2025-07-18
+FEAT001054,PROJ000074,Multi-language Support,Low,Released,13,2024-09-16
+FEAT001055,PROJ000042,API Enhancements,High,Backlog,9,2025-01-02
+FEAT001056,PROJ000170,Role Based Access,Critical,Testing,8,2025-06-08
+FEAT001057,PROJ000046,Mobile Optimization,High,Backlog,19,2026-03-01
+FEAT001058,PROJ000225,Role Based Access,Medium,In Development,5,2025-04-01
+FEAT001059,PROJ000199,Role Based Access,High,Planned,5,2025-11-05
+FEAT001060,PROJ000011,Dark Mode,Critical,Testing,5,2025-04-05
+FEAT001061,PROJ000165,Advanced Dashboard,Critical,Backlog,11,2025-12-11
+FEAT001062,PROJ000188,Multi-language Support,Low,In Development,6,2026-01-23
+FEAT001063,PROJ000103,Roadmap View,Low,Planned,14,2025-03-09
+FEAT001064,PROJ000015,Slack Integration,High,Testing,11,2026-02-11
+FEAT001065,PROJ000035,PDF Export,Medium,Testing,20,2025-09-02
+FEAT001066,PROJ000070,PDF Export,High,Planned,5,2024-07-22
+FEAT001067,PROJ000009,Custom Reports,Low,Testing,8,2026-05-06
+FEAT001068,PROJ000065,Mobile Optimization,Low,In Development,12,2024-10-16
+FEAT001069,PROJ000183,Mobile Optimization,High,In Development,1,2026-06-01
+FEAT001070,PROJ000204,Slack Integration,High,In Development,16,2025-10-17
+FEAT001071,PROJ000016,Multi-language Support,High,Backlog,12,2025-05-31
+FEAT001072,PROJ000113,Workflow Automation,Medium,Planned,2,2026-06-09
+FEAT001073,PROJ000112,Custom Reports,Low,Released,20,2025-06-17
+FEAT001074,PROJ000107,Slack Integration,High,Testing,15,2026-01-07
+FEAT001075,PROJ000081,Roadmap View,High,Testing,4,2026-06-26
+FEAT001076,PROJ000145,Notification Center,Medium,Released,1,2026-02-23
+FEAT001077,PROJ000116,Custom Reports,Low,In Development,4,2025-03-07
+FEAT001078,PROJ000124,Workflow Automation,Critical,In Development,13,2025-07-29
+FEAT001079,PROJ000244,Roadmap View,Low,Released,14,2026-01-29
+FEAT001080,PROJ000086,Notification Center,High,Planned,9,2026-03-29
+FEAT001081,PROJ000220,Advanced Dashboard,Critical,Released,10,2025-09-08
+FEAT001082,PROJ000093,Search Improvements,Low,Backlog,7,2025-12-29
+FEAT001083,PROJ000210,Slack Integration,Critical,Testing,1,2025-09-24
+FEAT001084,PROJ000146,PDF Export,High,Released,13,2025-01-07
+FEAT001085,PROJ000064,Mobile Optimization,Medium,Backlog,18,2025-11-18
+FEAT001086,PROJ000090,Notification Center,Medium,Testing,19,2025-09-29
+FEAT001087,PROJ000216,Custom Reports,Low,In Development,4,2025-04-09
+FEAT001088,PROJ000074,Advanced Dashboard,Low,Backlog,2,2026-01-09
+FEAT001089,PROJ000247,Workflow Automation,Medium,Testing,20,2026-03-05
+FEAT001090,PROJ000142,Search Improvements,High,Released,12,2025-06-28
+FEAT001091,PROJ000240,PDF Export,Critical,Released,20,2025-06-14
+FEAT001092,PROJ000109,AI Insights,Critical,Released,19,2025-03-05
+FEAT001093,PROJ000184,Search Improvements,Medium,Planned,6,2025-11-28
+FEAT001094,PROJ000025,Custom Reports,High,In Development,9,2025-11-30
+FEAT001095,PROJ000093,Custom Reports,Critical,Backlog,11,2024-12-15
+FEAT001096,PROJ000001,Workflow Automation,Medium,Planned,4,2025-05-16
+FEAT001097,PROJ000193,Notification Center,Medium,Released,15,2024-11-11
+FEAT001098,PROJ000196,Roadmap View,Low,In Development,5,2026-06-24
+FEAT001099,PROJ000136,PDF Export,High,In Development,17,2024-11-28
+FEAT001100,PROJ000048,Analytics Widgets,Critical,In Development,5,2025-05-29
+FEAT001101,PROJ000245,Custom Reports,Critical,In Development,17,2024-07-25
+FEAT001102,PROJ000242,Roadmap View,Low,Planned,7,2025-08-01
+FEAT001103,PROJ000202,Mobile Optimization,Medium,Testing,14,2025-07-01
+FEAT001104,PROJ000176,API Enhancements,Low,Testing,21,2024-11-01
+FEAT001105,PROJ000100,Mobile Optimization,Critical,Backlog,16,2026-07-04
+FEAT001106,PROJ000041,Role Based Access,Medium,Planned,8,2026-02-14
+FEAT001107,PROJ000207,Multi-language Support,Medium,In Development,13,2024-11-13
+FEAT001108,PROJ000049,Dark Mode,Critical,Backlog,8,2025-10-04
+FEAT001109,PROJ000067,Workflow Automation,High,In Development,21,2024-10-19
+FEAT001110,PROJ000216,PDF Export,Medium,Planned,3,2025-01-31
+FEAT001111,PROJ000095,Dark Mode,Medium,Released,3,2025-09-20
+FEAT001112,PROJ000010,Mobile Optimization,High,Testing,21,2026-06-10
+FEAT001113,PROJ000016,Mobile Optimization,Low,In Development,8,2025-04-25
+FEAT001114,PROJ000085,PDF Export,Low,Backlog,20,2025-02-15
+FEAT001115,PROJ000116,API Enhancements,Critical,Released,20,2025-09-12
+FEAT001116,PROJ000242,Slack Integration,Critical,Backlog,14,2024-08-23
+FEAT001117,PROJ000126,Workflow Automation,Critical,Backlog,6,2025-06-12
+FEAT001118,PROJ000086,AI Insights,Critical,Released,3,2025-07-04
+FEAT001119,PROJ000123,Analytics Widgets,Low,Released,1,2024-10-25
+FEAT001120,PROJ000043,API Enhancements,Low,Testing,18,2026-06-29
+FEAT001121,PROJ000216,Mobile Optimization,Medium,Released,12,2025-10-02
+FEAT001122,PROJ000224,Slack Integration,Low,Planned,13,2024-09-29
+FEAT001123,PROJ000010,Search Improvements,Critical,Testing,17,2025-04-05
+FEAT001124,PROJ000240,Multi-language Support,Medium,Planned,4,2024-10-12
+FEAT001125,PROJ000001,Slack Integration,Critical,Testing,17,2025-02-04
+FEAT001126,PROJ000086,Notification Center,Low,Testing,18,2025-01-03
+FEAT001127,PROJ000170,Search Improvements,Medium,Planned,9,2025-08-11
+FEAT001128,PROJ000218,Workflow Automation,Critical,Planned,14,2026-02-26
+FEAT001129,PROJ000127,PDF Export,Critical,In Development,3,2026-02-19
+FEAT001130,PROJ000227,Notification Center,High,Backlog,6,2025-09-19
+FEAT001131,PROJ000081,Notification Center,High,Released,19,2025-06-28
+FEAT001132,PROJ000002,Advanced Dashboard,High,Released,17,2024-10-01
+FEAT001133,PROJ000153,Notification Center,Critical,Backlog,2,2025-12-21
+FEAT001134,PROJ000189,Dark Mode,Medium,Backlog,10,2026-07-03
+FEAT001135,PROJ000230,Role Based Access,Critical,Testing,10,2025-06-27
+FEAT001136,PROJ000005,Custom Reports,High,Planned,7,2025-03-06
+FEAT001137,PROJ000004,Analytics Widgets,Medium,Planned,20,2025-04-28
+FEAT001138,PROJ000068,Roadmap View,High,Released,3,2025-11-01
+FEAT001139,PROJ000099,Search Improvements,High,Released,12,2026-04-20
+FEAT001140,PROJ000052,PDF Export,Medium,Released,9,2024-10-31
+FEAT001141,PROJ000163,Workflow Automation,High,Planned,13,2024-09-21
+FEAT001142,PROJ000027,Slack Integration,High,Planned,5,2025-08-07
+FEAT001143,PROJ000111,AI Insights,High,Planned,19,2025-07-15
+FEAT001144,PROJ000070,Workflow Automation,Low,Testing,10,2024-11-21
+FEAT001145,PROJ000074,Mobile Optimization,Critical,Planned,7,2024-08-22
+FEAT001146,PROJ000019,Roadmap View,Critical,Testing,9,2024-08-17
+FEAT001147,PROJ000237,Dark Mode,Medium,Testing,6,2024-10-01
+FEAT001148,PROJ000102,Workflow Automation,Low,Planned,11,2024-12-26
+FEAT001149,PROJ000036,Roadmap View,Low,Backlog,5,2024-12-18
+FEAT001150,PROJ000201,Multi-language Support,Critical,Released,20,2025-04-29
+FEAT001151,PROJ000103,Custom Reports,Low,In Development,21,2026-04-03
+FEAT001152,PROJ000094,Workflow Automation,High,In Development,10,2026-03-08
+FEAT001153,PROJ000141,Multi-language Support,Medium,Testing,8,2025-12-16
+FEAT001154,PROJ000082,Analytics Widgets,Medium,Released,3,2026-04-02
+FEAT001155,PROJ000189,PDF Export,High,Backlog,14,2025-08-17
+FEAT001156,PROJ000081,Analytics Widgets,Critical,Testing,14,2025-03-06
+FEAT001157,PROJ000056,Search Improvements,Medium,Released,21,2025-03-16
+FEAT001158,PROJ000095,Analytics Widgets,High,In Development,7,2025-07-16
+FEAT001159,PROJ000215,PDF Export,High,Planned,10,2024-11-20
+FEAT001160,PROJ000164,Advanced Dashboard,Low,Released,12,2025-09-18
+FEAT001161,PROJ000174,AI Insights,High,Backlog,21,2025-11-02
+FEAT001162,PROJ000216,AI Insights,Medium,Released,4,2024-08-27
+FEAT001163,PROJ000053,Workflow Automation,High,Backlog,10,2024-12-16
+FEAT001164,PROJ000017,Advanced Dashboard,Low,Backlog,6,2025-09-12
+FEAT001165,PROJ000054,AI Insights,High,In Development,8,2024-09-08
+FEAT001166,PROJ000122,Roadmap View,High,Released,13,2025-06-07
+FEAT001167,PROJ000116,Mobile Optimization,Medium,In Development,3,2025-02-15
+FEAT001168,PROJ000237,Advanced Dashboard,Medium,Backlog,4,2025-11-07
+FEAT001169,PROJ000020,Search Improvements,High,Testing,19,2024-10-22
+FEAT001170,PROJ000196,Dark Mode,Medium,Released,17,2024-08-19
+FEAT001171,PROJ000186,Roadmap View,Critical,Testing,7,2026-03-25
+FEAT001172,PROJ000035,AI Insights,High,In Development,17,2024-10-09
+FEAT001173,PROJ000098,Multi-language Support,Low,Planned,14,2026-02-15
+FEAT001174,PROJ000152,Analytics Widgets,Low,Released,6,2025-02-24
+FEAT001175,PROJ000242,Roadmap View,Critical,Planned,12,2025-01-13
+FEAT001176,PROJ000052,Workflow Automation,Medium,Planned,10,2025-09-10
+FEAT001177,PROJ000106,API Enhancements,Low,Backlog,15,2025-11-23
+FEAT001178,PROJ000227,Mobile Optimization,High,Released,7,2026-06-13
+FEAT001179,PROJ000173,Dark Mode,High,Testing,18,2024-09-13
+FEAT001180,PROJ000036,Advanced Dashboard,Critical,Testing,10,2024-12-29
+FEAT001181,PROJ000174,Multi-language Support,Critical,Backlog,3,2026-04-24
+FEAT001182,PROJ000181,API Enhancements,High,Testing,13,2025-03-31
+FEAT001183,PROJ000215,Mobile Optimization,Medium,In Development,6,2025-03-25
+FEAT001184,PROJ000158,PDF Export,Low,Backlog,6,2025-12-02
+FEAT001185,PROJ000133,Slack Integration,Critical,Testing,15,2026-02-02
+FEAT001186,PROJ000226,Dark Mode,Critical,In Development,19,2025-11-25
+FEAT001187,PROJ000120,Role Based Access,Medium,In Development,3,2026-04-23
+FEAT001188,PROJ000242,Workflow Automation,Low,Planned,19,2025-06-24
+FEAT001189,PROJ000035,AI Insights,Medium,In Development,21,2026-03-13
+FEAT001190,PROJ000119,Roadmap View,Critical,Testing,18,2025-03-15
+FEAT001191,PROJ000137,Role Based Access,Medium,Testing,10,2026-04-21
+FEAT001192,PROJ000143,API Enhancements,Medium,In Development,8,2025-03-03
+FEAT001193,PROJ000163,Search Improvements,Critical,Testing,18,2025-10-22
+FEAT001194,PROJ000166,Analytics Widgets,High,Backlog,9,2025-12-23
+FEAT001195,PROJ000185,Slack Integration,Critical,Released,1,2024-10-21
+FEAT001196,PROJ000121,Role Based Access,High,Planned,7,2025-03-03
+FEAT001197,PROJ000244,Advanced Dashboard,Medium,Planned,19,2025-07-08
+FEAT001198,PROJ000205,Notification Center,Low,Released,6,2025-03-25
+FEAT001199,PROJ000166,Search Improvements,High,Released,2,2026-07-11
+FEAT001200,PROJ000221,Search Improvements,Low,Planned,13,2025-12-07
+FEAT001201,PROJ000055,Role Based Access,Critical,Planned,8,2025-06-24
+FEAT001202,PROJ000189,Custom Reports,Medium,In Development,5,2026-01-13
+FEAT001203,PROJ000165,API Enhancements,Critical,Testing,17,2024-08-17
+FEAT001204,PROJ000083,Multi-language Support,Critical,Released,7,2025-01-27
+FEAT001205,PROJ000056,API Enhancements,High,Released,19,2025-10-17
+FEAT001206,PROJ000221,Role Based Access,High,Backlog,14,2025-09-23
+FEAT001207,PROJ000105,Role Based Access,Low,Testing,13,2026-04-22
+FEAT001208,PROJ000193,API Enhancements,High,Testing,5,2026-05-04
+FEAT001209,PROJ000088,Search Improvements,Medium,Planned,21,2024-12-04
+FEAT001210,PROJ000021,API Enhancements,Medium,In Development,5,2025-10-14
+FEAT001211,PROJ000179,PDF Export,Medium,Testing,2,2025-01-11
+FEAT001212,PROJ000115,Workflow Automation,High,Released,6,2026-01-02
+FEAT001213,PROJ000235,Roadmap View,Medium,Backlog,19,2025-10-26
+FEAT001214,PROJ000042,Search Improvements,Critical,Released,1,2026-05-19
+FEAT001215,PROJ000213,Role Based Access,Low,Released,8,2024-09-24
+FEAT001216,PROJ000034,Mobile Optimization,Critical,In Development,17,2026-06-12
+FEAT001217,PROJ000178,AI Insights,Medium,Backlog,13,2026-02-23
+FEAT001218,PROJ000227,Search Improvements,Low,Planned,10,2025-10-01
+FEAT001219,PROJ000009,Notification Center,High,Backlog,14,2025-05-01
+FEAT001220,PROJ000105,Analytics Widgets,Medium,Testing,11,2025-01-01
+FEAT001221,PROJ000200,Workflow Automation,Low,Planned,12,2025-01-18
+FEAT001222,PROJ000183,Advanced Dashboard,Medium,Planned,17,2026-05-06
+FEAT001223,PROJ000180,Notification Center,Low,In Development,16,2026-03-15
+FEAT001224,PROJ000177,Analytics Widgets,Medium,Testing,16,2025-07-18
+FEAT001225,PROJ000100,AI Insights,High,Testing,2,2025-12-15
+FEAT001226,PROJ000154,Analytics Widgets,Medium,In Development,15,2024-08-09
+FEAT001227,PROJ000038,Role Based Access,High,Planned,5,2025-12-28
+FEAT001228,PROJ000110,Custom Reports,Critical,Released,4,2025-05-29
+FEAT001229,PROJ000163,Analytics Widgets,Medium,Testing,19,2025-04-21
+FEAT001230,PROJ000129,Custom Reports,Low,Planned,17,2025-01-02
+FEAT001231,PROJ000213,Role Based Access,Medium,In Development,3,2025-08-20
+FEAT001232,PROJ000024,Multi-language Support,Medium,Planned,8,2025-05-27
+FEAT001233,PROJ000130,Workflow Automation,Critical,Released,6,2024-11-03
+FEAT001234,PROJ000164,API Enhancements,High,Planned,3,2025-11-06
+FEAT001235,PROJ000024,AI Insights,Medium,Planned,5,2025-10-22
+FEAT001236,PROJ000002,Custom Reports,Medium,Planned,17,2025-02-12
+FEAT001237,PROJ000062,Role Based Access,Critical,Testing,20,2025-02-08
+FEAT001238,PROJ000242,AI Insights,Medium,Released,2,2026-02-11
+FEAT001239,PROJ000243,Role Based Access,Low,Backlog,17,2026-05-20
+FEAT001240,PROJ000022,Role Based Access,Critical,Testing,17,2024-11-29
+FEAT001241,PROJ000116,Mobile Optimization,Medium,In Development,2,2025-10-07
+FEAT001242,PROJ000158,Workflow Automation,Medium,In Development,3,2025-03-31
+FEAT001243,PROJ000174,Analytics Widgets,Low,In Development,4,2026-04-03
+FEAT001244,PROJ000233,Roadmap View,Medium,Planned,10,2025-02-25
+FEAT001245,PROJ000225,API Enhancements,Critical,Backlog,8,2026-05-04
+FEAT001246,PROJ000066,Workflow Automation,Low,In Development,7,2026-06-06
+FEAT001247,PROJ000176,Mobile Optimization,Low,Planned,8,2026-04-30
+FEAT001248,PROJ000085,Search Improvements,Medium,Testing,9,2026-04-17
+FEAT001249,PROJ000019,API Enhancements,Critical,Planned,16,2026-06-02
+FEAT001250,PROJ000002,Notification Center,Low,Testing,2,2026-02-27
+FEAT001251,PROJ000121,Analytics Widgets,High,Released,6,2026-05-11
+FEAT001252,PROJ000024,PDF Export,Medium,Testing,17,2025-02-17
+FEAT001253,PROJ000217,Roadmap View,Low,In Development,9,2025-02-22
+FEAT001254,PROJ000051,Mobile Optimization,Medium,Backlog,20,2026-05-19
+FEAT001255,PROJ000203,API Enhancements,Low,Testing,20,2025-10-11
+FEAT001256,PROJ000050,Slack Integration,High,In Development,4,2025-11-01
+FEAT001257,PROJ000054,Notification Center,Medium,Testing,11,2025-01-29
+FEAT001258,PROJ000029,PDF Export,Low,Planned,2,2026-01-24
+FEAT001259,PROJ000002,Search Improvements,Medium,Planned,7,2026-04-24
+FEAT001260,PROJ000216,API Enhancements,Medium,In Development,2,2025-11-13
+FEAT001261,PROJ000070,Slack Integration,Medium,Planned,21,2025-05-23
+FEAT001262,PROJ000225,PDF Export,Medium,Backlog,12,2025-04-29
+FEAT001263,PROJ000176,Mobile Optimization,Critical,Testing,11,2025-04-10
+FEAT001264,PROJ000147,Slack Integration,High,Planned,10,2024-10-14
+FEAT001265,PROJ000143,Custom Reports,Critical,Backlog,7,2026-06-21
+FEAT001266,PROJ000074,Custom Reports,Low,Backlog,15,2026-07-22
+FEAT001267,PROJ000071,Slack Integration,Low,In Development,13,2026-02-07
+FEAT001268,PROJ000130,Mobile Optimization,High,In Development,14,2025-05-08
+FEAT001269,PROJ000125,Roadmap View,High,Released,5,2025-05-28
+FEAT001270,PROJ000218,Slack Integration,High,Released,9,2025-08-03
+FEAT001271,PROJ000245,Slack Integration,Low,Released,16,2025-04-20
+FEAT001272,PROJ000182,Roadmap View,Critical,Testing,20,2024-09-05
+FEAT001273,PROJ000107,Roadmap View,Medium,Released,20,2024-08-17
+FEAT001274,PROJ000045,Mobile Optimization,Critical,Testing,6,2026-07-11
+FEAT001275,PROJ000111,Multi-language Support,Medium,Testing,19,2026-02-03
+FEAT001276,PROJ000073,Custom Reports,Low,Planned,5,2025-10-09
+FEAT001277,PROJ000231,Dark Mode,Medium,Released,14,2025-12-09
+FEAT001278,PROJ000091,Workflow Automation,Low,Released,5,2024-12-21
+FEAT001279,PROJ000059,Multi-language Support,High,Planned,19,2025-02-23
+FEAT001280,PROJ000055,Advanced Dashboard,Critical,Released,6,2026-06-23
+FEAT001281,PROJ000109,Dark Mode,Medium,Testing,3,2025-10-13
+FEAT001282,PROJ000014,Multi-language Support,Low,Backlog,18,2026-03-14
+FEAT001283,PROJ000143,Advanced Dashboard,Critical,Released,7,2025-02-16
+FEAT001284,PROJ000228,Search Improvements,Critical,Released,7,2024-12-25
+FEAT001285,PROJ000148,AI Insights,Critical,Testing,19,2024-08-29
+FEAT001286,PROJ000052,AI Insights,High,Testing,21,2025-12-25
+FEAT001287,PROJ000111,Roadmap View,High,Planned,13,2026-06-30
+FEAT001288,PROJ000228,Workflow Automation,Critical,Backlog,10,2025-03-04
+FEAT001289,PROJ000168,Multi-language Support,Medium,Released,1,2025-03-08
+FEAT001290,PROJ000153,Analytics Widgets,High,In Development,20,2026-04-16
+FEAT001291,PROJ000001,AI Insights,High,Backlog,14,2025-10-05
+FEAT001292,PROJ000008,Slack Integration,High,In Development,6,2024-10-12
+FEAT001293,PROJ000060,Slack Integration,Medium,Backlog,21,2025-11-10
+FEAT001294,PROJ000250,Custom Reports,Medium,Released,17,2025-07-16
+FEAT001295,PROJ000073,Notification Center,Medium,Planned,20,2025-03-07
+FEAT001296,PROJ000047,Role Based Access,High,Testing,7,2026-04-27
+FEAT001297,PROJ000221,Workflow Automation,Low,Backlog,8,2024-12-21
+FEAT001298,PROJ000075,Analytics Widgets,Critical,Planned,20,2026-07-08
+FEAT001299,PROJ000078,Notification Center,Critical,Released,11,2026-02-13
+FEAT001300,PROJ000147,Multi-language Support,Medium,In Development,17,2025-07-13
+FEAT001301,PROJ000218,Analytics Widgets,Critical,Backlog,16,2025-07-28
+FEAT001302,PROJ000089,Custom Reports,High,Released,21,2026-06-07
+FEAT001303,PROJ000150,Custom Reports,Medium,Testing,21,2024-07-22
+FEAT001304,PROJ000147,PDF Export,Medium,In Development,14,2025-11-07
+FEAT001305,PROJ000029,Advanced Dashboard,Critical,In Development,4,2025-02-22
+FEAT001306,PROJ000241,API Enhancements,High,Released,12,2025-07-20
+FEAT001307,PROJ000081,Advanced Dashboard,Low,Testing,20,2024-11-10
+FEAT001308,PROJ000021,Workflow Automation,Low,Planned,2,2024-11-02
+FEAT001309,PROJ000187,Dark Mode,High,Released,4,2026-02-02
+FEAT001310,PROJ000004,Slack Integration,Medium,Backlog,5,2025-06-27
+FEAT001311,PROJ000147,Advanced Dashboard,Medium,In Development,10,2025-12-25
+FEAT001312,PROJ000045,Search Improvements,Medium,Released,14,2025-07-02
+FEAT001313,PROJ000215,Advanced Dashboard,Low,Released,14,2026-03-23
+FEAT001314,PROJ000209,Analytics Widgets,Medium,Planned,14,2025-12-19
+FEAT001315,PROJ000021,AI Insights,High,Released,9,2025-01-26
+FEAT001316,PROJ000082,Slack Integration,Low,In Development,6,2026-01-31
+FEAT001317,PROJ000244,Advanced Dashboard,High,Testing,9,2024-09-09
+FEAT001318,PROJ000061,AI Insights,High,Backlog,14,2026-06-29
+FEAT001319,PROJ000019,Advanced Dashboard,Medium,In Development,1,2025-06-16
+FEAT001320,PROJ000044,Advanced Dashboard,Medium,Testing,2,2025-11-11
+FEAT001321,PROJ000180,Workflow Automation,Critical,Backlog,18,2024-12-03
+FEAT001322,PROJ000096,Advanced Dashboard,High,Planned,10,2025-12-28
+FEAT001323,PROJ000239,API Enhancements,Low,In Development,5,2026-01-22
+FEAT001324,PROJ000129,API Enhancements,Low,In Development,5,2025-10-11
+FEAT001325,PROJ000065,Analytics Widgets,Medium,Released,16,2024-10-04
+FEAT001326,PROJ000157,Roadmap View,Low,Backlog,20,2026-04-08
+FEAT001327,PROJ000209,Slack Integration,Medium,Planned,14,2026-04-18
+FEAT001328,PROJ000037,Search Improvements,Critical,In Development,15,2025-03-30
+FEAT001329,PROJ000208,Mobile Optimization,Low,Testing,11,2025-01-28
+FEAT001330,PROJ000043,Roadmap View,High,Testing,20,2024-08-23
+FEAT001331,PROJ000051,Slack Integration,High,Backlog,8,2025-08-09
+FEAT001332,PROJ000231,AI Insights,High,Testing,18,2025-12-22
+FEAT001333,PROJ000168,Search Improvements,Medium,Testing,17,2024-09-18
+FEAT001334,PROJ000228,Roadmap View,Low,Planned,18,2026-05-23
+FEAT001335,PROJ000126,PDF Export,Low,Released,14,2025-01-19
+FEAT001336,PROJ000112,Mobile Optimization,High,Planned,5,2025-03-30
+FEAT001337,PROJ000073,Workflow Automation,Low,Testing,14,2026-04-21
+FEAT001338,PROJ000076,Search Improvements,Low,Planned,19,2024-10-14
+FEAT001339,PROJ000141,API Enhancements,High,Testing,21,2025-10-22
+FEAT001340,PROJ000041,Notification Center,High,Backlog,7,2026-05-24
+FEAT001341,PROJ000072,Workflow Automation,Medium,In Development,18,2025-06-06
+FEAT001342,PROJ000169,Roadmap View,High,Backlog,1,2024-12-18
+FEAT001343,PROJ000202,Role Based Access,Low,Testing,12,2025-05-18
+FEAT001344,PROJ000076,Workflow Automation,Critical,Backlog,8,2026-03-01
+FEAT001345,PROJ000014,AI Insights,Medium,Planned,17,2024-09-15
+FEAT001346,PROJ000113,Roadmap View,Low,Backlog,7,2026-03-10
+FEAT001347,PROJ000153,Analytics Widgets,Low,Planned,4,2026-02-05
+FEAT001348,PROJ000141,AI Insights,Low,Planned,8,2025-11-23
+FEAT001349,PROJ000065,Analytics Widgets,Low,Testing,17,2025-05-10
+FEAT001350,PROJ000137,Notification Center,High,In Development,17,2026-05-11
+FEAT001351,PROJ000129,Analytics Widgets,Critical,Backlog,5,2026-06-01
+FEAT001352,PROJ000207,Workflow Automation,Low,Testing,15,2024-10-05
+FEAT001353,PROJ000240,AI Insights,Critical,Released,11,2026-07-17
+FEAT001354,PROJ000017,Role Based Access,Critical,Backlog,12,2025-08-06
+FEAT001355,PROJ000064,Custom Reports,Critical,Backlog,4,2025-09-30
+FEAT001356,PROJ000214,Notification Center,Medium,In Development,7,2024-09-01
+FEAT001357,PROJ000132,Custom Reports,Low,In Development,18,2026-06-21
+FEAT001358,PROJ000127,Custom Reports,Critical,Backlog,13,2025-09-16
+FEAT001359,PROJ000074,Workflow Automation,Low,Planned,15,2024-08-12
+FEAT001360,PROJ000214,PDF Export,Medium,Planned,11,2025-01-15
+FEAT001361,PROJ000020,Analytics Widgets,High,Released,21,2024-08-07
+FEAT001362,PROJ000107,Multi-language Support,Low,Released,13,2024-09-01
+FEAT001363,PROJ000245,Dark Mode,Low,Released,17,2024-10-20
+FEAT001364,PROJ000096,Custom Reports,High,Testing,7,2026-03-31
+FEAT001365,PROJ000239,API Enhancements,Low,In Development,18,2025-07-25
+FEAT001366,PROJ000023,Slack Integration,Critical,In Development,20,2025-02-16
+FEAT001367,PROJ000122,Role Based Access,High,Backlog,5,2025-10-09
+FEAT001368,PROJ000234,Role Based Access,Low,In Development,5,2025-07-15
+FEAT001369,PROJ000209,Analytics Widgets,Low,In Development,21,2026-06-23
+FEAT001370,PROJ000011,Advanced Dashboard,Critical,Released,8,2024-08-18
+FEAT001371,PROJ000212,PDF Export,Medium,In Development,14,2025-05-21
+FEAT001372,PROJ000119,Advanced Dashboard,Critical,Planned,12,2026-03-03
+FEAT001373,PROJ000191,Multi-language Support,Medium,Testing,17,2025-09-14
+FEAT001374,PROJ000109,Dark Mode,Medium,Testing,21,2026-02-07
+FEAT001375,PROJ000051,Search Improvements,High,Testing,16,2025-11-04
+FEAT001376,PROJ000125,Mobile Optimization,Low,In Development,14,2025-06-28
+FEAT001377,PROJ000011,Roadmap View,Low,Backlog,17,2026-05-08
+FEAT001378,PROJ000218,Role Based Access,Low,Backlog,17,2025-08-11
+FEAT001379,PROJ000081,PDF Export,Medium,Testing,2,2026-04-24
+FEAT001380,PROJ000056,Multi-language Support,Critical,Testing,17,2025-06-19
+FEAT001381,PROJ000098,Custom Reports,High,Backlog,13,2024-09-29
+FEAT001382,PROJ000128,Roadmap View,High,Planned,18,2025-11-10
+FEAT001383,PROJ000249,Workflow Automation,Critical,Testing,4,2025-03-05
+FEAT001384,PROJ000052,PDF Export,High,Planned,5,2026-02-23
+FEAT001385,PROJ000174,Notification Center,Low,Testing,7,2024-10-04
+FEAT001386,PROJ000093,AI Insights,Critical,Released,15,2026-01-13
+FEAT001387,PROJ000095,Role Based Access,Medium,Released,4,2024-08-26
+FEAT001388,PROJ000228,PDF Export,Medium,Backlog,16,2024-08-31
+FEAT001389,PROJ000058,Multi-language Support,Critical,Backlog,12,2026-06-29
+FEAT001390,PROJ000016,Search Improvements,Critical,Backlog,4,2025-04-13
+FEAT001391,PROJ000089,Role Based Access,Low,Released,4,2025-09-23
+FEAT001392,PROJ000231,API Enhancements,Medium,In Development,9,2026-03-22
+FEAT001393,PROJ000198,API Enhancements,Low,Released,11,2025-10-11
+FEAT001394,PROJ000148,Multi-language Support,High,Testing,7,2025-09-29
+FEAT001395,PROJ000137,Roadmap View,High,In Development,9,2025-01-01
+FEAT001396,PROJ000129,Roadmap View,Critical,Testing,17,2025-10-18
+FEAT001397,PROJ000019,PDF Export,Low,Released,21,2025-10-10
+FEAT001398,PROJ000178,Advanced Dashboard,Medium,Testing,8,2025-07-11
+FEAT001399,PROJ000160,Analytics Widgets,Low,Released,12,2025-04-06
+FEAT001400,PROJ000129,Multi-language Support,High,Testing,2,2025-09-04
+FEAT001401,PROJ000035,Search Improvements,Critical,Released,8,2026-02-28
+FEAT001402,PROJ000065,Dark Mode,Medium,Released,21,2024-09-09
+FEAT001403,PROJ000245,Workflow Automation,Low,Backlog,11,2024-12-02
+FEAT001404,PROJ000206,PDF Export,Low,Released,4,2025-12-17
+FEAT001405,PROJ000057,Dark Mode,Medium,Released,4,2025-06-22
+FEAT001406,PROJ000032,PDF Export,High,Backlog,8,2025-06-06
+FEAT001407,PROJ000108,Multi-language Support,Medium,Released,2,2025-05-02
+FEAT001408,PROJ000144,PDF Export,Medium,Released,17,2024-12-25
+FEAT001409,PROJ000150,Dark Mode,Critical,Planned,21,2026-02-25
+FEAT001410,PROJ000161,Mobile Optimization,Critical,Backlog,6,2024-08-31
+FEAT001411,PROJ000058,Slack Integration,Critical,Released,21,2026-03-13
+FEAT001412,PROJ000184,Search Improvements,Low,Backlog,16,2026-03-16
+FEAT001413,PROJ000198,Role Based Access,Critical,In Development,6,2026-04-16
+FEAT001414,PROJ000209,Dark Mode,Medium,Released,18,2025-12-25
+FEAT001415,PROJ000006,Role Based Access,Critical,In Development,18,2025-03-14
+FEAT001416,PROJ000208,Analytics Widgets,Critical,Planned,6,2025-09-27
+FEAT001417,PROJ000007,AI Insights,Medium,In Development,2,2025-08-16
+FEAT001418,PROJ000026,PDF Export,Low,In Development,11,2026-03-15
+FEAT001419,PROJ000142,Analytics Widgets,High,Planned,4,2026-07-14
+FEAT001420,PROJ000036,AI Insights,Medium,Testing,12,2024-11-18
+FEAT001421,PROJ000173,Advanced Dashboard,High,Planned,1,2025-12-03
+FEAT001422,PROJ000194,PDF Export,Medium,In Development,12,2026-07-15
+FEAT001423,PROJ000227,Mobile Optimization,Critical,In Development,10,2025-06-16
+FEAT001424,PROJ000157,Slack Integration,Medium,Planned,9,2025-05-23
+FEAT001425,PROJ000042,Advanced Dashboard,Medium,Testing,16,2024-10-25
+FEAT001426,PROJ000151,Multi-language Support,Low,Planned,11,2025-06-02
+FEAT001427,PROJ000185,Workflow Automation,Critical,In Development,11,2026-02-22
+FEAT001428,PROJ000106,Slack Integration,Low,Released,3,2025-04-08
+FEAT001429,PROJ000086,Slack Integration,Critical,Planned,16,2025-05-12
+FEAT001430,PROJ000118,Notification Center,High,In Development,18,2026-04-21
+FEAT001431,PROJ000094,PDF Export,High,In Development,6,2024-10-06
+FEAT001432,PROJ000081,API Enhancements,Medium,Planned,6,2025-08-13
+FEAT001433,PROJ000053,PDF Export,Medium,In Development,19,2026-07-04
+FEAT001434,PROJ000167,AI Insights,Low,Planned,14,2026-05-12
+FEAT001435,PROJ000072,API Enhancements,Critical,Backlog,17,2025-09-17
+FEAT001436,PROJ000061,Advanced Dashboard,Medium,In Development,16,2025-09-11
+FEAT001437,PROJ000234,Multi-language Support,Medium,Testing,15,2025-05-01
+FEAT001438,PROJ000141,Role Based Access,Critical,Backlog,13,2025-09-12
+FEAT001439,PROJ000232,Notification Center,Low,Backlog,16,2025-02-08
+FEAT001440,PROJ000202,PDF Export,Low,In Development,10,2025-09-27
+FEAT001441,PROJ000005,Role Based Access,Critical,Released,6,2024-09-06
+FEAT001442,PROJ000089,Mobile Optimization,Critical,Planned,9,2026-01-19
+FEAT001443,PROJ000018,Advanced Dashboard,Low,Planned,7,2025-12-08
+FEAT001444,PROJ000014,Mobile Optimization,Critical,Backlog,10,2026-05-12
+FEAT001445,PROJ000159,PDF Export,Critical,Testing,14,2024-10-23
+FEAT001446,PROJ000183,Notification Center,High,Planned,16,2026-03-04
+FEAT001447,PROJ000120,Mobile Optimization,Critical,In Development,3,2024-12-29
+FEAT001448,PROJ000115,Dark Mode,Low,Released,14,2026-05-26
+FEAT001449,PROJ000054,Advanced Dashboard,High,Testing,18,2026-01-07
+FEAT001450,PROJ000088,Mobile Optimization,Critical,Backlog,1,2026-07-20
+FEAT001451,PROJ000011,Advanced Dashboard,High,Testing,12,2026-07-15
+FEAT001452,PROJ000042,Notification Center,High,Planned,9,2025-10-13
+FEAT001453,PROJ000244,Analytics Widgets,High,In Development,3,2025-11-28
+FEAT001454,PROJ000007,PDF Export,Low,In Development,3,2025-12-09
+FEAT001455,PROJ000222,PDF Export,Medium,Released,17,2025-12-24
+FEAT001456,PROJ000178,Multi-language Support,Low,Planned,20,2025-08-18
+FEAT001457,PROJ000011,Roadmap View,Medium,Backlog,1,2026-03-07
+FEAT001458,PROJ000110,Notification Center,Critical,Planned,12,2025-06-09
+FEAT001459,PROJ000111,PDF Export,Low,Planned,10,2025-04-14
+FEAT001460,PROJ000088,Analytics Widgets,High,In Development,1,2024-12-15
+FEAT001461,PROJ000125,Multi-language Support,Critical,Released,5,2025-05-09
+FEAT001462,PROJ000074,Roadmap View,Medium,Planned,6,2026-05-19
+FEAT001463,PROJ000220,Roadmap View,Critical,Backlog,18,2025-01-17
+FEAT001464,PROJ000138,Multi-language Support,Low,In Development,8,2025-10-27
+FEAT001465,PROJ000155,Notification Center,Low,In Development,18,2025-09-02
+FEAT001466,PROJ000005,AI Insights,Medium,Released,2,2026-02-10
+FEAT001467,PROJ000014,Notification Center,High,Planned,12,2025-06-29
+FEAT001468,PROJ000236,Workflow Automation,Low,Planned,1,2025-04-07
+FEAT001469,PROJ000238,Roadmap View,Medium,Released,1,2025-01-21
+FEAT001470,PROJ000167,Advanced Dashboard,High,Planned,4,2024-12-27
+FEAT001471,PROJ000138,Notification Center,Low,In Development,8,2026-03-28
+FEAT001472,PROJ000249,Analytics Widgets,High,Backlog,14,2025-11-02
+FEAT001473,PROJ000139,Search Improvements,Critical,In Development,11,2024-09-08
+FEAT001474,PROJ000085,PDF Export,High,Testing,2,2026-05-08
+FEAT001475,PROJ000108,Mobile Optimization,Medium,Planned,14,2025-08-25
+FEAT001476,PROJ000147,API Enhancements,Low,Released,12,2025-03-07
+FEAT001477,PROJ000032,Notification Center,Medium,Backlog,21,2025-07-25
+FEAT001478,PROJ000002,Workflow Automation,Low,In Development,6,2024-08-19
+FEAT001479,PROJ000190,Multi-language Support,Medium,Backlog,7,2026-07-21
+FEAT001480,PROJ000242,Slack Integration,Low,Backlog,18,2024-11-17
+FEAT001481,PROJ000126,Roadmap View,Low,Released,11,2025-06-13
+FEAT001482,PROJ000141,Multi-language Support,High,Backlog,3,2026-07-07
+FEAT001483,PROJ000050,API Enhancements,Medium,In Development,7,2025-06-24
+FEAT001484,PROJ000051,Slack Integration,Medium,Planned,15,2025-08-26
+FEAT001485,PROJ000090,Slack Integration,Low,Testing,5,2024-08-17
+FEAT001486,PROJ000126,PDF Export,Critical,In Development,9,2025-06-05
+FEAT001487,PROJ000209,Mobile Optimization,High,Released,10,2025-09-01
+FEAT001488,PROJ000020,Dark Mode,Critical,Planned,20,2024-11-15
+FEAT001489,PROJ000028,Slack Integration,High,In Development,19,2025-11-14
+FEAT001490,PROJ000189,AI Insights,Low,In Development,10,2025-12-23
+FEAT001491,PROJ000093,Roadmap View,Low,Backlog,16,2026-03-09
+FEAT001492,PROJ000116,PDF Export,Low,Planned,5,2025-07-22
+FEAT001493,PROJ000248,Notification Center,High,Backlog,10,2025-10-15
+FEAT001494,PROJ000139,API Enhancements,Low,Released,16,2024-10-12
+FEAT001495,PROJ000154,Analytics Widgets,Low,Backlog,21,2025-10-09
+FEAT001496,PROJ000017,Multi-language Support,Critical,In Development,14,2025-10-20
+FEAT001497,PROJ000204,Slack Integration,Low,In Development,3,2024-08-17
+FEAT001498,PROJ000019,Dark Mode,Medium,Planned,21,2025-07-05
+FEAT001499,PROJ000186,Roadmap View,Medium,In Development,20,2024-08-19
+FEAT001500,PROJ000226,Multi-language Support,Critical,Backlog,10,2025-11-05
+FEAT001501,PROJ000026,Analytics Widgets,Low,Planned,8,2024-10-08
+FEAT001502,PROJ000051,Mobile Optimization,Critical,Testing,2,2026-04-28
+FEAT001503,PROJ000012,Custom Reports,Critical,In Development,2,2024-08-01
+FEAT001504,PROJ000222,Notification Center,Medium,Released,14,2025-01-15
+FEAT001505,PROJ000043,Analytics Widgets,Low,Released,21,2024-12-20
+FEAT001506,PROJ000090,AI Insights,Critical,Backlog,18,2026-04-29
+FEAT001507,PROJ000173,Dark Mode,Low,Released,3,2025-11-05
+FEAT001508,PROJ000214,Role Based Access,Medium,Planned,19,2024-11-24
+FEAT001509,PROJ000164,Search Improvements,Medium,Released,15,2025-10-03
+FEAT001510,PROJ000159,Role Based Access,Critical,Backlog,17,2025-08-12
+FEAT001511,PROJ000036,Analytics Widgets,High,Released,2,2025-05-25
+FEAT001512,PROJ000091,Mobile Optimization,Medium,In Development,8,2026-01-05
+FEAT001513,PROJ000019,Workflow Automation,Low,Planned,1,2025-11-20
+FEAT001514,PROJ000244,Notification Center,Critical,Planned,17,2026-07-10
+FEAT001515,PROJ000193,Workflow Automation,High,Planned,3,2024-10-27
+FEAT001516,PROJ000009,Roadmap View,Medium,Planned,10,2025-05-29
+FEAT001517,PROJ000007,Search Improvements,Low,Testing,1,2024-07-28
+FEAT001518,PROJ000047,PDF Export,Low,Backlog,2,2025-05-18
+FEAT001519,PROJ000212,Search Improvements,High,Backlog,16,2026-01-29
+FEAT001520,PROJ000225,Search Improvements,Critical,In Development,2,2025-10-19
+FEAT001521,PROJ000065,Notification Center,High,Released,14,2026-06-25
+FEAT001522,PROJ000125,Mobile Optimization,Medium,In Development,21,2025-09-27
+FEAT001523,PROJ000032,Notification Center,Critical,In Development,17,2026-01-31
+FEAT001524,PROJ000061,Multi-language Support,High,Testing,16,2025-03-28
+FEAT001525,PROJ000026,Workflow Automation,Low,Released,11,2025-02-13
+FEAT001526,PROJ000028,Search Improvements,High,Planned,10,2024-09-20
+FEAT001527,PROJ000110,Search Improvements,Low,Testing,4,2024-10-25
+FEAT001528,PROJ000054,Workflow Automation,Critical,Planned,11,2024-08-12
+FEAT001529,PROJ000053,Multi-language Support,High,Planned,6,2024-08-16
+FEAT001530,PROJ000008,Analytics Widgets,Critical,Backlog,13,2025-03-01
+FEAT001531,PROJ000239,AI Insights,Critical,Testing,18,2026-02-19
+FEAT001532,PROJ000217,Roadmap View,High,Planned,13,2026-01-21
+FEAT001533,PROJ000118,Role Based Access,Medium,Testing,20,2024-09-07
+FEAT001534,PROJ000161,PDF Export,Critical,Backlog,2,2024-12-05
+FEAT001535,PROJ000146,Advanced Dashboard,Critical,Planned,6,2025-12-14
+FEAT001536,PROJ000062,Workflow Automation,Low,In Development,21,2025-04-15
+FEAT001537,PROJ000180,API Enhancements,High,Backlog,11,2025-03-12
+FEAT001538,PROJ000228,API Enhancements,High,Backlog,20,2025-11-27
+FEAT001539,PROJ000091,Search Improvements,Critical,Planned,12,2026-04-03
+FEAT001540,PROJ000028,Notification Center,Critical,Backlog,19,2026-01-11
+FEAT001541,PROJ000139,Roadmap View,Medium,Released,7,2024-11-25
+FEAT001542,PROJ000249,API Enhancements,High,Backlog,9,2024-12-05
+FEAT001543,PROJ000150,Roadmap View,High,Released,3,2024-09-24
+FEAT001544,PROJ000158,AI Insights,Critical,In Development,8,2024-11-17
+FEAT001545,PROJ000066,PDF Export,Medium,Backlog,5,2025-05-26
+FEAT001546,PROJ000097,Custom Reports,High,Planned,16,2025-06-11
+FEAT001547,PROJ000015,PDF Export,Medium,Backlog,8,2026-04-18
+FEAT001548,PROJ000225,API Enhancements,High,Testing,6,2025-07-20
+FEAT001549,PROJ000184,Roadmap View,High,Testing,6,2025-07-15
+FEAT001550,PROJ000174,Role Based Access,High,Backlog,7,2024-10-21
+FEAT001551,PROJ000249,Multi-language Support,Critical,Backlog,16,2025-03-25
+FEAT001552,PROJ000035,Advanced Dashboard,Medium,Testing,16,2026-06-28
+FEAT001553,PROJ000208,API Enhancements,Medium,Testing,7,2025-09-27
+FEAT001554,PROJ000117,Multi-language Support,Critical,Planned,10,2026-04-14
+FEAT001555,PROJ000073,Notification Center,Critical,Planned,13,2025-07-20
+FEAT001556,PROJ000075,AI Insights,Critical,Backlog,5,2025-01-24
+FEAT001557,PROJ000043,API Enhancements,High,In Development,9,2026-05-05
+FEAT001558,PROJ000078,Advanced Dashboard,Medium,Backlog,18,2024-09-25
+FEAT001559,PROJ000186,Search Improvements,Medium,Planned,6,2025-10-12
+FEAT001560,PROJ000069,Workflow Automation,Medium,Released,10,2025-02-08
+FEAT001561,PROJ000237,Mobile Optimization,Medium,Backlog,21,2024-08-02
+FEAT001562,PROJ000096,API Enhancements,Medium,Released,19,2026-03-16
+FEAT001563,PROJ000156,Slack Integration,High,Backlog,4,2025-09-02
+FEAT001564,PROJ000214,Workflow Automation,Low,Testing,13,2024-10-16
+FEAT001565,PROJ000246,PDF Export,High,Planned,10,2026-05-29
+FEAT001566,PROJ000177,Workflow Automation,High,In Development,14,2025-01-02
+FEAT001567,PROJ000165,Roadmap View,Critical,Backlog,11,2025-02-16
+FEAT001568,PROJ000219,Workflow Automation,Low,In Development,12,2024-07-30
+FEAT001569,PROJ000250,PDF Export,Low,Released,19,2025-07-23
+FEAT001570,PROJ000180,Search Improvements,Critical,Backlog,18,2025-08-20
+FEAT001571,PROJ000051,Custom Reports,Critical,In Development,16,2026-05-07
+FEAT001572,PROJ000191,Search Improvements,High,In Development,18,2026-03-02
+FEAT001573,PROJ000182,Custom Reports,High,Testing,15,2026-05-19
+FEAT001574,PROJ000103,Roadmap View,Critical,Backlog,15,2025-05-17
+FEAT001575,PROJ000016,Search Improvements,Low,Testing,3,2026-03-11
+FEAT001576,PROJ000127,Role Based Access,Critical,Planned,17,2025-07-25
+FEAT001577,PROJ000064,Advanced Dashboard,Critical,Testing,17,2024-10-15
+FEAT001578,PROJ000178,Workflow Automation,Medium,In Development,20,2025-11-14
+FEAT001579,PROJ000175,Notification Center,High,Planned,9,2024-11-22
+FEAT001580,PROJ000169,Workflow Automation,Low,In Development,17,2025-05-14
+FEAT001581,PROJ000054,Mobile Optimization,Critical,Backlog,16,2025-07-20
+FEAT001582,PROJ000103,Multi-language Support,Critical,Backlog,12,2026-02-17
+FEAT001583,PROJ000162,Advanced Dashboard,Medium,Backlog,17,2025-09-06
+FEAT001584,PROJ000202,API Enhancements,Low,In Development,19,2025-06-26
+FEAT001585,PROJ000250,Multi-language Support,High,Planned,5,2024-12-25
+FEAT001586,PROJ000237,Dark Mode,Low,Testing,18,2025-05-21
+FEAT001587,PROJ000008,AI Insights,Medium,Released,4,2024-08-23
+FEAT001588,PROJ000153,Search Improvements,High,Testing,15,2025-05-04
+FEAT001589,PROJ000056,Mobile Optimization,Medium,In Development,7,2024-08-05
+FEAT001590,PROJ000233,Multi-language Support,Critical,Backlog,15,2024-09-13
+FEAT001591,PROJ000082,Roadmap View,Low,Backlog,20,2024-09-16
+FEAT001592,PROJ000144,Custom Reports,Critical,Testing,18,2025-08-21
+FEAT001593,PROJ000047,Roadmap View,Low,Backlog,6,2024-10-12
+FEAT001594,PROJ000207,Multi-language Support,Medium,Backlog,4,2026-01-20
+FEAT001595,PROJ000049,Search Improvements,Medium,In Development,1,2025-06-15
+FEAT001596,PROJ000230,PDF Export,Critical,Planned,6,2026-03-25
+FEAT001597,PROJ000179,Search Improvements,Medium,Backlog,1,2026-07-04
+FEAT001598,PROJ000028,Roadmap View,Critical,Planned,19,2024-12-02
+FEAT001599,PROJ000101,Custom Reports,High,Released,18,2025-06-11
+FEAT001600,PROJ000016,Advanced Dashboard,Critical,In Development,18,2025-11-01
+FEAT001601,PROJ000229,Search Improvements,Medium,Testing,12,2026-04-14
+FEAT001602,PROJ000123,AI Insights,Critical,Backlog,11,2025-01-19
+FEAT001603,PROJ000164,Custom Reports,Critical,Planned,13,2025-02-01
+FEAT001604,PROJ000174,Search Improvements,Critical,Testing,17,2025-11-02
+FEAT001605,PROJ000066,Mobile Optimization,Critical,In Development,10,2026-07-12
+FEAT001606,PROJ000112,Dark Mode,Low,Testing,6,2026-04-15
+FEAT001607,PROJ000067,Custom Reports,Medium,Testing,10,2025-01-08
+FEAT001608,PROJ000186,Notification Center,Critical,Released,9,2025-05-16
+FEAT001609,PROJ000138,Multi-language Support,High,In Development,21,2026-06-30
+FEAT001610,PROJ000230,Slack Integration,High,Backlog,6,2026-05-27
+FEAT001611,PROJ000076,API Enhancements,Medium,Backlog,5,2025-06-01
+FEAT001612,PROJ000168,Slack Integration,Medium,Testing,17,2026-02-01
+FEAT001613,PROJ000145,Slack Integration,Low,Released,20,2024-08-23
+FEAT001614,PROJ000148,Custom Reports,High,Planned,10,2026-05-11
+FEAT001615,PROJ000194,Roadmap View,Low,Backlog,7,2025-07-07
+FEAT001616,PROJ000093,Analytics Widgets,Critical,Released,6,2025-09-27
+FEAT001617,PROJ000136,Search Improvements,Critical,Backlog,17,2024-10-16
+FEAT001618,PROJ000155,Role Based Access,High,Planned,19,2026-07-16
+FEAT001619,PROJ000247,PDF Export,Low,Released,20,2025-12-16
+FEAT001620,PROJ000031,Advanced Dashboard,Medium,Backlog,13,2025-11-05
+FEAT001621,PROJ000038,AI Insights,High,Testing,5,2024-09-21
+FEAT001622,PROJ000230,API Enhancements,Critical,Released,14,2025-10-16
+FEAT001623,PROJ000078,Workflow Automation,Low,Planned,1,2026-02-26
+FEAT001624,PROJ000082,Analytics Widgets,Medium,Testing,3,2026-07-01
+FEAT001625,PROJ000003,AI Insights,Critical,Testing,7,2025-06-29
+FEAT001626,PROJ000167,Search Improvements,Low,Backlog,16,2026-04-11
+FEAT001627,PROJ000052,PDF Export,High,Backlog,3,2025-01-21
+FEAT001628,PROJ000073,Slack Integration,Medium,Planned,9,2025-10-29
+FEAT001629,PROJ000042,Workflow Automation,Low,Planned,9,2025-06-01
+FEAT001630,PROJ000151,Workflow Automation,Low,Released,16,2025-05-02
+FEAT001631,PROJ000211,Roadmap View,High,Testing,9,2025-04-08
+FEAT001632,PROJ000209,AI Insights,Low,In Development,1,2025-08-16
+FEAT001633,PROJ000080,Analytics Widgets,Low,Released,8,2025-09-10
+FEAT001634,PROJ000021,PDF Export,Critical,Released,14,2026-04-16
+FEAT001635,PROJ000241,Advanced Dashboard,High,In Development,9,2025-06-05
+FEAT001636,PROJ000012,PDF Export,Medium,Planned,21,2025-04-14
+FEAT001637,PROJ000110,Roadmap View,Medium,In Development,1,2026-03-31
+FEAT001638,PROJ000250,PDF Export,Critical,Planned,12,2026-07-17
+FEAT001639,PROJ000103,Search Improvements,Critical,Released,3,2025-04-01
+FEAT001640,PROJ000147,Notification Center,Medium,Planned,10,2025-11-23
+FEAT001641,PROJ000115,Mobile Optimization,Critical,Testing,10,2026-05-11
+FEAT001642,PROJ000132,Dark Mode,Medium,Planned,17,2025-12-13
+FEAT001643,PROJ000247,Custom Reports,Critical,Planned,10,2026-05-07
+FEAT001644,PROJ000155,Search Improvements,Low,Testing,1,2025-03-28
+FEAT001645,PROJ000081,PDF Export,Medium,Planned,13,2026-01-11
+FEAT001646,PROJ000197,API Enhancements,Critical,In Development,4,2025-04-12
+FEAT001647,PROJ000187,PDF Export,Medium,Released,15,2026-04-05
+FEAT001648,PROJ000184,Custom Reports,Critical,Backlog,3,2026-06-07
+FEAT001649,PROJ000232,Mobile Optimization,Critical,Testing,3,2025-10-04
+FEAT001650,PROJ000017,Dark Mode,Medium,In Development,12,2025-04-18
+FEAT001651,PROJ000053,Search Improvements,Critical,Released,15,2025-04-01
+FEAT001652,PROJ000036,Slack Integration,Medium,Planned,21,2024-12-21
+FEAT001653,PROJ000136,Slack Integration,Medium,In Development,16,2025-04-29
+FEAT001654,PROJ000234,Mobile Optimization,High,Released,1,2026-06-12
+FEAT001655,PROJ000246,Mobile Optimization,Critical,Released,17,2025-11-24
+FEAT001656,PROJ000146,Analytics Widgets,Critical,Released,8,2024-11-27
+FEAT001657,PROJ000150,API Enhancements,Medium,Testing,14,2025-12-14
+FEAT001658,PROJ000127,AI Insights,Low,Backlog,6,2026-07-09
+FEAT001659,PROJ000014,Slack Integration,Medium,In Development,1,2025-07-05
+FEAT001660,PROJ000209,PDF Export,Low,Released,1,2025-07-13
+FEAT001661,PROJ000162,AI Insights,Critical,Backlog,13,2024-09-10
+FEAT001662,PROJ000133,Roadmap View,Medium,Planned,4,2026-07-10
+FEAT001663,PROJ000060,Roadmap View,Critical,Testing,9,2025-09-24
+FEAT001664,PROJ000076,Mobile Optimization,High,Released,8,2026-06-17
+FEAT001665,PROJ000033,PDF Export,Low,Testing,9,2025-11-04
+FEAT001666,PROJ000126,Mobile Optimization,Medium,In Development,6,2025-03-15
+FEAT001667,PROJ000042,Advanced Dashboard,Medium,In Development,14,2026-04-19
+FEAT001668,PROJ000055,PDF Export,High,Backlog,2,2025-06-14
+FEAT001669,PROJ000115,Multi-language Support,High,Released,19,2024-12-28
+FEAT001670,PROJ000008,PDF Export,Medium,Testing,14,2025-06-20
+FEAT001671,PROJ000155,Slack Integration,Medium,In Development,13,2025-05-15
+FEAT001672,PROJ000115,Advanced Dashboard,Critical,Released,19,2025-02-03
+FEAT001673,PROJ000225,Advanced Dashboard,Low,Planned,16,2024-07-28
+FEAT001674,PROJ000051,API Enhancements,Critical,In Development,5,2025-09-25
+FEAT001675,PROJ000068,Analytics Widgets,High,Backlog,19,2025-04-21
+FEAT001676,PROJ000123,Search Improvements,Critical,Testing,12,2025-06-27
+FEAT001677,PROJ000018,Mobile Optimization,Critical,In Development,1,2024-12-18
+FEAT001678,PROJ000197,AI Insights,High,Released,14,2025-10-04
+FEAT001679,PROJ000236,Roadmap View,High,Planned,1,2025-11-18
+FEAT001680,PROJ000172,Dark Mode,Critical,In Development,15,2025-04-12
+FEAT001681,PROJ000081,Multi-language Support,Low,Testing,2,2024-11-08
+FEAT001682,PROJ000240,Custom Reports,Medium,Planned,14,2025-04-27
+FEAT001683,PROJ000137,Slack Integration,High,Testing,8,2024-08-19
+FEAT001684,PROJ000082,Mobile Optimization,Low,Testing,10,2025-09-07
+FEAT001685,PROJ000099,Analytics Widgets,Medium,Backlog,1,2025-10-11
+FEAT001686,PROJ000241,Advanced Dashboard,Critical,In Development,7,2025-08-10
+FEAT001687,PROJ000228,Mobile Optimization,Medium,Testing,20,2024-08-17
+FEAT001688,PROJ000023,Role Based Access,Low,Testing,14,2024-10-04
+FEAT001689,PROJ000222,Dark Mode,High,Testing,13,2025-05-16
+FEAT001690,PROJ000002,Workflow Automation,Critical,In Development,3,2025-12-05
+FEAT001691,PROJ000042,Custom Reports,Medium,Released,18,2026-01-26
+FEAT001692,PROJ000050,Custom Reports,High,Released,13,2025-10-10
+FEAT001693,PROJ000052,Roadmap View,Medium,In Development,4,2025-03-30
+FEAT001694,PROJ000237,PDF Export,Critical,In Development,7,2025-12-13
+FEAT001695,PROJ000112,Search Improvements,Medium,Testing,1,2026-02-12
+FEAT001696,PROJ000158,Slack Integration,High,In Development,4,2026-01-23
+FEAT001697,PROJ000153,Custom Reports,Low,In Development,12,2025-05-12
+FEAT001698,PROJ000238,Dark Mode,High,Testing,12,2025-06-19
+FEAT001699,PROJ000215,Advanced Dashboard,High,Backlog,8,2025-12-29
+FEAT001700,PROJ000039,Analytics Widgets,High,In Development,13,2024-09-30
+FEAT001701,PROJ000017,Roadmap View,Critical,Released,3,2026-03-05
+FEAT001702,PROJ000243,Advanced Dashboard,Critical,Planned,4,2026-01-26
+FEAT001703,PROJ000239,Dark Mode,Low,Testing,20,2025-07-29
+FEAT001704,PROJ000235,Search Improvements,Medium,Testing,17,2025-08-21
+FEAT001705,PROJ000028,Workflow Automation,Critical,Planned,5,2025-04-20
+FEAT001706,PROJ000057,PDF Export,High,Backlog,8,2025-10-09
+FEAT001707,PROJ000043,Workflow Automation,Medium,In Development,10,2025-08-02
+FEAT001708,PROJ000046,Dark Mode,High,Backlog,13,2025-03-08
+FEAT001709,PROJ000143,Notification Center,High,Backlog,17,2026-06-10
+FEAT001710,PROJ000001,AI Insights,Critical,Testing,12,2024-10-21
+FEAT001711,PROJ000095,Dark Mode,Critical,Released,18,2024-12-11
+FEAT001712,PROJ000211,Roadmap View,Medium,Backlog,14,2025-11-30
+FEAT001713,PROJ000131,Workflow Automation,Low,Testing,4,2026-04-26
+FEAT001714,PROJ000171,Workflow Automation,Critical,Testing,15,2024-11-27
+FEAT001715,PROJ000006,Roadmap View,Medium,Released,20,2025-04-07
+FEAT001716,PROJ000141,Search Improvements,Medium,In Development,6,2024-08-15
+FEAT001717,PROJ000245,API Enhancements,Low,In Development,11,2025-08-24
+FEAT001718,PROJ000237,Custom Reports,Low,Testing,19,2025-08-18
+FEAT001719,PROJ000181,Role Based Access,Medium,Planned,1,2026-03-18
+FEAT001720,PROJ000206,Search Improvements,Low,Released,10,2026-05-02
+FEAT001721,PROJ000140,API Enhancements,Medium,Backlog,8,2026-05-31
+FEAT001722,PROJ000092,AI Insights,Medium,Planned,3,2025-09-16
+FEAT001723,PROJ000250,Roadmap View,Low,Testing,20,2025-07-12
+FEAT001724,PROJ000172,Notification Center,High,In Development,15,2026-02-20
+FEAT001725,PROJ000192,Roadmap View,Low,Testing,2,2026-02-11
+FEAT001726,PROJ000005,PDF Export,High,In Development,7,2025-07-04
+FEAT001727,PROJ000009,Mobile Optimization,High,Released,4,2024-11-26
+FEAT001728,PROJ000227,Mobile Optimization,High,Testing,5,2024-09-20
+FEAT001729,PROJ000152,Multi-language Support,Critical,Planned,17,2026-06-20
+FEAT001730,PROJ000048,Search Improvements,Critical,Backlog,5,2024-07-25
+FEAT001731,PROJ000061,Workflow Automation,Critical,Testing,3,2025-03-30
+FEAT001732,PROJ000193,Search Improvements,Medium,Testing,1,2024-11-03
+FEAT001733,PROJ000146,Search Improvements,High,Backlog,10,2025-04-27
+FEAT001734,PROJ000096,Notification Center,Low,Backlog,4,2026-06-20
+FEAT001735,PROJ000239,Advanced Dashboard,Medium,Planned,16,2026-03-25
+FEAT001736,PROJ000138,Custom Reports,Critical,Released,7,2025-04-26
+FEAT001737,PROJ000022,PDF Export,Critical,Released,1,2026-03-23
+FEAT001738,PROJ000119,Role Based Access,Medium,Testing,13,2024-07-24
+FEAT001739,PROJ000185,Advanced Dashboard,Medium,In Development,19,2024-10-21
+FEAT001740,PROJ000040,Custom Reports,Critical,In Development,20,2024-07-24
+FEAT001741,PROJ000204,Analytics Widgets,Critical,Testing,12,2025-06-19
+FEAT001742,PROJ000088,API Enhancements,Low,Released,18,2025-02-15
+FEAT001743,PROJ000130,Role Based Access,Low,In Development,9,2025-10-23
+FEAT001744,PROJ000150,Search Improvements,Medium,Testing,18,2025-10-10
+FEAT001745,PROJ000111,Notification Center,Low,In Development,16,2026-04-26
+FEAT001746,PROJ000064,PDF Export,Low,Testing,16,2024-07-22
+FEAT001747,PROJ000231,Roadmap View,High,Backlog,17,2025-02-27
+FEAT001748,PROJ000073,Custom Reports,Low,Planned,13,2024-11-13
+FEAT001749,PROJ000087,Mobile Optimization,High,Testing,6,2025-09-21
+FEAT001750,PROJ000032,Notification Center,Critical,In Development,18,2024-12-10
+FEAT001751,PROJ000112,Role Based Access,Critical,Planned,7,2026-03-01
+FEAT001752,PROJ000214,Role Based Access,Low,In Development,15,2024-11-24
+FEAT001753,PROJ000198,Dark Mode,Medium,In Development,7,2026-04-15
+FEAT001754,PROJ000003,Role Based Access,High,In Development,15,2026-04-14
+FEAT001755,PROJ000011,Slack Integration,Critical,Testing,9,2025-04-29
+FEAT001756,PROJ000232,Analytics Widgets,Critical,Released,11,2025-01-04
+FEAT001757,PROJ000243,Custom Reports,High,Planned,7,2025-09-16
+FEAT001758,PROJ000205,PDF Export,Critical,In Development,18,2024-11-27
+FEAT001759,PROJ000003,Role Based Access,Medium,Released,16,2025-03-06
+FEAT001760,PROJ000086,Workflow Automation,Critical,In Development,1,2025-02-11
+FEAT001761,PROJ000229,Advanced Dashboard,Medium,Backlog,10,2025-05-29
+FEAT001762,PROJ000237,Custom Reports,Medium,In Development,5,2025-12-30
+FEAT001763,PROJ000078,Search Improvements,Critical,Testing,4,2026-05-31
+FEAT001764,PROJ000035,Advanced Dashboard,Critical,Released,13,2025-08-07
+FEAT001765,PROJ000212,Multi-language Support,Medium,In Development,17,2025-12-11
+FEAT001766,PROJ000207,Slack Integration,Critical,Planned,3,2026-02-24
+FEAT001767,PROJ000153,AI Insights,Low,Released,8,2025-03-11
+FEAT001768,PROJ000101,Role Based Access,Medium,Backlog,5,2025-05-17
+FEAT001769,PROJ000029,Analytics Widgets,High,In Development,19,2024-11-13
+FEAT001770,PROJ000089,Mobile Optimization,High,In Development,1,2026-07-02
+FEAT001771,PROJ000131,Analytics Widgets,Medium,Released,11,2025-11-22
+FEAT001772,PROJ000239,Role Based Access,Medium,In Development,20,2024-12-26
+FEAT001773,PROJ000158,Roadmap View,Critical,Released,6,2025-05-14
+FEAT001774,PROJ000217,Mobile Optimization,Medium,Planned,13,2025-07-28
+FEAT001775,PROJ000069,Slack Integration,Low,Planned,21,2025-04-24
+FEAT001776,PROJ000194,API Enhancements,Medium,In Development,8,2026-02-20
+FEAT001777,PROJ000037,Custom Reports,High,In Development,1,2025-03-21
+FEAT001778,PROJ000177,Roadmap View,Critical,In Development,3,2024-12-18
+FEAT001779,PROJ000127,PDF Export,Low,Backlog,15,2024-12-09
+FEAT001780,PROJ000125,PDF Export,Critical,Testing,6,2026-06-03
+FEAT001781,PROJ000017,Notification Center,Medium,Planned,4,2024-08-02
+FEAT001782,PROJ000131,Advanced Dashboard,Low,Testing,5,2024-07-30
+FEAT001783,PROJ000102,Role Based Access,Medium,Testing,14,2026-04-11
+FEAT001784,PROJ000242,Workflow Automation,Medium,Planned,11,2025-02-14
+FEAT001785,PROJ000048,Roadmap View,Medium,Testing,11,2024-08-22
+FEAT001786,PROJ000232,Roadmap View,High,Testing,15,2025-12-08
+FEAT001787,PROJ000205,Custom Reports,Medium,Backlog,4,2024-11-29
+FEAT001788,PROJ000036,Slack Integration,High,Backlog,12,2024-10-23
+FEAT001789,PROJ000204,Mobile Optimization,Low,Testing,14,2024-08-24
+FEAT001790,PROJ000149,Workflow Automation,High,In Development,11,2026-07-17
+FEAT001791,PROJ000120,Multi-language Support,Critical,Planned,17,2024-09-06
+FEAT001792,PROJ000025,AI Insights,Medium,Testing,20,2025-11-01
+FEAT001793,PROJ000225,PDF Export,Medium,Planned,2,2024-11-22
+FEAT001794,PROJ000001,Mobile Optimization,Critical,In Development,10,2024-09-29
+FEAT001795,PROJ000188,Search Improvements,High,Planned,18,2024-12-04
+FEAT001796,PROJ000029,Advanced Dashboard,Critical,Backlog,1,2024-08-18
+FEAT001797,PROJ000051,Search Improvements,High,Released,12,2024-10-20
+FEAT001798,PROJ000055,Workflow Automation,Medium,Testing,18,2026-01-10
+FEAT001799,PROJ000174,Search Improvements,Low,Backlog,9,2024-11-15
+FEAT001800,PROJ000048,Dark Mode,Critical,Released,18,2025-06-16
+FEAT001801,PROJ000091,Notification Center,Medium,Planned,11,2026-07-02
+FEAT001802,PROJ000048,Slack Integration,Medium,Released,4,2025-07-01
+FEAT001803,PROJ000222,Role Based Access,High,Backlog,20,2024-09-08
+FEAT001804,PROJ000248,Dark Mode,Medium,Released,2,2025-02-06
+FEAT001805,PROJ000215,API Enhancements,Medium,Testing,4,2025-04-01
+FEAT001806,PROJ000020,Dark Mode,Critical,Backlog,18,2026-03-21
+FEAT001807,PROJ000131,PDF Export,Medium,Backlog,20,2026-07-02
+FEAT001808,PROJ000154,Slack Integration,High,Backlog,10,2025-07-14
+FEAT001809,PROJ000156,API Enhancements,Medium,Planned,4,2024-12-16
+FEAT001810,PROJ000243,AI Insights,High,In Development,12,2026-06-03
+FEAT001811,PROJ000093,Advanced Dashboard,Medium,Backlog,13,2024-12-14
+FEAT001812,PROJ000056,Dark Mode,Medium,In Development,6,2025-11-05
+FEAT001813,PROJ000215,Notification Center,High,Backlog,3,2025-07-27
+FEAT001814,PROJ000095,PDF Export,Low,Backlog,19,2025-05-30
+FEAT001815,PROJ000144,PDF Export,Low,Testing,17,2026-05-05
+FEAT001816,PROJ000147,Search Improvements,Low,Backlog,19,2025-10-04
+FEAT001817,PROJ000244,Roadmap View,Medium,Backlog,1,2025-12-29
+FEAT001818,PROJ000103,Dark Mode,High,In Development,14,2024-09-06
+FEAT001819,PROJ000127,PDF Export,Low,Released,5,2026-02-22
+FEAT001820,PROJ000146,AI Insights,High,In Development,11,2026-01-15
+FEAT001821,PROJ000197,Advanced Dashboard,Critical,Backlog,9,2024-11-22
+FEAT001822,PROJ000086,Roadmap View,Low,In Development,13,2025-05-18
+FEAT001823,PROJ000177,Mobile Optimization,Critical,Planned,20,2025-02-15
+FEAT001824,PROJ000144,PDF Export,Critical,Planned,14,2025-03-22
+FEAT001825,PROJ000064,Dark Mode,Medium,Planned,16,2024-10-09
+FEAT001826,PROJ000012,API Enhancements,Low,Released,16,2025-12-08
+FEAT001827,PROJ000010,Custom Reports,High,Released,1,2024-09-15
+FEAT001828,PROJ000209,Advanced Dashboard,Critical,In Development,13,2025-11-13
+FEAT001829,PROJ000074,Dark Mode,Medium,Testing,19,2026-05-26
+FEAT001830,PROJ000075,Notification Center,Medium,In Development,1,2024-12-30
+FEAT001831,PROJ000203,Notification Center,High,Released,16,2026-05-15
+FEAT001832,PROJ000167,PDF Export,High,Backlog,5,2024-10-23
+FEAT001833,PROJ000132,Role Based Access,High,Testing,18,2026-01-08
+FEAT001834,PROJ000173,Search Improvements,Medium,Released,8,2025-10-25
+FEAT001835,PROJ000216,Roadmap View,Critical,Backlog,17,2025-04-10
+FEAT001836,PROJ000204,Roadmap View,High,Backlog,2,2025-05-23
+FEAT001837,PROJ000198,Advanced Dashboard,Low,Backlog,10,2025-07-14
+FEAT001838,PROJ000249,Advanced Dashboard,Medium,Backlog,6,2026-03-02
+FEAT001839,PROJ000104,API Enhancements,High,In Development,8,2025-04-03
+FEAT001840,PROJ000006,Search Improvements,Medium,Backlog,12,2026-06-22
+FEAT001841,PROJ000232,Dark Mode,Critical,Released,20,2024-12-07
+FEAT001842,PROJ000223,Analytics Widgets,Critical,Planned,2,2025-09-11
+FEAT001843,PROJ000239,Slack Integration,Medium,Planned,16,2024-08-05
+FEAT001844,PROJ000080,Slack Integration,High,Released,8,2026-02-16
+FEAT001845,PROJ000218,Advanced Dashboard,Low,Testing,7,2025-06-09
+FEAT001846,PROJ000089,AI Insights,Low,Testing,12,2025-11-13
+FEAT001847,PROJ000216,Multi-language Support,Low,Released,9,2025-01-08
+FEAT001848,PROJ000247,Analytics Widgets,Critical,Backlog,7,2025-02-04
+FEAT001849,PROJ000245,Analytics Widgets,Medium,Backlog,4,2025-07-05
+FEAT001850,PROJ000018,Multi-language Support,Medium,Backlog,4,2025-09-25
+FEAT001851,PROJ000187,Advanced Dashboard,Low,In Development,14,2025-06-06
+FEAT001852,PROJ000080,Dark Mode,High,Released,19,2026-06-27
+FEAT001853,PROJ000205,Workflow Automation,Low,Planned,17,2025-06-21
+FEAT001854,PROJ000010,Role Based Access,Low,Released,6,2024-08-16
+FEAT001855,PROJ000079,Mobile Optimization,High,Planned,12,2025-11-04
+FEAT001856,PROJ000249,Custom Reports,High,Backlog,12,2026-03-10
+FEAT001857,PROJ000216,Roadmap View,High,Testing,3,2025-01-21
+FEAT001858,PROJ000152,Multi-language Support,Low,In Development,5,2026-02-22
+FEAT001859,PROJ000225,PDF Export,Low,Backlog,9,2025-07-31
+FEAT001860,PROJ000245,PDF Export,Medium,Testing,6,2025-08-13
+FEAT001861,PROJ000155,AI Insights,Critical,Testing,5,2026-07-03
+FEAT001862,PROJ000036,API Enhancements,Medium,Backlog,7,2026-05-01
+FEAT001863,PROJ000112,Custom Reports,High,Backlog,11,2024-12-26
+FEAT001864,PROJ000083,Roadmap View,Medium,Released,5,2026-01-19
+FEAT001865,PROJ000200,AI Insights,Low,Released,9,2024-12-19
+FEAT001866,PROJ000216,Search Improvements,Low,Testing,7,2025-08-09
+FEAT001867,PROJ000244,Slack Integration,Low,Backlog,12,2026-04-09
+FEAT001868,PROJ000167,Mobile Optimization,Medium,In Development,1,2025-11-18
+FEAT001869,PROJ000175,API Enhancements,Medium,Backlog,5,2025-11-30
+FEAT001870,PROJ000143,PDF Export,Low,Planned,5,2024-08-04
+FEAT001871,PROJ000022,Slack Integration,Low,Planned,20,2024-08-07
+FEAT001872,PROJ000058,Analytics Widgets,Medium,Released,16,2025-11-14
+FEAT001873,PROJ000193,Custom Reports,Low,Planned,19,2026-03-24
+FEAT001874,PROJ000239,Workflow Automation,Low,Backlog,1,2024-09-23
+FEAT001875,PROJ000150,API Enhancements,High,Released,5,2026-07-15
+FEAT001876,PROJ000007,Multi-language Support,Low,Backlog,12,2026-01-27
+FEAT001877,PROJ000005,Search Improvements,Medium,Released,17,2025-03-19
+FEAT001878,PROJ000213,Advanced Dashboard,Medium,In Development,8,2025-06-26
+FEAT001879,PROJ000155,PDF Export,Low,Backlog,1,2025-09-29
+FEAT001880,PROJ000032,Role Based Access,Critical,Released,10,2025-09-06
+FEAT001881,PROJ000040,Notification Center,Low,Planned,9,2024-08-03
+FEAT001882,PROJ000103,Analytics Widgets,Medium,Testing,12,2024-10-28
+FEAT001883,PROJ000193,Notification Center,Medium,Planned,11,2025-03-13
+FEAT001884,PROJ000056,Roadmap View,Critical,In Development,5,2025-11-14
+FEAT001885,PROJ000109,Dark Mode,Critical,Planned,16,2026-05-19
+FEAT001886,PROJ000085,Slack Integration,Critical,Released,10,2026-04-05
+FEAT001887,PROJ000141,Mobile Optimization,High,Planned,14,2026-05-04
+FEAT001888,PROJ000003,API Enhancements,Low,Planned,8,2025-06-26
+FEAT001889,PROJ000006,Multi-language Support,Medium,In Development,12,2024-07-30
+FEAT001890,PROJ000170,API Enhancements,High,Released,1,2026-02-07
+FEAT001891,PROJ000132,API Enhancements,Critical,Backlog,5,2025-12-11
+FEAT001892,PROJ000204,Multi-language Support,Low,Released,4,2025-03-05
+FEAT001893,PROJ000191,API Enhancements,Low,Testing,18,2025-12-03
+FEAT001894,PROJ000076,Roadmap View,Medium,Planned,5,2026-01-02
+FEAT001895,PROJ000239,Mobile Optimization,Medium,Released,3,2025-04-29
+FEAT001896,PROJ000098,Custom Reports,Medium,Planned,14,2024-12-21
+FEAT001897,PROJ000160,Custom Reports,High,In Development,14,2024-12-31
+FEAT001898,PROJ000053,Advanced Dashboard,Low,Backlog,20,2026-02-20
+FEAT001899,PROJ000092,PDF Export,Critical,In Development,20,2025-09-20
+FEAT001900,PROJ000038,Notification Center,Critical,Released,12,2026-05-10
+FEAT001901,PROJ000231,Slack Integration,Critical,Backlog,14,2025-08-27
+FEAT001902,PROJ000144,Notification Center,Medium,Backlog,4,2024-07-31
+FEAT001903,PROJ000097,Advanced Dashboard,Medium,Released,4,2026-02-16
+FEAT001904,PROJ000111,Custom Reports,Low,Backlog,11,2026-04-27
+FEAT001905,PROJ000074,Dark Mode,Medium,Planned,4,2025-08-04
+FEAT001906,PROJ000093,Advanced Dashboard,Critical,Planned,6,2026-04-06
+FEAT001907,PROJ000145,API Enhancements,Critical,Backlog,13,2026-07-21
+FEAT001908,PROJ000032,Roadmap View,Critical,Testing,3,2025-11-24
+FEAT001909,PROJ000062,Custom Reports,Critical,Testing,13,2026-02-25
+FEAT001910,PROJ000065,Multi-language Support,Critical,Planned,19,2026-05-31
+FEAT001911,PROJ000216,Roadmap View,High,Testing,7,2025-08-06
+FEAT001912,PROJ000134,Advanced Dashboard,High,Planned,20,2025-08-14
+FEAT001913,PROJ000014,Slack Integration,High,Planned,1,2026-04-29
+FEAT001914,PROJ000102,Multi-language Support,Critical,Released,19,2025-01-02
+FEAT001915,PROJ000165,API Enhancements,Low,Backlog,11,2024-08-16
+FEAT001916,PROJ000039,Analytics Widgets,Medium,Released,1,2026-04-29
+FEAT001917,PROJ000234,Advanced Dashboard,Low,Planned,6,2026-02-20
+FEAT001918,PROJ000071,Multi-language Support,Medium,Planned,21,2026-04-22
+FEAT001919,PROJ000043,Mobile Optimization,Critical,Planned,17,2025-11-03
+FEAT001920,PROJ000126,Dark Mode,Critical,In Development,5,2024-10-11
+FEAT001921,PROJ000146,Search Improvements,High,Backlog,20,2024-12-14
+FEAT001922,PROJ000098,Advanced Dashboard,Critical,Released,4,2025-11-06
+FEAT001923,PROJ000102,Roadmap View,High,In Development,6,2025-07-18
+FEAT001924,PROJ000025,Custom Reports,Low,Planned,19,2026-02-01
+FEAT001925,PROJ000039,Custom Reports,High,Released,3,2026-02-07
+FEAT001926,PROJ000145,Advanced Dashboard,Medium,Released,16,2026-07-14
+FEAT001927,PROJ000183,Roadmap View,Critical,Planned,11,2024-08-25
+FEAT001928,PROJ000104,Advanced Dashboard,Low,Backlog,9,2026-05-03
+FEAT001929,PROJ000096,PDF Export,Medium,In Development,12,2026-01-12
+FEAT001930,PROJ000168,Search Improvements,Low,Backlog,13,2025-04-11
+FEAT001931,PROJ000151,Roadmap View,Low,Testing,15,2025-01-17
+FEAT001932,PROJ000195,Notification Center,Medium,Backlog,10,2026-02-19
+FEAT001933,PROJ000212,Analytics Widgets,High,Released,3,2025-07-30
+FEAT001934,PROJ000082,API Enhancements,Low,Planned,18,2024-11-08
+FEAT001935,PROJ000238,Dark Mode,Medium,Released,6,2025-01-06
+FEAT001936,PROJ000165,Notification Center,High,Testing,7,2025-02-05
+FEAT001937,PROJ000038,Roadmap View,Medium,Released,16,2026-03-07
+FEAT001938,PROJ000218,AI Insights,Critical,Planned,20,2026-02-07
+FEAT001939,PROJ000204,Notification Center,Low,Released,12,2024-10-14
+FEAT001940,PROJ000228,Custom Reports,Medium,Released,4,2025-01-21
+FEAT001941,PROJ000069,API Enhancements,Medium,Released,1,2024-09-22
+FEAT001942,PROJ000235,Multi-language Support,High,Testing,5,2025-07-28
+FEAT001943,PROJ000109,AI Insights,High,Testing,9,2024-12-03
+FEAT001944,PROJ000062,Mobile Optimization,High,Backlog,5,2024-12-12
+FEAT001945,PROJ000097,Multi-language Support,Medium,Backlog,20,2024-10-29
+FEAT001946,PROJ000011,Workflow Automation,Medium,Backlog,7,2025-08-12
+FEAT001947,PROJ000104,Role Based Access,Critical,In Development,17,2024-07-27
+FEAT001948,PROJ000028,Dark Mode,High,Planned,11,2025-09-17
+FEAT001949,PROJ000186,Custom Reports,Critical,Planned,15,2025-04-26
+FEAT001950,PROJ000069,Roadmap View,Medium,Backlog,18,2025-04-25
+FEAT001951,PROJ000194,Mobile Optimization,Low,Released,10,2025-12-24
+FEAT001952,PROJ000114,Advanced Dashboard,Low,Testing,4,2025-02-24
+FEAT001953,PROJ000246,Roadmap View,High,Testing,5,2025-10-18
+FEAT001954,PROJ000057,Slack Integration,Medium,Backlog,10,2024-08-04
+FEAT001955,PROJ000248,Workflow Automation,Low,In Development,12,2026-03-10
+FEAT001956,PROJ000145,Role Based Access,Low,Backlog,20,2026-06-24
+FEAT001957,PROJ000137,API Enhancements,Medium,Backlog,9,2025-10-30
+FEAT001958,PROJ000133,Multi-language Support,Critical,In Development,4,2025-06-09
+FEAT001959,PROJ000225,Custom Reports,Critical,Testing,16,2025-03-26
+FEAT001960,PROJ000059,PDF Export,High,In Development,4,2025-02-18
+FEAT001961,PROJ000042,API Enhancements,Low,Backlog,12,2025-08-16
+FEAT001962,PROJ000118,Advanced Dashboard,Medium,Released,17,2026-02-28
+FEAT001963,PROJ000229,Custom Reports,Medium,Released,9,2025-11-08
+FEAT001964,PROJ000105,Analytics Widgets,Critical,Testing,3,2025-11-13
+FEAT001965,PROJ000137,Slack Integration,High,Backlog,16,2025-09-08
+FEAT001966,PROJ000209,Custom Reports,Low,Released,21,2024-08-09
+FEAT001967,PROJ000016,Role Based Access,Critical,Testing,15,2025-06-20
+FEAT001968,PROJ000076,Search Improvements,Medium,Backlog,21,2024-10-27
+FEAT001969,PROJ000188,PDF Export,Low,Testing,18,2026-03-27
+FEAT001970,PROJ000015,AI Insights,High,Released,5,2026-05-12
+FEAT001971,PROJ000001,Roadmap View,High,Backlog,3,2026-02-01
+FEAT001972,PROJ000115,Notification Center,Low,Testing,8,2025-03-26
+FEAT001973,PROJ000200,Advanced Dashboard,Critical,Testing,7,2026-01-26
+FEAT001974,PROJ000022,Roadmap View,Low,Planned,20,2025-12-25
+FEAT001975,PROJ000115,Workflow Automation,Low,Backlog,9,2025-08-29
+FEAT001976,PROJ000239,Custom Reports,Medium,Released,2,2025-04-01
+FEAT001977,PROJ000075,Roadmap View,Critical,Released,12,2026-05-26
+FEAT001978,PROJ000004,Dark Mode,Medium,In Development,14,2024-12-01
+FEAT001979,PROJ000104,API Enhancements,Critical,Testing,20,2024-09-24
+FEAT001980,PROJ000049,PDF Export,Medium,Released,18,2024-09-17
+FEAT001981,PROJ000016,Advanced Dashboard,Medium,Testing,13,2026-05-12
+FEAT001982,PROJ000076,Multi-language Support,Critical,Backlog,10,2026-03-21
+FEAT001983,PROJ000201,Roadmap View,Medium,Backlog,13,2025-08-07
+FEAT001984,PROJ000012,Advanced Dashboard,Medium,Planned,15,2026-05-15
+FEAT001985,PROJ000097,Roadmap View,Low,In Development,16,2025-06-15
+FEAT001986,PROJ000239,Multi-language Support,Medium,Planned,2,2025-07-25
+FEAT001987,PROJ000211,Custom Reports,High,In Development,5,2025-03-11
+FEAT001988,PROJ000141,Custom Reports,Critical,Released,19,2025-01-06
+FEAT001989,PROJ000142,Custom Reports,Medium,Backlog,16,2024-12-25
+FEAT001990,PROJ000204,PDF Export,Medium,In Development,12,2024-09-22
+FEAT001991,PROJ000214,Analytics Widgets,Low,Testing,21,2025-09-11
+FEAT001992,PROJ000006,Role Based Access,Critical,Testing,6,2024-08-31
+FEAT001993,PROJ000053,Slack Integration,Low,Released,7,2025-07-28
+FEAT001994,PROJ000125,Multi-language Support,Low,Backlog,11,2024-09-08
+FEAT001995,PROJ000018,Custom Reports,Medium,Released,10,2026-04-09
+FEAT001996,PROJ000062,Search Improvements,Medium,Backlog,17,2024-08-30
+FEAT001997,PROJ000082,Notification Center,Critical,Backlog,12,2024-09-28
+FEAT001998,PROJ000024,Mobile Optimization,Critical,Testing,11,2025-06-23
+FEAT001999,PROJ000099,Roadmap View,Medium,Released,13,2026-05-22
+FEAT002000,PROJ000192,Roadmap View,Low,Testing,18,2025-11-19
+FEAT002001,PROJ000088,Advanced Dashboard,High,Testing,20,2026-06-26
+FEAT002002,PROJ000246,Role Based Access,Critical,In Development,2,2025-08-29
+FEAT002003,PROJ000096,API Enhancements,Critical,Released,17,2026-01-15
+FEAT002004,PROJ000146,Search Improvements,Critical,In Development,15,2025-01-16
+FEAT002005,PROJ000028,Dark Mode,Medium,Planned,1,2025-03-16
+FEAT002006,PROJ000247,Analytics Widgets,Critical,Released,17,2026-02-01
+FEAT002007,PROJ000065,PDF Export,Medium,Released,2,2024-07-22
+FEAT002008,PROJ000116,Role Based Access,High,In Development,16,2024-08-03
+FEAT002009,PROJ000058,Roadmap View,High,Backlog,7,2025-10-11
+FEAT002010,PROJ000199,Analytics Widgets,Critical,Backlog,16,2025-05-04
+FEAT002011,PROJ000015,API Enhancements,Low,In Development,20,2025-10-03
+FEAT002012,PROJ000074,API Enhancements,Critical,Backlog,14,2024-08-06
+FEAT002013,PROJ000171,Multi-language Support,Low,Testing,1,2026-04-28
+FEAT002014,PROJ000214,Notification Center,High,Backlog,1,2026-06-22
+FEAT002015,PROJ000218,Workflow Automation,Low,Planned,9,2025-10-09
+FEAT002016,PROJ000123,Roadmap View,Critical,Backlog,2,2025-12-14
+FEAT002017,PROJ000167,Slack Integration,Medium,Released,11,2024-09-21
+FEAT002018,PROJ000034,Workflow Automation,Medium,Released,14,2026-01-24
+FEAT002019,PROJ000022,Slack Integration,Low,Backlog,16,2025-04-07
+FEAT002020,PROJ000170,Workflow Automation,Low,In Development,4,2026-07-22
+FEAT002021,PROJ000179,Dark Mode,High,Planned,15,2024-09-19
+FEAT002022,PROJ000132,Multi-language Support,Low,In Development,11,2026-07-10
+FEAT002023,PROJ000065,Mobile Optimization,Low,In Development,10,2026-03-14
+FEAT002024,PROJ000107,Role Based Access,Medium,Testing,19,2025-11-13
+FEAT002025,PROJ000144,PDF Export,High,Planned,7,2024-11-18
+FEAT002026,PROJ000123,Search Improvements,Medium,Testing,13,2025-09-14
+FEAT002027,PROJ000053,AI Insights,Medium,Backlog,4,2024-12-22
+FEAT002028,PROJ000224,Custom Reports,Medium,Testing,9,2026-05-18
+FEAT002029,PROJ000151,Multi-language Support,Low,Backlog,7,2026-02-08
+FEAT002030,PROJ000105,AI Insights,Medium,Backlog,20,2025-02-28
+FEAT002031,PROJ000005,Custom Reports,Critical,Released,21,2026-01-17
+FEAT002032,PROJ000033,Dark Mode,High,Released,1,2025-07-07
+FEAT002033,PROJ000117,Multi-language Support,High,In Development,20,2024-09-24
+FEAT002034,PROJ000146,Search Improvements,Low,Backlog,17,2025-03-31
+FEAT002035,PROJ000195,PDF Export,Critical,In Development,12,2024-11-19
+FEAT002036,PROJ000173,Notification Center,Critical,Testing,18,2025-08-21
+FEAT002037,PROJ000161,Slack Integration,Medium,Released,13,2025-12-14
+FEAT002038,PROJ000221,Mobile Optimization,Low,Released,15,2024-12-05
+FEAT002039,PROJ000234,Roadmap View,Critical,Released,11,2025-06-22
+FEAT002040,PROJ000160,Multi-language Support,Medium,In Development,9,2026-01-23
+FEAT002041,PROJ000159,Workflow Automation,Critical,Testing,4,2026-02-25
+FEAT002042,PROJ000227,Roadmap View,Critical,Backlog,12,2026-05-29
+FEAT002043,PROJ000033,Workflow Automation,High,Planned,3,2024-07-30
+FEAT002044,PROJ000108,Slack Integration,Critical,Testing,12,2025-01-15
+FEAT002045,PROJ000111,Dark Mode,Low,Released,4,2024-08-24
+FEAT002046,PROJ000235,Roadmap View,Critical,In Development,1,2025-07-11
+FEAT002047,PROJ000207,Slack Integration,Medium,Released,2,2026-06-05
+FEAT002048,PROJ000036,Role Based Access,Low,In Development,3,2025-02-28
+FEAT002049,PROJ000085,Multi-language Support,Critical,Planned,17,2025-11-19
+FEAT002050,PROJ000004,Slack Integration,Low,Testing,17,2026-05-15
+FEAT002051,PROJ000162,Multi-language Support,Critical,Backlog,15,2026-04-22
+FEAT002052,PROJ000061,Mobile Optimization,Low,In Development,20,2026-01-20
+FEAT002053,PROJ000103,Custom Reports,Medium,In Development,2,2025-08-30
+FEAT002054,PROJ000124,Notification Center,High,Backlog,1,2026-05-29
+FEAT002055,PROJ000177,Dark Mode,Critical,Backlog,9,2024-10-19
+FEAT002056,PROJ000143,Custom Reports,Medium,Testing,6,2025-10-19
+FEAT002057,PROJ000115,Dark Mode,Medium,Testing,14,2025-08-30
+FEAT002058,PROJ000194,Slack Integration,Critical,Testing,21,2025-08-08
+FEAT002059,PROJ000248,Roadmap View,Low,Backlog,7,2026-01-27
+FEAT002060,PROJ000229,Advanced Dashboard,Low,Released,3,2026-04-07
+FEAT002061,PROJ000062,PDF Export,Low,Planned,12,2026-05-29
+FEAT002062,PROJ000050,Notification Center,Medium,In Development,15,2025-02-27
+FEAT002063,PROJ000184,Role Based Access,Critical,In Development,17,2025-01-29
+FEAT002064,PROJ000057,Analytics Widgets,Low,In Development,15,2026-03-03
+FEAT002065,PROJ000183,Multi-language Support,Medium,Backlog,17,2025-10-24
+FEAT002066,PROJ000161,Notification Center,Critical,In Development,10,2026-05-17
+FEAT002067,PROJ000144,Custom Reports,Low,Released,4,2026-06-02
+FEAT002068,PROJ000194,Multi-language Support,Low,Planned,1,2025-07-28
+FEAT002069,PROJ000149,Dark Mode,Critical,Backlog,1,2024-11-17
+FEAT002070,PROJ000091,Role Based Access,Medium,Planned,11,2026-06-17
+FEAT002071,PROJ000135,Custom Reports,High,Released,2,2025-07-08
+FEAT002072,PROJ000151,Notification Center,High,In Development,4,2025-10-27
+FEAT002073,PROJ000228,Mobile Optimization,Low,Backlog,2,2026-07-01
+FEAT002074,PROJ000176,Multi-language Support,Low,Backlog,16,2025-04-01
+FEAT002075,PROJ000178,API Enhancements,Critical,Testing,8,2025-12-20
+FEAT002076,PROJ000047,Dark Mode,High,In Development,1,2026-05-29
+FEAT002077,PROJ000108,Multi-language Support,High,Backlog,2,2025-11-01
+FEAT002078,PROJ000171,Multi-language Support,High,Testing,19,2025-04-30
+FEAT002079,PROJ000077,AI Insights,High,Backlog,20,2025-03-12
+FEAT002080,PROJ000239,Notification Center,Critical,Backlog,13,2024-12-25
+FEAT002081,PROJ000114,Multi-language Support,Medium,Planned,11,2026-02-21
+FEAT002082,PROJ000203,Search Improvements,High,Backlog,21,2025-11-24
+FEAT002083,PROJ000150,Search Improvements,Critical,In Development,17,2025-12-15
+FEAT002084,PROJ000193,Roadmap View,High,Backlog,14,2025-10-19
+FEAT002085,PROJ000221,Role Based Access,Critical,Backlog,9,2025-10-27
+FEAT002086,PROJ000113,Roadmap View,Low,Released,19,2025-02-17
+FEAT002087,PROJ000084,API Enhancements,Medium,In Development,3,2025-01-08
+FEAT002088,PROJ000080,Role Based Access,Critical,Testing,7,2025-11-03
+FEAT002089,PROJ000109,Advanced Dashboard,Critical,Testing,18,2025-02-04
+FEAT002090,PROJ000195,Search Improvements,Medium,In Development,19,2026-05-30
+FEAT002091,PROJ000199,PDF Export,Low,Backlog,16,2025-09-07
+FEAT002092,PROJ000089,API Enhancements,Critical,In Development,1,2026-02-07
+FEAT002093,PROJ000049,Custom Reports,High,Backlog,15,2025-06-04
+FEAT002094,PROJ000218,Search Improvements,Medium,Released,3,2026-03-25
+FEAT002095,PROJ000152,Advanced Dashboard,High,Released,21,2025-03-26
+FEAT002096,PROJ000152,Notification Center,Critical,Planned,2,2024-12-08
+FEAT002097,PROJ000160,Search Improvements,Medium,Backlog,4,2026-04-29
+FEAT002098,PROJ000148,Notification Center,High,Backlog,8,2024-07-27
+FEAT002099,PROJ000140,Search Improvements,Critical,Backlog,17,2025-08-30
+FEAT002100,PROJ000134,Analytics Widgets,High,Released,17,2025-02-25
+FEAT002101,PROJ000167,Advanced Dashboard,Low,Released,11,2025-03-18
+FEAT002102,PROJ000047,API Enhancements,High,Testing,17,2026-07-17
+FEAT002103,PROJ000160,Custom Reports,Medium,In Development,18,2025-02-23
+FEAT002104,PROJ000048,Mobile Optimization,Medium,Released,14,2024-10-28
+FEAT002105,PROJ000180,Role Based Access,High,In Development,1,2024-10-23
+FEAT002106,PROJ000077,PDF Export,High,Released,21,2025-01-12
+FEAT002107,PROJ000229,Role Based Access,Critical,Planned,8,2025-04-07
+FEAT002108,PROJ000131,API Enhancements,Low,In Development,2,2025-05-06
+FEAT002109,PROJ000104,Role Based Access,Low,In Development,19,2025-07-02
+FEAT002110,PROJ000132,Analytics Widgets,Critical,Backlog,4,2025-06-17
+FEAT002111,PROJ000089,Custom Reports,Medium,Planned,6,2026-07-02
+FEAT002112,PROJ000129,Advanced Dashboard,Low,Released,4,2026-04-25
+FEAT002113,PROJ000100,AI Insights,Medium,In Development,12,2025-08-06
+FEAT002114,PROJ000173,Custom Reports,High,In Development,16,2025-04-03
+FEAT002115,PROJ000218,Custom Reports,Critical,Planned,6,2024-12-12
+FEAT002116,PROJ000034,Analytics Widgets,Low,Planned,6,2025-06-11
+FEAT002117,PROJ000154,Slack Integration,Medium,In Development,17,2024-09-21
+FEAT002118,PROJ000159,AI Insights,Critical,Testing,19,2024-11-13
+FEAT002119,PROJ000245,Custom Reports,Critical,Released,18,2025-07-29
+FEAT002120,PROJ000042,Slack Integration,Low,Testing,2,2024-11-01
+FEAT002121,PROJ000129,Mobile Optimization,High,Testing,21,2025-05-11
+FEAT002122,PROJ000051,Dark Mode,Medium,Backlog,5,2026-04-16
+FEAT002123,PROJ000041,Role Based Access,Low,In Development,11,2025-12-29
+FEAT002124,PROJ000244,Mobile Optimization,Medium,Testing,11,2024-11-18
+FEAT002125,PROJ000206,Slack Integration,High,Testing,10,2026-06-29
+FEAT002126,PROJ000040,Search Improvements,Critical,Planned,5,2026-06-11
+FEAT002127,PROJ000226,PDF Export,Low,Planned,6,2025-05-03
+FEAT002128,PROJ000124,Workflow Automation,Critical,Backlog,13,2026-02-01
+FEAT002129,PROJ000144,Custom Reports,Medium,In Development,20,2025-01-12
+FEAT002130,PROJ000213,Notification Center,Low,Released,20,2025-01-30
+FEAT002131,PROJ000212,Custom Reports,Critical,Backlog,12,2026-04-12
+FEAT002132,PROJ000196,Dark Mode,Medium,In Development,18,2025-04-18
+FEAT002133,PROJ000079,Roadmap View,Low,Released,17,2024-07-29
+FEAT002134,PROJ000224,Search Improvements,Critical,Released,8,2025-09-04
+FEAT002135,PROJ000067,Roadmap View,Medium,Planned,12,2025-06-04
+FEAT002136,PROJ000096,API Enhancements,Critical,Released,10,2024-11-29
+FEAT002137,PROJ000121,Search Improvements,Critical,Released,12,2025-03-11
+FEAT002138,PROJ000066,Multi-language Support,Medium,Released,4,2026-07-04
+FEAT002139,PROJ000186,Slack Integration,Medium,Planned,15,2025-11-15
+FEAT002140,PROJ000111,Custom Reports,Critical,Backlog,15,2024-09-18
+FEAT002141,PROJ000032,Role Based Access,Critical,Released,6,2025-11-30
+FEAT002142,PROJ000180,AI Insights,Medium,In Development,7,2026-05-06
+FEAT002143,PROJ000026,AI Insights,Medium,Planned,7,2026-03-22
+FEAT002144,PROJ000005,Analytics Widgets,Medium,Released,20,2025-02-13
+FEAT002145,PROJ000139,Roadmap View,Medium,Released,17,2026-06-22
+FEAT002146,PROJ000140,Search Improvements,Medium,Released,3,2025-10-01
+FEAT002147,PROJ000083,API Enhancements,High,Testing,21,2024-09-12
+FEAT002148,PROJ000017,Slack Integration,Low,Planned,10,2025-08-21
+FEAT002149,PROJ000208,Multi-language Support,Critical,Released,2,2026-03-26
+FEAT002150,PROJ000093,Advanced Dashboard,Critical,In Development,9,2024-08-25
+FEAT002151,PROJ000031,Custom Reports,Critical,Testing,4,2024-10-16
+FEAT002152,PROJ000247,Advanced Dashboard,High,Released,14,2025-05-07
+FEAT002153,PROJ000054,AI Insights,Critical,Released,9,2025-02-25
+FEAT002154,PROJ000135,PDF Export,High,Released,11,2026-07-10
+FEAT002155,PROJ000116,Analytics Widgets,Medium,Released,7,2026-01-09
+FEAT002156,PROJ000114,Analytics Widgets,Medium,Backlog,16,2026-01-19
+FEAT002157,PROJ000022,Role Based Access,High,Testing,6,2025-12-14
+FEAT002158,PROJ000118,Roadmap View,Medium,Backlog,2,2026-03-28
+FEAT002159,PROJ000020,Workflow Automation,Critical,Testing,6,2024-10-16
+FEAT002160,PROJ000080,API Enhancements,High,Released,15,2025-03-17
+FEAT002161,PROJ000178,API Enhancements,High,Planned,17,2025-01-31
+FEAT002162,PROJ000166,Multi-language Support,Medium,Backlog,17,2026-06-16
+FEAT002163,PROJ000028,Notification Center,Low,Released,18,2025-05-06
+FEAT002164,PROJ000044,Role Based Access,Critical,Backlog,15,2025-11-11
+FEAT002165,PROJ000078,Roadmap View,High,Planned,15,2026-01-11
+FEAT002166,PROJ000048,Workflow Automation,Critical,Released,19,2024-11-10
+FEAT002167,PROJ000104,Advanced Dashboard,Low,Testing,5,2025-05-31
+FEAT002168,PROJ000086,Role Based Access,Critical,In Development,10,2025-02-22
+FEAT002169,PROJ000025,Workflow Automation,Critical,Planned,5,2026-02-19
+FEAT002170,PROJ000179,Role Based Access,Low,Backlog,15,2025-04-19
+FEAT002171,PROJ000003,API Enhancements,Medium,In Development,14,2025-09-05
+FEAT002172,PROJ000006,Search Improvements,Critical,Backlog,10,2026-03-06
+FEAT002173,PROJ000021,AI Insights,High,Backlog,9,2025-10-22
+FEAT002174,PROJ000214,Multi-language Support,Critical,Testing,5,2025-06-24
+FEAT002175,PROJ000184,Workflow Automation,Low,Released,14,2024-11-08
+FEAT002176,PROJ000031,Advanced Dashboard,Critical,In Development,12,2025-11-15
+FEAT002177,PROJ000226,Notification Center,High,Released,14,2026-04-22
+FEAT002178,PROJ000079,PDF Export,Medium,Testing,11,2026-06-19
+FEAT002179,PROJ000063,Notification Center,Low,Backlog,19,2025-06-10
+FEAT002180,PROJ000211,Dark Mode,Low,Backlog,7,2025-11-19
+FEAT002181,PROJ000071,Advanced Dashboard,Critical,Backlog,14,2024-09-08
+FEAT002182,PROJ000107,Multi-language Support,Medium,Planned,3,2024-12-02
+FEAT002183,PROJ000200,Roadmap View,Medium,Backlog,16,2024-08-15
+FEAT002184,PROJ000250,Mobile Optimization,Medium,Released,12,2026-04-18
+FEAT002185,PROJ000086,AI Insights,Critical,Backlog,8,2024-10-27
+FEAT002186,PROJ000210,AI Insights,Medium,Backlog,12,2026-01-11
+FEAT002187,PROJ000151,Search Improvements,Medium,Backlog,18,2025-11-27
+FEAT002188,PROJ000190,API Enhancements,Low,In Development,6,2026-02-25
+FEAT002189,PROJ000107,Workflow Automation,Low,Planned,4,2025-09-16
+FEAT002190,PROJ000129,Multi-language Support,Critical,Testing,1,2026-05-25
+FEAT002191,PROJ000077,Advanced Dashboard,High,Planned,21,2025-01-14
+FEAT002192,PROJ000235,Roadmap View,High,Testing,7,2025-08-13
+FEAT002193,PROJ000067,Search Improvements,Critical,In Development,18,2025-10-20
+FEAT002194,PROJ000244,Custom Reports,High,Backlog,12,2024-12-15
+FEAT002195,PROJ000250,Analytics Widgets,Medium,Released,16,2024-10-17
+FEAT002196,PROJ000128,Dark Mode,Critical,Backlog,2,2025-06-30
+FEAT002197,PROJ000160,Workflow Automation,Low,In Development,5,2024-10-19
+FEAT002198,PROJ000188,Multi-language Support,Critical,In Development,2,2026-06-29
+FEAT002199,PROJ000232,Analytics Widgets,Low,Testing,17,2025-08-11
+FEAT002200,PROJ000152,PDF Export,Medium,Testing,16,2026-05-15
+FEAT002201,PROJ000009,AI Insights,Low,Planned,12,2026-07-12
+FEAT002202,PROJ000121,Slack Integration,High,Planned,20,2025-07-29
+FEAT002203,PROJ000160,Advanced Dashboard,Low,Planned,14,2025-03-25
+FEAT002204,PROJ000198,Multi-language Support,Low,In Development,17,2026-02-20
+FEAT002205,PROJ000222,Workflow Automation,Critical,Planned,19,2026-05-13
+FEAT002206,PROJ000081,Analytics Widgets,High,In Development,20,2024-10-10
+FEAT002207,PROJ000248,API Enhancements,Medium,Released,2,2025-10-04
+FEAT002208,PROJ000128,API Enhancements,Low,Testing,17,2025-11-05
+FEAT002209,PROJ000228,Role Based Access,High,Planned,9,2026-04-08
+FEAT002210,PROJ000065,Roadmap View,Critical,In Development,18,2026-03-05
+FEAT002211,PROJ000053,Custom Reports,High,Released,12,2025-12-28
+FEAT002212,PROJ000179,Advanced Dashboard,Critical,Testing,20,2025-02-20
+FEAT002213,PROJ000033,API Enhancements,High,Backlog,18,2025-03-29
+FEAT002214,PROJ000037,PDF Export,Critical,Released,4,2026-02-20
+FEAT002215,PROJ000095,Advanced Dashboard,Medium,Testing,1,2024-08-06
+FEAT002216,PROJ000238,Advanced Dashboard,High,Backlog,14,2025-06-07
+FEAT002217,PROJ000219,API Enhancements,High,Released,15,2024-09-15
+FEAT002218,PROJ000140,Analytics Widgets,Low,Backlog,10,2025-08-17
+FEAT002219,PROJ000098,AI Insights,High,Backlog,8,2026-01-19
+FEAT002220,PROJ000243,Search Improvements,High,Released,1,2024-11-17
+FEAT002221,PROJ000070,PDF Export,High,In Development,7,2026-01-08
+FEAT002222,PROJ000042,AI Insights,Low,Planned,7,2025-06-22
+FEAT002223,PROJ000070,Search Improvements,Critical,Released,8,2026-04-25
+FEAT002224,PROJ000209,Multi-language Support,Low,Released,20,2024-11-05
+FEAT002225,PROJ000244,API Enhancements,Low,Testing,7,2024-12-29
+FEAT002226,PROJ000220,Slack Integration,High,Backlog,14,2026-04-22
+FEAT002227,PROJ000094,Mobile Optimization,Low,In Development,7,2025-06-16
+FEAT002228,PROJ000213,Mobile Optimization,Critical,Released,2,2025-10-30
+FEAT002229,PROJ000068,PDF Export,Critical,Planned,21,2025-03-16
+FEAT002230,PROJ000029,Multi-language Support,Low,In Development,13,2024-11-25
+FEAT002231,PROJ000035,Dark Mode,Low,Planned,20,2025-11-01
+FEAT002232,PROJ000223,Roadmap View,High,Testing,4,2025-04-06
+FEAT002233,PROJ000193,API Enhancements,Low,In Development,10,2024-07-30
+FEAT002234,PROJ000189,AI Insights,Critical,In Development,20,2026-01-22
+FEAT002235,PROJ000021,Notification Center,Critical,In Development,3,2025-06-08
+FEAT002236,PROJ000220,Analytics Widgets,Critical,Planned,12,2026-06-23
+FEAT002237,PROJ000158,API Enhancements,Low,Backlog,4,2025-08-05
+FEAT002238,PROJ000198,Mobile Optimization,High,In Development,5,2024-07-22
+FEAT002239,PROJ000143,Slack Integration,High,Released,21,2025-08-05
+FEAT002240,PROJ000155,Notification Center,High,Released,2,2025-02-17
+FEAT002241,PROJ000216,Multi-language Support,Low,Testing,8,2024-07-27
+FEAT002242,PROJ000201,Roadmap View,Critical,In Development,21,2024-12-25
+FEAT002243,PROJ000079,Dark Mode,Critical,Backlog,18,2024-09-14
+FEAT002244,PROJ000107,Workflow Automation,Low,Backlog,6,2026-07-22
+FEAT002245,PROJ000047,Analytics Widgets,Low,Backlog,21,2026-06-06
+FEAT002246,PROJ000007,Multi-language Support,Critical,Backlog,7,2025-07-18
+FEAT002247,PROJ000049,Roadmap View,Critical,Testing,2,2026-05-11
+FEAT002248,PROJ000106,Mobile Optimization,Low,Planned,19,2025-11-01
+FEAT002249,PROJ000181,Dark Mode,Critical,Planned,20,2025-03-13
+FEAT002250,PROJ000018,Advanced Dashboard,Medium,Testing,8,2024-10-13
+FEAT002251,PROJ000173,Slack Integration,Medium,Released,9,2024-08-18
+FEAT002252,PROJ000177,AI Insights,Critical,In Development,13,2024-12-29
+FEAT002253,PROJ000194,Advanced Dashboard,Critical,Backlog,4,2024-08-14
+FEAT002254,PROJ000164,Advanced Dashboard,Critical,Testing,2,2025-04-27
+FEAT002255,PROJ000029,Custom Reports,High,In Development,18,2025-10-08
+FEAT002256,PROJ000109,AI Insights,High,Released,9,2024-07-25
+FEAT002257,PROJ000104,Analytics Widgets,Medium,In Development,1,2025-06-17
+FEAT002258,PROJ000157,Roadmap View,Medium,Testing,18,2025-08-23
+FEAT002259,PROJ000013,Analytics Widgets,Critical,In Development,21,2025-01-14
+FEAT002260,PROJ000176,Advanced Dashboard,Critical,Backlog,4,2025-04-04
+FEAT002261,PROJ000136,Custom Reports,High,Backlog,10,2026-02-24
+FEAT002262,PROJ000098,Analytics Widgets,Medium,Backlog,17,2025-02-11
+FEAT002263,PROJ000146,Slack Integration,Low,Planned,21,2025-10-30
+FEAT002264,PROJ000068,PDF Export,Critical,In Development,9,2026-07-15
+FEAT002265,PROJ000067,PDF Export,High,In Development,8,2025-05-01
+FEAT002266,PROJ000024,Notification Center,Medium,Released,16,2025-11-28
+FEAT002267,PROJ000213,Advanced Dashboard,High,Planned,10,2026-06-16
+FEAT002268,PROJ000192,Notification Center,Critical,Backlog,3,2024-10-06
+FEAT002269,PROJ000113,Slack Integration,High,Backlog,18,2025-12-12
+FEAT002270,PROJ000219,AI Insights,Medium,In Development,10,2025-02-21
+FEAT002271,PROJ000228,API Enhancements,Critical,Planned,13,2025-01-28
+FEAT002272,PROJ000037,Dark Mode,Medium,Released,21,2024-11-13
+FEAT002273,PROJ000224,Role Based Access,High,Testing,21,2026-06-29
+FEAT002274,PROJ000141,Analytics Widgets,Low,In Development,14,2024-12-18
+FEAT002275,PROJ000161,PDF Export,Medium,Released,19,2025-02-13
+FEAT002276,PROJ000024,Notification Center,Low,Planned,16,2026-01-02
+FEAT002277,PROJ000060,Slack Integration,Critical,Released,13,2025-02-26
+FEAT002278,PROJ000198,Advanced Dashboard,Critical,Planned,5,2024-10-29
+FEAT002279,PROJ000066,API Enhancements,Low,Testing,10,2024-12-02
+FEAT002280,PROJ000065,Advanced Dashboard,Medium,Testing,5,2025-03-09
+FEAT002281,PROJ000146,Mobile Optimization,Critical,Planned,4,2025-03-31
+FEAT002282,PROJ000235,Notification Center,Medium,Planned,20,2025-08-08
+FEAT002283,PROJ000011,Search Improvements,Critical,Planned,13,2024-10-23
+FEAT002284,PROJ000035,Slack Integration,Critical,Backlog,4,2026-01-21
+FEAT002285,PROJ000034,Notification Center,Medium,Backlog,3,2024-10-06
+FEAT002286,PROJ000128,Advanced Dashboard,High,Backlog,8,2025-09-07
+FEAT002287,PROJ000208,Workflow Automation,Low,Released,10,2025-10-31
+FEAT002288,PROJ000191,Advanced Dashboard,Medium,In Development,2,2024-11-25
+FEAT002289,PROJ000218,Multi-language Support,Medium,Testing,6,2026-02-28
+FEAT002290,PROJ000071,Mobile Optimization,Low,Planned,1,2025-11-10
+FEAT002291,PROJ000119,Role Based Access,Medium,Testing,10,2026-02-02
+FEAT002292,PROJ000244,AI Insights,Medium,In Development,16,2026-03-09
+FEAT002293,PROJ000136,Dark Mode,Medium,Testing,3,2024-08-29
+FEAT002294,PROJ000133,Custom Reports,Critical,In Development,15,2024-09-03
+FEAT002295,PROJ000207,Roadmap View,Medium,Backlog,17,2024-11-24
+FEAT002296,PROJ000048,Advanced Dashboard,Medium,In Development,6,2024-07-26
+FEAT002297,PROJ000186,Custom Reports,Critical,Testing,13,2025-09-07
+FEAT002298,PROJ000163,Mobile Optimization,Critical,Released,16,2025-01-18
+FEAT002299,PROJ000147,Mobile Optimization,High,Backlog,8,2025-12-01
+FEAT002300,PROJ000141,PDF Export,Medium,Testing,1,2025-02-20
+FEAT002301,PROJ000201,Workflow Automation,Low,Planned,10,2025-06-30
+FEAT002302,PROJ000183,Workflow Automation,Critical,Backlog,8,2024-09-18
+FEAT002303,PROJ000091,Notification Center,Low,Backlog,2,2026-07-06
+FEAT002304,PROJ000005,API Enhancements,High,Backlog,17,2026-04-20
+FEAT002305,PROJ000017,Custom Reports,Medium,In Development,20,2026-03-22
+FEAT002306,PROJ000084,Workflow Automation,High,Released,16,2025-11-22
+FEAT002307,PROJ000039,Notification Center,Critical,Released,15,2024-08-26
+FEAT002308,PROJ000037,Notification Center,Critical,Testing,13,2026-07-07
+FEAT002309,PROJ000003,AI Insights,High,Planned,18,2024-12-25
+FEAT002310,PROJ000113,Dark Mode,Low,In Development,21,2026-03-23
+FEAT002311,PROJ000042,API Enhancements,Low,In Development,5,2026-03-12
+FEAT002312,PROJ000049,AI Insights,High,Backlog,18,2026-05-27
+FEAT002313,PROJ000070,Dark Mode,Critical,Testing,5,2024-09-09
+FEAT002314,PROJ000064,Dark Mode,Critical,Backlog,19,2026-04-15
+FEAT002315,PROJ000238,Multi-language Support,Critical,Released,21,2025-03-04
+FEAT002316,PROJ000125,Analytics Widgets,Critical,In Development,7,2025-10-11
+FEAT002317,PROJ000032,Role Based Access,Critical,Testing,6,2025-03-19
+FEAT002318,PROJ000147,Role Based Access,Medium,In Development,8,2026-07-05
+FEAT002319,PROJ000197,Notification Center,Low,Planned,10,2024-09-12
+FEAT002320,PROJ000009,Custom Reports,High,Released,13,2026-07-04
+FEAT002321,PROJ000219,Dark Mode,Medium,Backlog,16,2025-12-06
+FEAT002322,PROJ000197,Role Based Access,Low,Testing,14,2024-12-22
+FEAT002323,PROJ000212,Workflow Automation,Low,Backlog,15,2026-01-02
+FEAT002324,PROJ000146,AI Insights,Medium,In Development,12,2024-08-26
+FEAT002325,PROJ000118,Role Based Access,Medium,Testing,17,2025-02-11
+FEAT002326,PROJ000226,Analytics Widgets,High,In Development,12,2026-01-25
+FEAT002327,PROJ000060,AI Insights,High,Planned,19,2025-04-22
+FEAT002328,PROJ000087,PDF Export,Low,Planned,1,2025-03-03
+FEAT002329,PROJ000024,Custom Reports,Critical,Released,6,2024-12-10
+FEAT002330,PROJ000189,Advanced Dashboard,Low,Planned,1,2026-03-06
+FEAT002331,PROJ000077,Role Based Access,Low,In Development,8,2025-01-26
+FEAT002332,PROJ000032,Dark Mode,Medium,Planned,19,2024-09-17
+FEAT002333,PROJ000166,Notification Center,Low,Released,4,2025-09-12
+FEAT002334,PROJ000012,Mobile Optimization,Critical,Testing,18,2025-01-03
+FEAT002335,PROJ000014,Analytics Widgets,Medium,In Development,7,2024-08-14
+FEAT002336,PROJ000074,Role Based Access,Critical,In Development,13,2024-09-21
+FEAT002337,PROJ000194,AI Insights,High,Backlog,20,2025-12-28
+FEAT002338,PROJ000161,Search Improvements,Low,In Development,13,2026-05-15
+FEAT002339,PROJ000092,Search Improvements,High,Testing,21,2026-06-16
+FEAT002340,PROJ000083,Custom Reports,High,Backlog,8,2024-08-28
+FEAT002341,PROJ000006,Advanced Dashboard,Medium,In Development,18,2024-07-28
+FEAT002342,PROJ000139,Custom Reports,Low,Planned,18,2026-02-08
+FEAT002343,PROJ000139,Roadmap View,High,In Development,20,2025-03-27
+FEAT002344,PROJ000226,AI Insights,High,Released,13,2024-12-18
+FEAT002345,PROJ000070,Notification Center,Medium,Testing,1,2025-07-12
+FEAT002346,PROJ000205,AI Insights,Low,Planned,4,2026-01-17
+FEAT002347,PROJ000015,Notification Center,Low,In Development,7,2024-11-30
+FEAT002348,PROJ000094,Advanced Dashboard,Critical,Released,3,2024-09-08
+FEAT002349,PROJ000194,API Enhancements,Medium,Backlog,15,2026-01-23
+FEAT002350,PROJ000064,Notification Center,High,Planned,9,2026-05-08
+FEAT002351,PROJ000089,Slack Integration,Medium,Released,17,2024-08-28
+FEAT002352,PROJ000090,Search Improvements,Medium,Released,14,2025-06-17
+FEAT002353,PROJ000114,Analytics Widgets,High,In Development,1,2025-01-30
+FEAT002354,PROJ000054,AI Insights,Critical,Released,17,2025-10-01
+FEAT002355,PROJ000148,Slack Integration,Critical,Backlog,6,2025-10-29
+FEAT002356,PROJ000094,Roadmap View,Medium,Testing,20,2025-06-18
+FEAT002357,PROJ000036,API Enhancements,Low,In Development,11,2025-08-13
+FEAT002358,PROJ000129,Search Improvements,Critical,Released,20,2025-09-30
+FEAT002359,PROJ000162,AI Insights,Critical,Testing,12,2025-01-07
+FEAT002360,PROJ000223,Analytics Widgets,Medium,Planned,5,2025-10-06
+FEAT002361,PROJ000190,Role Based Access,Low,Backlog,18,2024-08-09
+FEAT002362,PROJ000095,Role Based Access,Low,Testing,8,2024-08-27
+FEAT002363,PROJ000184,Role Based Access,Medium,Testing,7,2026-01-13
+FEAT002364,PROJ000084,API Enhancements,Medium,Released,3,2025-12-02
+FEAT002365,PROJ000064,AI Insights,Medium,Planned,4,2026-02-13
+FEAT002366,PROJ000157,API Enhancements,High,Backlog,1,2026-05-15
+FEAT002367,PROJ000023,API Enhancements,High,Released,9,2024-11-17
+FEAT002368,PROJ000092,Notification Center,Medium,In Development,20,2026-04-14
+FEAT002369,PROJ000182,Notification Center,Medium,Testing,4,2025-10-31
+FEAT002370,PROJ000232,API Enhancements,High,Testing,12,2025-05-10
+FEAT002371,PROJ000051,Role Based Access,Low,Planned,11,2025-04-30
+FEAT002372,PROJ000214,Search Improvements,Medium,Backlog,16,2025-05-05
+FEAT002373,PROJ000166,Analytics Widgets,Critical,Released,18,2025-03-18
+FEAT002374,PROJ000033,Mobile Optimization,High,Testing,13,2026-02-05
+FEAT002375,PROJ000137,Multi-language Support,Medium,Testing,10,2025-08-28
+FEAT002376,PROJ000034,Workflow Automation,Low,Backlog,1,2026-06-04
+FEAT002377,PROJ000233,AI Insights,Medium,Planned,17,2024-08-07
+FEAT002378,PROJ000090,Role Based Access,Low,Backlog,2,2026-04-12
+FEAT002379,PROJ000033,Role Based Access,Low,In Development,11,2025-05-26
+FEAT002380,PROJ000205,Search Improvements,Medium,Testing,3,2025-05-19
+FEAT002381,PROJ000190,Notification Center,Low,In Development,8,2026-07-19
+FEAT002382,PROJ000161,Advanced Dashboard,Low,In Development,16,2025-09-20
+FEAT002383,PROJ000020,Slack Integration,Medium,Planned,7,2026-02-10
+FEAT002384,PROJ000107,Notification Center,Critical,Planned,11,2024-10-16
+FEAT002385,PROJ000070,Mobile Optimization,Critical,Planned,18,2025-02-24
+FEAT002386,PROJ000071,Slack Integration,High,Planned,8,2024-09-09
+FEAT002387,PROJ000074,Dark Mode,Critical,In Development,7,2025-01-12
+FEAT002388,PROJ000079,API Enhancements,Low,Planned,15,2024-11-12
+FEAT002389,PROJ000170,Search Improvements,Medium,Backlog,18,2024-08-17
+FEAT002390,PROJ000025,Search Improvements,High,Testing,10,2026-01-14
+FEAT002391,PROJ000210,API Enhancements,Medium,Released,4,2025-12-07
+FEAT002392,PROJ000081,AI Insights,High,Backlog,8,2024-10-07
+FEAT002393,PROJ000248,Dark Mode,Medium,Planned,16,2026-01-08
+FEAT002394,PROJ000069,Role Based Access,High,Planned,11,2025-08-09
+FEAT002395,PROJ000161,Notification Center,Medium,Released,4,2026-04-08
+FEAT002396,PROJ000237,Analytics Widgets,Critical,Backlog,4,2025-12-31
+FEAT002397,PROJ000162,Search Improvements,High,Testing,14,2025-03-18
+FEAT002398,PROJ000218,Multi-language Support,High,Released,2,2025-07-16
+FEAT002399,PROJ000124,Dark Mode,Low,Testing,20,2026-06-03
+FEAT002400,PROJ000002,Mobile Optimization,Critical,Testing,15,2025-09-05
+FEAT002401,PROJ000026,API Enhancements,Low,Released,21,2026-01-14
+FEAT002402,PROJ000194,Notification Center,Low,Released,3,2026-05-25
+FEAT002403,PROJ000229,PDF Export,High,Testing,15,2025-05-17
+FEAT002404,PROJ000150,Role Based Access,Critical,Backlog,8,2026-01-22
+FEAT002405,PROJ000116,Analytics Widgets,Critical,In Development,20,2025-08-27
+FEAT002406,PROJ000043,Search Improvements,Low,Backlog,8,2024-12-01
+FEAT002407,PROJ000142,Mobile Optimization,Medium,Testing,1,2026-05-08
+FEAT002408,PROJ000182,Dark Mode,High,Planned,4,2025-05-26
+FEAT002409,PROJ000150,Advanced Dashboard,Critical,Planned,19,2024-12-24
+FEAT002410,PROJ000072,Roadmap View,Critical,Testing,10,2026-01-21
+FEAT002411,PROJ000070,Workflow Automation,High,Backlog,2,2025-10-29
+FEAT002412,PROJ000193,Advanced Dashboard,Medium,Planned,3,2025-10-21
+FEAT002413,PROJ000123,AI Insights,Critical,Released,16,2026-06-10
+FEAT002414,PROJ000012,PDF Export,Medium,Backlog,4,2024-08-09
+FEAT002415,PROJ000104,Dark Mode,Medium,Backlog,16,2024-10-25
+FEAT002416,PROJ000024,Dark Mode,High,In Development,20,2026-07-01
+FEAT002417,PROJ000194,Custom Reports,Medium,Released,1,2025-02-02
+FEAT002418,PROJ000218,Mobile Optimization,Low,Planned,8,2024-09-11
+FEAT002419,PROJ000078,Notification Center,Medium,Released,3,2026-05-31
+FEAT002420,PROJ000164,Workflow Automation,Critical,Planned,5,2025-01-13
+FEAT002421,PROJ000022,Search Improvements,Medium,Testing,10,2025-09-26
+FEAT002422,PROJ000139,Slack Integration,Critical,Backlog,2,2024-10-17
+FEAT002423,PROJ000140,Dark Mode,Low,Released,18,2025-03-19
+FEAT002424,PROJ000225,Dark Mode,High,Planned,13,2026-07-11
+FEAT002425,PROJ000245,Search Improvements,Critical,Planned,6,2025-03-24
+FEAT002426,PROJ000003,Workflow Automation,High,Planned,19,2026-02-15
+FEAT002427,PROJ000244,API Enhancements,Low,In Development,5,2026-01-03
+FEAT002428,PROJ000147,Analytics Widgets,Critical,Backlog,6,2026-06-23
+FEAT002429,PROJ000059,Notification Center,High,In Development,17,2025-03-05
+FEAT002430,PROJ000184,Workflow Automation,Critical,Backlog,7,2026-04-02
+FEAT002431,PROJ000003,Advanced Dashboard,Medium,Testing,21,2026-02-02
+FEAT002432,PROJ000097,Workflow Automation,Medium,Testing,1,2024-08-19
+FEAT002433,PROJ000029,API Enhancements,High,Backlog,12,2026-02-23
+FEAT002434,PROJ000054,Roadmap View,High,Released,17,2024-09-08
+FEAT002435,PROJ000198,Slack Integration,Low,Planned,21,2024-07-27
+FEAT002436,PROJ000095,Mobile Optimization,Low,In Development,21,2025-11-30
+FEAT002437,PROJ000248,PDF Export,Low,Planned,11,2026-05-05
+FEAT002438,PROJ000213,Dark Mode,Medium,Planned,2,2024-09-20
+FEAT002439,PROJ000147,API Enhancements,Low,In Development,19,2026-03-14
+FEAT002440,PROJ000137,Search Improvements,Medium,Testing,5,2025-09-15
+FEAT002441,PROJ000152,Roadmap View,Critical,Testing,14,2024-08-07
+FEAT002442,PROJ000035,API Enhancements,Medium,Released,8,2025-12-15
+FEAT002443,PROJ000051,Notification Center,Critical,Backlog,5,2025-11-29
+FEAT002444,PROJ000088,Workflow Automation,Medium,In Development,6,2025-08-04
+FEAT002445,PROJ000014,Search Improvements,Low,Released,18,2024-11-14
+FEAT002446,PROJ000082,Dark Mode,Medium,Testing,3,2024-12-26
+FEAT002447,PROJ000170,Slack Integration,Medium,Released,15,2026-07-20
+FEAT002448,PROJ000008,Roadmap View,High,Planned,9,2025-07-11
+FEAT002449,PROJ000088,Advanced Dashboard,Low,In Development,6,2025-05-18
+FEAT002450,PROJ000016,Mobile Optimization,Low,In Development,11,2025-12-09
+FEAT002451,PROJ000052,AI Insights,High,Planned,17,2024-09-13
+FEAT002452,PROJ000152,AI Insights,Medium,Planned,4,2026-01-30
+FEAT002453,PROJ000113,Slack Integration,Medium,Backlog,2,2025-08-27
+FEAT002454,PROJ000069,Roadmap View,Medium,Testing,3,2025-05-08
+FEAT002455,PROJ000041,Advanced Dashboard,Critical,Testing,8,2025-10-08
+FEAT002456,PROJ000173,Role Based Access,Low,Planned,1,2026-06-15
+FEAT002457,PROJ000217,Workflow Automation,Medium,Released,7,2024-11-21
+FEAT002458,PROJ000022,API Enhancements,High,Testing,2,2024-07-31
+FEAT002459,PROJ000078,Role Based Access,Critical,In Development,15,2024-09-02
+FEAT002460,PROJ000227,Workflow Automation,Medium,Testing,17,2025-04-30
+FEAT002461,PROJ000189,API Enhancements,Medium,Backlog,19,2025-08-05
+FEAT002462,PROJ000025,API Enhancements,Medium,In Development,7,2025-06-06
+FEAT002463,PROJ000004,Roadmap View,Medium,Planned,1,2026-04-25
+FEAT002464,PROJ000130,Slack Integration,Low,Released,15,2025-10-17
+FEAT002465,PROJ000098,Custom Reports,High,In Development,9,2024-11-06
+FEAT002466,PROJ000176,Dark Mode,Medium,Planned,20,2025-04-30
+FEAT002467,PROJ000190,PDF Export,Low,Testing,6,2025-02-14
+FEAT002468,PROJ000095,Roadmap View,High,Backlog,9,2026-02-18
+FEAT002469,PROJ000233,Advanced Dashboard,High,Released,21,2025-12-03
+FEAT002470,PROJ000078,Notification Center,Low,Planned,17,2025-08-16
+FEAT002471,PROJ000157,Workflow Automation,Medium,Planned,5,2025-09-25
+FEAT002472,PROJ000122,AI Insights,Medium,Testing,7,2025-10-01
+FEAT002473,PROJ000166,PDF Export,Medium,Planned,16,2025-11-21
+FEAT002474,PROJ000166,Slack Integration,Low,In Development,8,2026-05-03
+FEAT002475,PROJ000068,Custom Reports,High,Backlog,18,2026-02-04
+FEAT002476,PROJ000113,Analytics Widgets,Low,Testing,15,2025-09-18
+FEAT002477,PROJ000041,Mobile Optimization,Critical,Backlog,14,2024-08-26
+FEAT002478,PROJ000081,Custom Reports,Low,Released,15,2026-07-13
+FEAT002479,PROJ000076,Analytics Widgets,High,Backlog,21,2025-03-03
+FEAT002480,PROJ000236,Workflow Automation,Medium,Planned,1,2026-02-23
+FEAT002481,PROJ000080,Multi-language Support,Medium,Backlog,6,2025-11-28
+FEAT002482,PROJ000185,Dark Mode,High,Backlog,12,2026-06-18
+FEAT002483,PROJ000077,Workflow Automation,High,Released,12,2026-05-21
+FEAT002484,PROJ000019,Workflow Automation,Critical,Planned,13,2024-10-04
+FEAT002485,PROJ000081,Mobile Optimization,Medium,Backlog,18,2026-07-13
+FEAT002486,PROJ000240,Notification Center,Medium,Released,10,2026-03-15
+FEAT002487,PROJ000217,Notification Center,Low,Released,12,2025-04-23
+FEAT002488,PROJ000091,Slack Integration,Low,Planned,5,2026-01-09
+FEAT002489,PROJ000053,PDF Export,Medium,In Development,19,2024-10-11
+FEAT002490,PROJ000118,Role Based Access,Low,Backlog,21,2024-10-22
+FEAT002491,PROJ000115,Multi-language Support,High,In Development,17,2026-01-27
+FEAT002492,PROJ000233,API Enhancements,Critical,Testing,2,2024-10-12
+FEAT002493,PROJ000234,API Enhancements,High,Backlog,13,2025-07-11
+FEAT002494,PROJ000132,Search Improvements,Low,Backlog,12,2024-12-23
+FEAT002495,PROJ000150,Analytics Widgets,Medium,Released,9,2025-11-24
+FEAT002496,PROJ000051,Role Based Access,Medium,In Development,15,2024-09-22
+FEAT002497,PROJ000197,Workflow Automation,High,In Development,3,2025-04-25
+FEAT002498,PROJ000149,Dark Mode,Critical,Planned,10,2024-12-23
+FEAT002499,PROJ000166,Workflow Automation,Critical,Backlog,17,2026-05-11
+FEAT002500,PROJ000149,Role Based Access,High,In Development,7,2026-02-08
