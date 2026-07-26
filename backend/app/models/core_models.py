@@ -10,63 +10,359 @@ Base = declarative_base()
 class Organization(Base):
     __tablename__ = "organizations"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = Column(String(255), nullable=False)
-    workspaces = relationship("Workspace", back_populates="organization", cascade="all, delete-orphan")
-    created_at = Column(DateTime,server_default=func.now(),nullable=False)
-    updated_at = Column(DateTime,server_default=func.now(),onupdate=func.now(),nullable=False)
+    organization_code = Column(
+    String(20),
+    unique=True,
+    nullable=False,
+    index=True
+    )
+    organization_name = Column(String(255), nullable=False)
+    industry = Column(String(100), nullable=False)
+    country = Column(String(100), nullable=False)
+    city = Column(String(100), nullable=False)
+    employee_count = Column(Integer, nullable=False)
+    subscription_plan = Column(String(50), nullable=False)
+    workspaces = relationship(
+        "Workspace",
+        back_populates="organization",
+        cascade="all, delete-orphan"
+    )
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
 
 class Workspace(Base):
     __tablename__ = "workspaces"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    org_id = Column(UUID(as_uuid=True),ForeignKey("organizations.id", ondelete="CASCADE"),nullable=False,index=True)
-    name = Column(String(255), nullable=False)
-    organization = relationship("Organization", back_populates="workspaces")
-    projects = relationship("Project", back_populates="workspace", cascade="all, delete-orphan")
-    created_at = Column(DateTime,server_default=func.now(),nullable=False)
-    updated_at = Column(DateTime,server_default=func.now(),onupdate=func.now(),nullable=False)
+    workspace_code = Column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    org_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("organizations.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+    workspace_name = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)    
+    organization = relationship(
+        "Organization",
+        back_populates="workspaces"
+    )
+    projects = relationship(
+        "Project",
+        back_populates="workspace",
+        cascade="all, delete-orphan"
+    )
+    users = relationship(
+        "User",
+        back_populates="workspace",
+        cascade="all, delete-orphan"
+    )
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_code = Column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    workspace_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("workspaces.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+    first_name = Column(String(100), nullable=False)
+    last_name = Column(String(100), nullable=False)
+    email = Column(String(255), unique=True, nullable=False)
+    role = Column(String(100), nullable=False)
+    country = Column(String(100), nullable=False)
+    workspace = relationship(
+        "Workspace",
+        back_populates="users"
+    )
+    owned_projects = relationship(
+        "Project",
+        back_populates="owner"
+    )
+    assigned_tickets = relationship(
+        "Ticket",
+        back_populates="assigned_user"
+    )
+    feedback_entries = relationship(
+        "Feedback",
+        back_populates="user"
+    )
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
 
 class Project(Base):
     __tablename__ = "projects"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    workspace_id = Column(UUID(as_uuid=True),ForeignKey("workspaces.id", ondelete="CASCADE"),nullable=False,index=True)
-    name = Column(String(255), nullable=False)
-    workspace = relationship("Workspace", back_populates="projects")
-    feedback_items = relationship("FeedbackItem", back_populates="project")
-    created_at = Column(DateTime,server_default=func.now(),nullable=False)
-    updated_at = Column(DateTime,server_default=func.now(),onupdate=func.now(),nullable=False)
-    
-
-class FeatureRequest(Base):
-    __tablename__ = "feature_requests"
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    title = Column(String(255), nullable=False)
+    project_code = Column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    workspace_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("workspaces.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+    owner_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True
+    )
+    project_name = Column(String(255), nullable=False)
+    project_type = Column(String(100), nullable=False)
     description = Column(Text, nullable=True)
-    rice_score = Column(Integer, default=0)
-    feedback_items = relationship("FeedbackItem", back_populates="feature_request")
-    prd = relationship("PRD", uselist=False, back_populates="feature_request")
-    created_at = Column(DateTime,server_default=func.now(),nullable=False)
-    updated_at = Column(DateTime,server_default=func.now(),onupdate=func.now(),nullable=False)
+    technology_stack = Column(Text, nullable=True)
+    status = Column(String(50), nullable=False)
+    budget_usd = Column(Float, nullable=True)
+    start_date = Column(DateTime, nullable=True)
+    end_date = Column(DateTime, nullable=True)
+    workspace = relationship(
+        "Workspace",
+        back_populates="projects"
+    )
+    owner = relationship(
+        "User",
+        back_populates="owned_projects"
+    )
+    feedback = relationship(
+        "Feedback",
+        back_populates="project",
+        cascade="all, delete-orphan"
+    )
+    sprints = relationship(
+        "Sprint",
+        back_populates="project",
+        cascade="all, delete-orphan"
+    )
+    features = relationship(
+        "Feature",
+        back_populates="project",
+        cascade="all, delete-orphan"
+    )
+    tickets = relationship(
+        "Ticket",
+        back_populates="project",
+        cascade="all, delete-orphan"
+    )
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
 
-class FeedbackItem(Base):
-    __tablename__ = "feedback_items"
+class Sprint(Base):
+    __tablename__ = "sprints"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    project_id = Column(UUID(as_uuid=True),ForeignKey("projects.id", ondelete="CASCADE"),nullable=False,index=True)
-    feature_request_id = Column(UUID(as_uuid=True),ForeignKey("feature_requests.id", ondelete="SET NULL"),nullable=True,index=True)
-    raw_text = Column(Text, nullable=False)
-    cleaned_text = Column(Text, nullable=True)
-    sentiment_score = Column(Float, default=0.0)
-    source = Column(String(50), default="csv")
-    project = relationship("Project", back_populates="feedback_items")
-    feature_request = relationship("FeatureRequest", back_populates="feedback_items")
-    created_at = Column(DateTime,server_default=func.now(),nullable=False)
-    updated_at = Column(DateTime,server_default=func.now(),onupdate=func.now(),nullable=False)
+    sprint_code = Column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    project_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("projects.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+    sprint_name = Column(String(255), nullable=False)
+    goal = Column(Text, nullable=True)
+    status = Column(String(50), nullable=False)
+    start_date = Column(DateTime, nullable=True)
+    end_date = Column(DateTime, nullable=True)
+    project = relationship(
+        "Project",
+        back_populates="sprints"
+    )
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
 
-class PRD(Base):
-    __tablename__ = "prds"
+class Feature(Base):
+    __tablename__ = "features"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    feature_request_id = Column(UUID(as_uuid=True),ForeignKey("feature_requests.id", ondelete="CASCADE"),nullable=False,index=True)
-    content_markdown = Column(Text, nullable=False)
-    version = Column(Integer, default=1)
-    feature_request = relationship("FeatureRequest", back_populates="prd")
-    created_at = Column(DateTime,server_default=func.now(),nullable=False)
-    updated_at = Column(DateTime,server_default=func.now(),onupdate=func.now(),nullable=False)
+    feature_code = Column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    project_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("projects.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+    feature_name = Column(String(255), nullable=False)
+    priority = Column(String(50), nullable=False)
+    status = Column(String(50), nullable=False)
+    estimated_story_points = Column(Integer, nullable=False)
+    project = relationship(
+        "Project",
+        back_populates="features"
+    )
+    tickets = relationship(
+        "Ticket",
+        back_populates="feature",
+        cascade="all, delete-orphan"
+    )
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
+
+class Ticket(Base):
+    __tablename__ = "tickets"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    ticket_code = Column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    project_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("projects.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+    assigned_user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True
+    )
+    ticket_title = Column(String(255), nullable=False)
+    ticket_type = Column(String(100), nullable=False)
+    priority = Column(String(50), nullable=False)
+    status = Column(String(50), nullable=False)
+    story_points = Column(Integer, nullable=True)
+    project = relationship(
+        "Project",
+        back_populates="tickets"
+    )
+    assigned_user = relationship(
+        "User",
+        back_populates="assigned_tickets"
+    )
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
+
+class Feedback(Base):
+    __tablename__ = "feedback"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    feedback_code = Column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    project_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("projects.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+    user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True
+    )
+    feedback_type = Column(String(100), nullable=False)
+    feedback_text = Column(Text, nullable=False)
+    priority = Column(String(50), nullable=False)
+    sentiment = Column(String(50), nullable=False)
+    channel = Column(String(100), nullable=False)
+    project = relationship(
+        "Project",
+        back_populates="feedback"
+    )
+    user = relationship(
+        "User",
+        back_populates="feedback_entries"
+    )
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
