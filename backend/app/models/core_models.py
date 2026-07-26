@@ -258,11 +258,6 @@ class Feature(Base):
         "Project",
         back_populates="features"
     )
-    tickets = relationship(
-        "Ticket",
-        back_populates="feature",
-        cascade="all, delete-orphan"
-    )
     created_at = Column(
         DateTime,
         server_default=func.now(),
