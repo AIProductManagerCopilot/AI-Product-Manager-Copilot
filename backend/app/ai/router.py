@@ -15,7 +15,11 @@ from app.ai.prompts.registry import PromptRegistry, PromptVersion
 from app.ai.streaming.generator import stream_ai_response
 
 
-router = APIRouter(prefix="/ai", tags=["AI Copilot"])
+# CHANGE THIS:
+# router = APIRouter(prefix="/ai", tags=["AI Copilot"])
+
+# TO THIS:
+router = APIRouter(tags=["AI Subsystem"])
 
 
 class CopilotQueryRequest(BaseModel):
