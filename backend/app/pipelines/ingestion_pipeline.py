@@ -3,9 +3,9 @@
 import logging
 import time
 from typing import Dict, Any, List, Tuple
-from backend.app.etl.csv_pipeline import CSVETLPipeline
-from backend.app.analytics.metrics import AnalyticsEngine, MetricsResult
-from backend.app.etl.base import PipelineTelemetry
+from app.etl.csv_pipeline import CSVETLPipeline
+from app.analytics.metrics import AnalyticsEngine, MetricsResult
+from app.etl.base import PipelineTelemetry
 
 logger = logging.getLogger("pipelines.ingestion_orchestrator")
 

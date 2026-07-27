@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 
-from backend.app.db.session import get_db
-from backend.app.analytics.services.clustering import get_theme_clusters_from_db
-from backend.app.analytics.services.trends import get_theme_trends_from_db
+from app.db.session import get_db
+from app.analytics.services.clustering import get_theme_clusters_from_db
+from app.analytics.services.trends import get_theme_trends_from_db
 
 router = APIRouter()
 

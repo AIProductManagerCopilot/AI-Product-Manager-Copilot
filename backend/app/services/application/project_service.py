@@ -1,7 +1,7 @@
 # File: backend/app/services/application/project_service.py
 import logging
-from backend.app.schemas.project import ProjectCreate, ProjectResponse
-from backend.app.repositories.interfaces import IProjectRepository
+from app.schemas.project import ProjectCreate, ProjectResponse
+from app.repositories.interfaces import IProjectRepository
 
 # Maintained exact logging namespace from Milestone 1
 logger = logging.getLogger("backend.services")
@@ -22,6 +22,15 @@ class ProjectService:
         # The repository handles the UUID lookup, project_code generation, and default status
         db_project = self.repo.create(payload=payload, owner_id=owner_id)
 
-        # 2. Serialize the SQLAlchemy ORM instance directly into a standard ProjectResponse
-        # (Relies on model_config = ConfigDict(from_attributes=True) defined in your schema)
-        return ProjectResponse.model_validate(db_project)
+        # 2. Construct the ProjectResponse explicitly to bridge schema field names (e.g. project_name -> title)
+        # and ensure type conversions (e.g. UUID -> str for owner_id) pass validation cleanly
+        return ProjectResponse(
+            id=str(db_project.id),
+            title=db_project.project_name,
+            description=db_project.description,
+            target_audience=payload.target_audience,
+            owner_id=str(db_project.owner_id),
+            status=db_project.status,
+            created_at=db_project.created_at,
+            updated_at=db_project.updated_at,
+        )

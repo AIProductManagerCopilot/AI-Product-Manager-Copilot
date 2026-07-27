@@ -3,8 +3,8 @@
 import csv
 import time
 from typing import Generator, Dict, Any, List
-from backend.app.etl.base import BaseETLPipeline, PipelineTelemetry
-from backend.app.etl.exceptions import DataValidationError
+from app.etl.base import BaseETLPipeline, PipelineTelemetry
+from app.etl.exceptions import DataValidationError
 
 class CSVIngestionPipeline(BaseETLPipeline):
     """

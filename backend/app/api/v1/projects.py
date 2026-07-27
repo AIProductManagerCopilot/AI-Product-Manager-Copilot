@@ -1,12 +1,12 @@
 # File: backend/app/api/v1/projects.py
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
-from backend.app.auth.rbac import RoleChecker
-from backend.app.services.application.project_service import ProjectService
-from backend.app.repositories.project_repository import ProjectRepository
-from backend.app.core.database import get_db
+from app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
+from app.auth.rbac import RoleChecker
+from app.services.application.project_service import ProjectService
+from app.repositories.project_repository import ProjectRepository
+from app.core.database import get_db
 
 router = APIRouter(
     prefix="/projects",

@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy.orm import Session
 
 from app.models.core_models import Project, User
@@ -24,6 +25,7 @@ class ProjectRepository(IProjectRepository):
 
         Responsibilities:
         - Resolve Firebase UID -> internal User UUID
+        - Generate unique project_code
         - Assign default values
         - Save project
         """
@@ -38,7 +40,11 @@ class ProjectRepository(IProjectRepository):
         if user is None:
             raise ValueError(f"User '{owner_id}' not found.")
 
+        # Generate unique project code to satisfy NotNull constraint
+        project_code = getattr(payload, "project_code", None) or f"prj_{uuid.uuid4().hex[:8]}"
+
         project = Project(
+            project_code=project_code,
             workspace_id=user.workspace_id,
             owner_id=user.id,
             project_name=payload.title,

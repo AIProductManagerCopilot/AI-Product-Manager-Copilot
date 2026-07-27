@@ -3,10 +3,10 @@ import uuid
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from backend.app.api.v1.schemas import FeedbackUploadRequest, FeedbackResponse
-from backend.app.services.text_processor import TextProcessorService
-from backend.app.models.core_models import FeedbackItem, Project
-from backend.app.core.database import get_db
+from app.api.v1.schemas import FeedbackUploadRequest, FeedbackResponse
+from app.services.text_processor import TextProcessorService
+from app.models.core_models import FeedbackItem, Project
+from app.core.database import get_db
 from datetime import datetime
 
 router = APIRouter()
