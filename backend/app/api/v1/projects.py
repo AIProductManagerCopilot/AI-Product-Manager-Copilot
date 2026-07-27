@@ -1,8 +1,8 @@
 # File: backend/app/api/v1/projects.py
 from fastapi import APIRouter, Depends, status
-from backend.app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
-from backend.app.auth.rbac import RoleChecker
-from backend.app.services.application.project_service import ProjectService
+from app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
+from app.auth.rbac import RoleChecker
+from app.services.application.project_service import ProjectService
 
 router = APIRouter(
     prefix="/projects",

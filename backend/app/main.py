@@ -14,6 +14,7 @@ setup_logging(json_format=False, log_level="INFO")
 from app.api.v1 import feedback  
 from app.api.v1 import copilot
 from app.ai.router import router as ai_router
+from app.api.v1 import projects
 
 app = FastAPI(
     title="AI Product Manager Copilot API",
@@ -34,6 +35,7 @@ app.add_middleware(
 app.include_router(feedback.router, prefix="/api/v1")
 app.include_router(copilot.router, prefix="/api/v1")
 app.include_router(ai_router, prefix="/api/v1/ai", tags=["AI Subsystem"])
+app.include_router(projects.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():

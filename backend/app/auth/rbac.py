@@ -2,7 +2,7 @@
 from typing import List, Dict, Any
 from fastapi import HTTPException, Security, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from backend.app.auth.firebase import verify_firebase_token
+from app.auth.firebase import verify_firebase_token
 
 # Native FastAPI security helper that auto-detects Authorization headers
 security_scheme = HTTPBearer()

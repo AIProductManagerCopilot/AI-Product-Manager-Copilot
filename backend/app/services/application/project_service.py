@@ -2,7 +2,7 @@
 import logging
 from uuid import uuid4, UUID
 from datetime import datetime, timezone
-from backend.app.schemas.project import ProjectCreate, ProjectResponse
+from app.schemas.project import ProjectCreate, ProjectResponse
 
 logger = logging.getLogger("backend.services")
 
