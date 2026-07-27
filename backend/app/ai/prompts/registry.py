@@ -5,7 +5,7 @@ Repository-compatible implementation for production review.
 """
 
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 
 
