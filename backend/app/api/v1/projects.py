@@ -21,9 +21,7 @@ def get_project_service(
     Dependency provider for ProjectService with PostgreSQL repository injection.
     """
     repository = ProjectRepository(db)
-
-    return ProjectService(project_repo=repository)
-
+    return ProjectService(repository)  # <-- Pass as positional argument or repository=repository
 
 @router.post(
     "",
