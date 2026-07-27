@@ -28,7 +28,7 @@ class ProjectService:
             id=str(db_project.id),
             title=db_project.project_name,
             description=db_project.description,
-            target_audience=payload.target_audience,
+            target_audience=db_project.target_audience,
             owner_id=str(db_project.owner_id),
             status=db_project.status,
             created_at=db_project.created_at,

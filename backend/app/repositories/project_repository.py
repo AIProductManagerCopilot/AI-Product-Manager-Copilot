@@ -49,6 +49,7 @@ class ProjectRepository(IProjectRepository):
             owner_id=user.id,
             project_name=payload.title,
             description=payload.description,
+            target_audience=payload.target_audience,
             project_type="standard",
             status="active",
         )
