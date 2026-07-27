@@ -1,8 +1,17 @@
 # File: backend/app/api/v1/projects.py
 from fastapi import APIRouter, Depends, status
+<<<<<<< Updated upstream
 from app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
 from app.auth.rbac import RoleChecker
 from app.services.application.project_service import ProjectService
+=======
+from backend.app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
+from backend.app.auth.rbac import RoleChecker
+from backend.app.services.application.project_service import ProjectService
+from sqlalchemy.orm import Session
+from backend.app.core.database import get_db
+from backend.app.repositories.project_repository import ProjectRepository
+>>>>>>> Stashed changes
 
 router = APIRouter(
     prefix="/projects",
@@ -11,9 +20,15 @@ router = APIRouter(
 
 
 # Shared factory pattern to cleanly deliver our app service boundary
-def get_project_service() -> ProjectService:
-    """Dependency provider for ProjectService."""
-    return ProjectService()
+def get_project_service(
+    db: Session = Depends(get_db),
+) -> ProjectService:
+    """
+    Dependency provider for ProjectService with PostgreSQL repository injection.
+    """
+    repository = ProjectRepository(db)
+
+    return ProjectService(project_repo=repository)
 
 
 @router.post(
