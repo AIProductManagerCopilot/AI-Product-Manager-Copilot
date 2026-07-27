@@ -29,6 +29,7 @@ import { workspaceService, type Workspace, type WorkspaceFormData, PRODUCT_TYPE_
 import { useAuth } from '../context/AuthContext';
 import { formatDate, formatDistanceToNow } from '../utils/dateUtils';
 import { useTheme } from '../context/ThemeContext';
+import { useSidebar } from '../context/SidebarContext';
 
 // Theme-aware color badges for stages and priorities in light mode
 const STAGE_COLORS_DARK: Record<string, string> = {
@@ -110,6 +111,7 @@ export const WorkspaceDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isDark } = useTheme();
+  const { isCollapsed } = useSidebar();
 
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -184,7 +186,7 @@ export const WorkspaceDetailPage: React.FC = () => {
     return (
       <div className="min-h-screen transition-colors duration-200" style={{ backgroundColor: 'var(--bg-base)' }}>
         <Sidebar />
-        <div className="ml-60 pt-16 flex items-center justify-center min-h-screen">
+        <div className={`${isCollapsed ? 'ml-16' : 'ml-60'} pt-16 flex items-center justify-center min-h-screen transition-all duration-300 ease-in-out`}>
           <div className="flex items-center gap-3" style={{ color: 'var(--text-muted)' }}>
             <Sparkles className="w-5 h-5 text-[#3B82F6] animate-pulse" />
             <span className="text-sm">Loading workspace...</span>
@@ -199,7 +201,7 @@ export const WorkspaceDetailPage: React.FC = () => {
     return (
       <div className="min-h-screen transition-colors duration-200" style={{ backgroundColor: 'var(--bg-base)' }}>
         <Sidebar />
-        <div className="ml-60 pt-16 flex flex-col items-center justify-center min-h-screen gap-4">
+        <div className={`${isCollapsed ? 'ml-16' : 'ml-60'} pt-16 flex flex-col items-center justify-center min-h-screen gap-4 transition-all duration-300 ease-in-out`}>
           <p style={{ color: 'var(--text-secondary)' }}>Workspace not found or access denied.</p>
           <button onClick={() => navigate('/dashboard')} className="text-sm text-[#3B82F6] hover:underline font-semibold">
             ← Back to Dashboard
@@ -241,7 +243,7 @@ export const WorkspaceDetailPage: React.FC = () => {
       <Sidebar />
       <TopNavbar />
 
-      <div className="ml-60 pt-16">
+      <div className={`${isCollapsed ? 'ml-16' : 'ml-60'} pt-16 transition-all duration-300 ease-in-out`}>
         <main className="px-8 py-8 max-w-screen-xl space-y-7">
 
           {/* ── Breadcrumb + Back ──────────────────────────────────── */}

@@ -18,6 +18,7 @@ import { useWorkspaces, type SortOption } from '../hooks/useWorkspaces';
 import { workspaceService, type Workspace, type WorkspaceFormData } from '../services/workspaceService';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useSidebar } from '../context/SidebarContext';
 
 // ─── Stat Card ────────────────────────────────────────────────────────────────
 
@@ -63,6 +64,7 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
   const { isDark } = useTheme();
+  const { isCollapsed } = useSidebar();
 
   const {
     workspaces, filteredWorkspaces, isLoading,
@@ -160,7 +162,7 @@ export const DashboardPage: React.FC = () => {
       <Toaster position="top-right" />
       <Sidebar />
 
-      <div className="ml-60 min-h-screen flex flex-col">
+      <div className={`${isCollapsed ? 'ml-16' : 'ml-60'} min-h-screen flex flex-col transition-all duration-300 ease-in-out`}>
         <TopNavbar
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
