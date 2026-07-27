@@ -1,17 +1,12 @@
 # File: backend/app/api/v1/projects.py
 from fastapi import APIRouter, Depends, status
-<<<<<<< Updated upstream
-from app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
-from app.auth.rbac import RoleChecker
-from app.services.application.project_service import ProjectService
-=======
+from sqlalchemy.orm import Session
+
 from backend.app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
 from backend.app.auth.rbac import RoleChecker
 from backend.app.services.application.project_service import ProjectService
-from sqlalchemy.orm import Session
-from backend.app.core.database import get_db
 from backend.app.repositories.project_repository import ProjectRepository
->>>>>>> Stashed changes
+from backend.app.core.database import get_db
 
 router = APIRouter(
     prefix="/projects",
@@ -19,16 +14,11 @@ router = APIRouter(
 )
 
 
-# Shared factory pattern to cleanly deliver our app service boundary
-def get_project_service(
-    db: Session = Depends(get_db),
-) -> ProjectService:
-    """
-    Dependency provider for ProjectService with PostgreSQL repository injection.
-    """
+# Shared factory pattern delivering application service boundary with PostgreSQL repository
+def get_project_service(db: Session = Depends(get_db)) -> ProjectService:
+    """Dependency provider for ProjectService with PostgreSQL repository injection."""
     repository = ProjectRepository(db)
-
-    return ProjectService(project_repo=repository)
+    return ProjectService(repo=repository)
 
 
 @router.post(
@@ -36,7 +26,7 @@ def get_project_service(
     response_model=ProjectResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create a new AI Product Workspace",
-    description="Validates incoming payload parameters, verifies Firebase authorization, enforces role validation, and initializes the workspace.",
+    description="Validates incoming payload parameters, verifies Firebase authorization, enforces role validation, and initializes the workspace in PostgreSQL.",
     responses={
         400: {"model": ErrorResponse, "description": "Bad Request / Validation Failure"},
         401: {"model": ErrorResponse, "description": "Unauthorized / Invalid Token"},
