@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeToggle } from './ThemeToggle';
 import { useTheme } from '../context/ThemeContext';
+import { useSidebar } from '../context/SidebarContext';
 
 interface TopNavbarProps {
   searchQuery?: string;
@@ -18,6 +19,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 }) => {
   const { user } = useAuth();
   const { isDark } = useTheme();
+  const { isCollapsed } = useSidebar();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [hasNotif] = useState(true);
 
@@ -56,8 +58,11 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
   return (
     <header
-      className={`fixed top-0 left-60 right-0 h-16 backdrop-blur-md border-b z-30 flex items-center px-6 gap-4 transition-colors duration-200 ${navBg}`}
+      className={`fixed top-0 ${
+        isCollapsed ? 'left-16' : 'left-60'
+      } right-0 h-16 backdrop-blur-md border-b z-30 flex items-center px-6 gap-4 transition-all duration-300 ease-in-out ${navBg}`}
     >
+
       {/* Search Bar */}
       <div className="flex-1 max-w-md relative">
         <div className="absolute left-3 top-1/2 -translate-y-1/2">
