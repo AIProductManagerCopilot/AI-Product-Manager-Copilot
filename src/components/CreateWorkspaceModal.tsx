@@ -49,22 +49,23 @@ const SelectField: React.FC<{
     ? 'bg-[#0D1117]/80 border-[#2D3748] text-[#F8FAFC]'
     : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A]';
   return (
-  <div className="space-y-1.5">
-    <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>
-      {label} {required && <span className="text-[#EF4444]">*</span>}
-    </label>
-    <div className="relative">
-      <select
-        className={`w-full appearance-none px-3.5 py-2.5 border rounded-xl text-sm focus:outline-none focus:border-[#3B82F6]/60 focus:ring-2 focus:ring-[#3B82F6]/15 transition-all cursor-pointer ${inputCls}`}
-        {...rest}
-      >
-        {children}
-      </select>
-      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--text-muted)' }} />
+    <div className="space-y-1.5">
+      <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>
+        {label} {required && <span className="text-[#EF4444]">*</span>}
+      </label>
+      <div className="relative">
+        <select
+          className={`w-full appearance-none px-3.5 py-2.5 border rounded-xl text-sm focus:outline-none focus:border-[#3B82F6]/60 focus:ring-2 focus:ring-[#3B82F6]/15 transition-all cursor-pointer ${inputCls}`}
+          {...rest}
+        >
+          {children}
+        </select>
+        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--text-muted)' }} />
+      </div>
+      {error && <p className="text-xs text-[#EF4444]">{error}</p>}
     </div>
-    {error && <p className="text-xs text-[#EF4444]">{error}</p>}
-  </div>
-);}
+  );
+};
 
 const InputField: React.FC<{
   label: string;
@@ -79,18 +80,19 @@ const InputField: React.FC<{
     : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A] placeholder-[#94A3B8]';
   const base = `w-full px-3.5 py-2.5 border rounded-xl text-sm focus:outline-none focus:border-[#3B82F6]/60 focus:ring-2 focus:ring-[#3B82F6]/15 transition-all ${inputCls}`;
   return (
-  <div className="space-y-1.5">
-    <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>
-      {label} {required && <span className="text-[#EF4444]">*</span>}
-    </label>
-    {multiline ? (
-      <textarea rows={3} className={`${base} resize-none`} {...rest as React.TextareaHTMLAttributes<HTMLTextAreaElement>} />
-    ) : (
-      <input className={base} {...rest as React.InputHTMLAttributes<HTMLInputElement>} />
-    )}
-    {error && <p className="text-xs text-[#EF4444]">{error}</p>}
-  </div>
-);}
+    <div className="space-y-1.5">
+      <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>
+        {label} {required && <span className="text-[#EF4444]">*</span>}
+      </label>
+      {multiline ? (
+        <textarea rows={3} className={`${base} resize-none`} {...(rest as React.TextareaHTMLAttributes<HTMLTextAreaElement>)} />
+      ) : (
+        <input className={base} {...(rest as React.InputHTMLAttributes<HTMLInputElement>)} />
+      )}
+      {error && <p className="text-xs text-[#EF4444]">{error}</p>}
+    </div>
+  );
+};
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -284,8 +286,8 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
 
                 {/* Row 6: Target Audience */}
                 <InputField
-                  label="Target Audience"
-                  placeholder="e.g. Enterprise B2B SaaS teams"
+                  label="Target Audience (comma-separated)"
+                  placeholder="e.g. B2B SaaS teams, Product Managers, Engineers"
                   error={errors.targetAudience?.message}
                   {...register('targetAudience')}
                 />

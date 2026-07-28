@@ -14,7 +14,7 @@ import {
   onSnapshot,
   type Unsubscribe,
 } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import { db, auth } from '../config/firebase';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -48,7 +48,7 @@ export interface Workspace {
   stage: ProductStage;
   priority: Priority;
   businessGoal?: string;
-  targetAudience?: string;
+  targetAudience?: string; // Standard string input from UI forms
   teamSize?: number;
   documentsCount: number;
   chatCount: number;
@@ -64,6 +64,14 @@ export type WorkspaceFormData = Omit<
   Workspace,
   'id' | 'ownerId' | 'documentsCount' | 'chatCount' | 'status' | 'progress' | 'createdAt' | 'updatedAt'
 >;
+
+// ─── FastAPI Payload Schemas ──────────────────────────────────────────────────
+
+export interface CreateProjectPayload {
+  name: string;
+  description?: string;
+  target_audience?: string[];
+}
 
 // ─── PRODUCT TYPE ICONS ───────────────────────────────────────────────────────
 
@@ -95,13 +103,62 @@ export const PRIORITY_COLORS: Record<Priority, string> = {
   Critical: 'text-red-400 bg-red-400/10 border-red-400/20',
 };
 
-// ─── Firestore Collection Reference ──────────────────────────────────────────
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const COLLECTION = 'workspaces';
+const BASE_URL = '/api/v1';
+
+async function getAuthHeader(): Promise<Record<string, string>> {
+  const currentUser = auth.currentUser;
+  if (!currentUser) return {};
+  const token = await currentUser.getIdToken();
+  return { Authorization: `Bearer ${token}` };
+}
 
 // ─── Service Methods ─────────────────────────────────────────────────────────
 
 export const workspaceService = {
+  // ── FastAPI Integrated Endpoints ──────────────────────────────────────────
+
+  /**
+   * Fetch all projects directly from FastAPI backend.
+   */
+  async getWorkspacesFromApi() {
+    const headers = await getAuthHeader();
+    const response = await fetch(`${BASE_URL}/projects`, { headers });
+    if (!response.ok) throw new Error('Failed to fetch workspaces from backend');
+    return await response.json();
+  },
+
+  /**
+   * Create a new project via FastAPI backend (supports target_audience list).
+   */
+  async createWorkspaceApi(payload: CreateProjectPayload) {
+    const headers = await getAuthHeader();
+    const response = await fetch(`${BASE_URL}/projects`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error('Failed to create workspace via backend');
+    return await response.json();
+  },
+
+  /**
+   * Fetch analytics for a given project from FastAPI backend.
+   */
+  async getWorkspaceAnalytics(projectId: string) {
+    const headers = await getAuthHeader();
+    const response = await fetch(`${BASE_URL}/analytics/${projectId}`, { headers });
+    if (!response.ok) throw new Error('Failed to fetch analytics from backend');
+    return await response.json();
+  },
+
+  // ── Firestore / Real-Time Client Operations ────────────────────────────────
+
   /**
    * Subscribe to real-time workspace updates for the logged-in user.
    */
@@ -135,7 +192,7 @@ export const workspaceService = {
   },
 
   /**
-   * Create a new workspace for the user.
+   * Create a new workspace (syncs both to Firestore and FastAPI backend).
    */
   async createWorkspace(
     userId: string,
@@ -143,6 +200,22 @@ export const workspaceService = {
     ownerName: string,
     ownerAvatar: string
   ): Promise<string> {
+    // 1. Sync to FastAPI Backend
+    try {
+      const targetAudienceList = formData.targetAudience
+        ? formData.targetAudience.split(',').map((s) => s.trim()).filter(Boolean)
+        : [];
+
+      await this.createWorkspaceApi({
+        name: formData.workspaceName,
+        description: formData.description,
+        target_audience: targetAudienceList,
+      });
+    } catch (apiError) {
+      console.warn('FastAPI backend sync warning during creation:', apiError);
+    }
+
+    // 2. Persist in Firestore for local UI real-time listeners
     const docRef = await addDoc(collection(db, COLLECTION), {
       ...formData,
       ownerId: userId,
