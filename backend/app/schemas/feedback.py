@@ -17,4 +17,8 @@ class FeedbackResponse(BaseModel):
     ai_insights: Optional[Dict[str, Any]] = Field(None, description="Structured intelligence insights returned by Gemini API.")
 
     class Config:
+<<<<<<< HEAD
         from_attributes = True
+=======
+        from_attributes = True
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

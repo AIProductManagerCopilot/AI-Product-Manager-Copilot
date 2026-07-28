@@ -2,7 +2,11 @@
 from typing import List, Dict, Any
 from fastapi import HTTPException, Security, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+<<<<<<< HEAD
 from app.auth.firebase import verify_firebase_token
+=======
+from backend.app.auth.firebase import verify_firebase_token
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 # Native FastAPI security helper that auto-detects Authorization headers
 security_scheme = HTTPBearer()
@@ -32,4 +36,8 @@ class RoleChecker:
                 detail="Access denied: Insufficient permissions for this workspace action.",
             )
 
+<<<<<<< HEAD
         return claims
+=======
+        return claims
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

@@ -58,4 +58,8 @@ def setup_logging(json_format: bool = False, log_level: str = "INFO") -> None:
 
 def get_logger(name: str):
     """Returns a structured logger instance for a given module name."""
+<<<<<<< HEAD
     return structlog.get_logger(name)
+=======
+    return structlog.get_logger(name)
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

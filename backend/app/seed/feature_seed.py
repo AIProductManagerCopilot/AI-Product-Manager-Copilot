@@ -44,4 +44,8 @@ def seed_features():
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     seed_features()
+=======
+    seed_features()
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

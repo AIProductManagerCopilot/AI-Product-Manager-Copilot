@@ -52,4 +52,8 @@ class AnalyticsEngine:
             source_distribution=source_counts,
             severity_distribution=severity_counts,
             processing_efficiency_eps=efficiency
+<<<<<<< HEAD
         )
+=======
+        )
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

@@ -267,6 +267,7 @@ __marimo__/
 # =========================================================
 
 .streamlit/secrets.toml
+<<<<<<< HEAD
 
 # =========================================================
 # macOS / Windows
@@ -311,3 +312,8 @@ dataset_factory/output/validated/
 echo pgdata_fresh/ >> .gitignore
 git add .gitignore
 git commit -m "chore: ignore local pgdata_fresh directory"
+=======
+pgdata_fresh/ 
+qdrant_db/ 
+backend/qdrant_db/ 
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

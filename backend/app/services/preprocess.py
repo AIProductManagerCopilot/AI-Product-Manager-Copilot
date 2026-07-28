@@ -20,4 +20,8 @@ def clean_customer_feedback(raw_text: str) -> str:
     # 3. Clean up leading and trailing empty spaces
     cleaned = cleaned.strip()
     
+<<<<<<< HEAD
     return cleaned
+=======
+    return cleaned
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

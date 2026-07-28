@@ -1,12 +1,21 @@
+<<<<<<< HEAD
 import uuid
+=======
+# File: backend/tests/test_projects_api.py
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 import pytest
 from unittest.mock import patch
 from fastapi.testclient import TestClient
 from fastapi import FastAPI
+<<<<<<< HEAD
 from app.api.v1.projects import router as projects_router
 from app.schemas.project import ProjectCreate, ProjectResponse
 from app.core.database import SessionLocal
 from app.models.core_models import User, Workspace, Organization
+=======
+from backend.app.api.v1.projects import router as projects_router
+from backend.app.schemas.project import ProjectCreate, ProjectResponse
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 # Initialize lightweight test harness
 app = FastAPI()
@@ -37,6 +46,7 @@ def test_pydantic_schema_validation_failure():
     with pytest.raises(ValueError):
         ProjectCreate(**payload)
 
+<<<<<<< HEAD
 @patch("app.auth.rbac.verify_firebase_token")
 def test_create_project_endpoint_authorized(mock_verify_token):
     """Router Test: Verifies successful 201 Created response for authorized PM user."""
@@ -90,6 +100,13 @@ def test_create_project_endpoint_authorized(mock_verify_token):
     finally:
         db.close()
 
+=======
+@patch("backend.app.auth.rbac.verify_firebase_token")
+def test_create_project_endpoint_authorized(mock_verify_token):
+    """Router Test: Verifies successful 201 Created response for authorized PM user."""
+    mock_verify_token.return_value = MOCK_PM_CLAIMS
+    
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
     payload = {
         "title": "Enterprise RAG Workspace",
         "description": "High throughput RAG workspace.",
@@ -97,9 +114,20 @@ def test_create_project_endpoint_authorized(mock_verify_token):
     }
     headers = {"Authorization": "Bearer valid_mock_token"}
     response = client.post("/api/v1/projects", json=payload, headers=headers)
+<<<<<<< HEAD
     assert response.status_code == 201
 
 @patch("app.auth.rbac.verify_firebase_token")
+=======
+    
+    assert response.status_code == 201
+    data = response.json()
+    assert data["title"] == "Enterprise RAG Workspace"
+    assert data["owner_id"] == "usr_test_12345"
+    assert data["status"] == "active"
+
+@patch("backend.app.auth.rbac.verify_firebase_token")
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 def test_create_project_endpoint_forbidden(mock_verify_token):
     """Router Test: Ensures users with insufficient roles receive a 403 Forbidden error."""
     mock_verify_token.return_value = MOCK_VIEWER_CLAIMS

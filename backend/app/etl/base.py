@@ -55,4 +55,8 @@ class BaseETLPipeline(abc.ABC):
     @abc.abstractmethod
     def normalize_record(self, validated_record: Dict[str, Any]) -> Dict[str, Any]:
         """Coerces record values into unified standard primitives."""
+<<<<<<< HEAD
         pass
+=======
+        pass
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

@@ -40,4 +40,8 @@ class ErrorResponse(BaseModel):
     """Standardized exception payload across all backend endpoints."""
     error_code: str = Field(..., description="Machine-readable error identifier.")
     message: str = Field(..., description="Human-readable error description.")
+<<<<<<< HEAD
     correlation_id: str = Field(..., description="Unique request tracing correlation ID.")
+=======
+    correlation_id: str = Field(..., description="Unique request tracing correlation ID.")
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

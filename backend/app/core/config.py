@@ -11,4 +11,8 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
+<<<<<<< HEAD
 settings = Settings()
+=======
+settings = Settings()
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

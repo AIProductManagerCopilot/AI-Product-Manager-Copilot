@@ -3,10 +3,17 @@ import uuid
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+<<<<<<< HEAD
 from app.api.v1.schemas import FeedbackUploadRequest, FeedbackResponse
 from app.services.text_processor import TextProcessorService
 from app.models.core_models import FeedbackItem, Project
 from app.core.database import get_db
+=======
+from backend.app.api.v1.schemas import FeedbackUploadRequest, FeedbackResponse
+from backend.app.services.text_processor import TextProcessorService
+from backend.app.models.core_models import FeedbackItem, Project
+from backend.app.core.database import get_db
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 from datetime import datetime
 
 router = APIRouter()
@@ -54,4 +61,8 @@ async def ingest_feedback(payload: FeedbackUploadRequest, db: Session = Depends(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Database integrity violation encountered during transactional ingestion mapping."
+<<<<<<< HEAD
         )
+=======
+        )
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

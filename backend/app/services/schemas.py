@@ -38,4 +38,8 @@ class TokenTelemetryMetrics(BaseModel):
     prompt_tokens: int = Field(..., description="Count of prompt tokens processed")
     completion_tokens: int = Field(..., description="Count of output completion generation tokens")
     execution_duration_ms: int = Field(..., description="Computation duration tracking elapsed milliseconds")
+<<<<<<< HEAD
     execution_id: str = Field(..., description="Tracking correlation identifier mapping")
+=======
+    execution_id: str = Field(..., description="Tracking correlation identifier mapping")
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

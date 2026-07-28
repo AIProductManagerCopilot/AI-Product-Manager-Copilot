@@ -1,17 +1,25 @@
 # File: backend/app/api/v1/projects.py
 from fastapi import APIRouter, Depends, status
+<<<<<<< HEAD
 from sqlalchemy.orm import Session
 from app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
 from app.auth.rbac import RoleChecker
 from app.services.application.project_service import ProjectService
 from app.core.database import get_db
 from app.repositories.project_repository import ProjectRepository
+=======
+from backend.app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
+from backend.app.auth.rbac import RoleChecker
+from backend.app.services.application.project_service import ProjectService
+
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 router = APIRouter(
     prefix="/projects",
     tags=["Projects Workspace Management"]
 )
 
 
+<<<<<<< HEAD
 
 # Shared factory pattern to cleanly deliver our app service boundary
 def get_project_service(
@@ -22,6 +30,13 @@ def get_project_service(
     """
     repository = ProjectRepository(db)
     return ProjectService(repository)  # <-- Pass as positional argument or repository=repository
+=======
+# Shared factory pattern to cleanly deliver our app service boundary
+def get_project_service() -> ProjectService:
+    """Dependency provider for ProjectService."""
+    return ProjectService()
+
+>>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 @router.post(
     "",
