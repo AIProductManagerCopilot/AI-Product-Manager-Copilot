@@ -14,11 +14,7 @@ import {
   onSnapshot,
   type Unsubscribe,
 } from 'firebase/firestore';
-<<<<<<< HEAD
 import { db, auth } from '../config/firebase';
-=======
-import { db } from '../config/firebase';
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -52,11 +48,7 @@ export interface Workspace {
   stage: ProductStage;
   priority: Priority;
   businessGoal?: string;
-<<<<<<< HEAD
   targetAudience?: string; // Standard string input from UI forms
-=======
-  targetAudience?: string;
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
   teamSize?: number;
   documentsCount: number;
   chatCount: number;
@@ -73,7 +65,6 @@ export type WorkspaceFormData = Omit<
   'id' | 'ownerId' | 'documentsCount' | 'chatCount' | 'status' | 'progress' | 'createdAt' | 'updatedAt'
 >;
 
-<<<<<<< HEAD
 // ─── FastAPI Payload Schemas ──────────────────────────────────────────────────
 
 export interface CreateProjectPayload {
@@ -82,8 +73,6 @@ export interface CreateProjectPayload {
   target_audience?: string[];
 }
 
-=======
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 // ─── PRODUCT TYPE ICONS ───────────────────────────────────────────────────────
 
 export const PRODUCT_TYPE_ICONS: Record<ProductType, string> = {
@@ -114,7 +103,6 @@ export const PRIORITY_COLORS: Record<Priority, string> = {
   Critical: 'text-red-400 bg-red-400/10 border-red-400/20',
 };
 
-<<<<<<< HEAD
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const COLLECTION = 'workspaces';
@@ -126,16 +114,10 @@ async function getAuthHeader(): Promise<Record<string, string>> {
   const token = await currentUser.getIdToken();
   return { Authorization: `Bearer ${token}` };
 }
-=======
-// ─── Firestore Collection Reference ──────────────────────────────────────────
-
-const COLLECTION = 'workspaces';
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 // ─── Service Methods ─────────────────────────────────────────────────────────
 
 export const workspaceService = {
-<<<<<<< HEAD
   // ── FastAPI Integrated Endpoints ──────────────────────────────────────────
 
   /**
@@ -177,8 +159,6 @@ export const workspaceService = {
 
   // ── Firestore / Real-Time Client Operations ────────────────────────────────
 
-=======
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
   /**
    * Subscribe to real-time workspace updates for the logged-in user.
    */
@@ -212,11 +192,7 @@ export const workspaceService = {
   },
 
   /**
-<<<<<<< HEAD
    * Create a new workspace (syncs both to Firestore and FastAPI backend).
-=======
-   * Create a new workspace for the user.
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
    */
   async createWorkspace(
     userId: string,
@@ -224,7 +200,6 @@ export const workspaceService = {
     ownerName: string,
     ownerAvatar: string
   ): Promise<string> {
-<<<<<<< HEAD
     // 1. Sync to FastAPI Backend
     try {
       const targetAudienceList = formData.targetAudience
@@ -241,8 +216,6 @@ export const workspaceService = {
     }
 
     // 2. Persist in Firestore for local UI real-time listeners
-=======
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
     const docRef = await addDoc(collection(db, COLLECTION), {
       ...formData,
       ownerId: userId,
@@ -343,8 +316,4 @@ export const workspaceService = {
       ...(doc.data() as Omit<Workspace, 'id'>),
     }));
   },
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
