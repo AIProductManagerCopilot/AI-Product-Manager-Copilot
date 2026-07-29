@@ -1,10 +1,10 @@
 import pandas as pd
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from sqlalchemy import text
 from typing import List, Dict, Any
 
-async def get_theme_clusters_from_db(
-    db: AsyncSession, 
+def get_theme_clusters_from_db(
+    db: Session, 
     start_date: str = None, 
     end_date: str = None
 ) -> List[Dict[str, Any]]:
@@ -22,11 +22,11 @@ async def get_theme_clusters_from_db(
             content,
             created_at
         FROM customer_feedback
-        WHERE (:start_date IS NULL OR created_at >= :start_date::timestamp)
-          AND (:end_date IS NULL OR created_at <= :end_date::timestamp)
+        WHERE (:start_date IS NULL OR created_at >= CAST(:start_date AS TIMESTAMP))
+          AND (:end_date IS NULL OR created_at <= CAST(:end_date AS TIMESTAMP))
     """)
     
-    result = await db.execute(query, {"start_date": start_date, "end_date": end_date})
+    result = db.execute(query, {"start_date": start_date, "end_date": end_date})
     rows = result.mappings().all()
     
     if not rows:

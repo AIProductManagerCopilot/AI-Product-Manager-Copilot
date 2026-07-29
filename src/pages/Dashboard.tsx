@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Database,
@@ -21,6 +21,8 @@ import {
   ExternalLink,
   Sparkles,
   CheckCircle2,
+  Wifi,
+  WifiOff,
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -29,6 +31,8 @@ import { TopNavbar } from '../components/TopNavbar';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { CreateWorkspaceModal } from '../components/CreateWorkspaceModal';
+import { analyticsService, type BackendCluster } from '../services/analyticsService';
+import { workspaceService } from '../services/workspaceService';
 
 // ─── Feedback Volume Chart SVG Component ───────────────────────────────────────
 
@@ -138,13 +142,23 @@ const FeedbackVolumeChart: React.FC = () => {
   );
 };
 
+// ─── Default Pain Points Fallback Data ─────────────────────────────────────────
+
+const DEFAULT_PAIN_POINTS = [
+  { title: 'Complex onboarding process', mentions: 892, pct: '24.1%', severity: 'High', color: 'red' },
+  { title: 'Lack of real-time analytics', mentions: 623, pct: '16.8%', severity: 'High', color: 'red' },
+  { title: 'Poor feature discoverability', mentions: 512, pct: '13.8%', severity: 'Medium', color: 'amber' },
+  { title: 'Slow performance issues', mentions: 441, pct: '11.9%', severity: 'Medium', color: 'amber' },
+  { title: 'Limited integration options', mentions: 387, pct: '10.4%', severity: 'Medium', color: 'amber' },
+];
+
 // ─── Dashboard Component ──────────────────────────────────────────────────────
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
   const { isDark } = useTheme();
 
-  // Local state
+  // Local UI state
   const [searchQuery, setSearchQuery] = useState('');
   const [volumeTimeframe, setVolumeTimeframe] = useState('Last 8 Weeks');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -152,12 +166,66 @@ export const DashboardPage: React.FC = () => {
   const [selectedPRDModal, setSelectedPRDModal] = useState(false);
   const [selectedAlertsModal, setSelectedAlertsModal] = useState(false);
 
+  // Backend Integration State
+  const [isBackendConnected, setIsBackendConnected] = useState<boolean | null>(null);
+  const [backendClusters, setBackendClusters] = useState<BackendCluster[]>([]);
+  const [apiProjectCount, setApiProjectCount] = useState<number | null>(null);
+
   // Toast theme styles
   const toast_ok = {
     background: isDark ? '#161B22' : '#ffffff',
     color: isDark ? '#F8FAFC' : '#0F172A',
     border: `1px solid ${isDark ? '#2D3748' : '#E2E8F0'}`,
   };
+
+  // Connect to Backend APIs on Mount (Reads existing endpoints)
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadBackendData() {
+      try {
+        // 1. Check Projects Backend Endpoint
+        const projects = await workspaceService.getWorkspacesFromApi();
+        if (isMounted && Array.isArray(projects)) {
+          setApiProjectCount(projects.length);
+          setIsBackendConnected(true);
+        }
+      } catch {
+        if (isMounted) setIsBackendConnected(false);
+      }
+
+      try {
+        // 2. Fetch Theme Clusters from Analytics Endpoint
+        const clusters = await analyticsService.getThemeClusters();
+        if (isMounted && Array.isArray(clusters) && clusters.length > 0) {
+          setBackendClusters(clusters);
+        }
+      } catch (err) {
+        console.warn('Analytics backend endpoint notice:', err);
+      }
+    }
+
+    loadBackendData();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Compute Pain Points from Backend or Fallback
+  const painPoints = backendClusters.length > 0
+    ? backendClusters.slice(0, 5).map((c) => {
+        const title = c.category || c.name || c.theme || 'Unlabeled Cluster';
+        const mentions = c.total_volume ?? c.mentions ?? c.count ?? 0;
+        const severityNum = c.avg_severity ?? 3.5;
+        const severity = severityNum >= 4.5 ? 'High' : 'Medium';
+        const pct = c.pct_total || `${((mentions / 200) * 100).toFixed(1)}%`;
+        return {
+          title,
+          mentions,
+          pct,
+          severity,
+          color: severity === 'High' ? 'red' : 'amber',
+        };
+      })
+    : DEFAULT_PAIN_POINTS;
 
   // Card background theme
   const cardBg = isDark
@@ -180,12 +248,33 @@ export const DashboardPage: React.FC = () => {
 
         <main className="flex-1 pt-20 px-8 pb-12 space-y-7 max-w-screen-2xl mx-auto w-full">
           
-          {/* ── Welcome Header ──────────────────────────────────────────────── */}
+          {/* ── Welcome Header & Backend Connection Badge ────────────────── */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-extrabold tracking-tight font-display" style={{ color: 'var(--text-primary)' }}>
-                Welcome back, {user?.name?.split(' ')[0] || 'Gagandeep'}! 👋
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-extrabold tracking-tight font-display" style={{ color: 'var(--text-primary)' }}>
+                  Welcome back, {user?.name?.split(' ')[0] || 'Gagandeep'}! 👋
+                </h1>
+
+                {/* Backend Connection Indicator */}
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-extrabold border ${
+                  isBackendConnected
+                    ? 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30'
+                    : 'bg-[#64748B]/15 text-[#94A3B8] border-[#64748B]/30'
+                }`}>
+                  {isBackendConnected ? (
+                    <>
+                      <Wifi className="w-3 h-3 text-[#10B981]" />
+                      FastAPI Active
+                    </>
+                  ) : (
+                    <>
+                      <WifiOff className="w-3 h-3 text-[#94A3B8]" />
+                      Frontend Engine
+                    </>
+                  )}
+                </span>
+              </div>
               <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
                 Here's what's happening with your product ecosystem today.
               </p>
@@ -219,7 +308,9 @@ export const DashboardPage: React.FC = () => {
                 <div>
                   <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Total Records</p>
                   <span className="text-2xl font-extrabold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                    8,342
+                    {backendClusters.length > 0
+                      ? backendClusters.reduce((sum, item) => sum + (item.total_volume || 0), 0).toLocaleString()
+                      : '8,342'}
                   </span>
                 </div>
               </div>
@@ -243,7 +334,7 @@ export const DashboardPage: React.FC = () => {
                 <div>
                   <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Themes Found</p>
                   <span className="text-2xl font-extrabold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                    24
+                    {backendClusters.length > 0 ? backendClusters.length : 24}
                   </span>
                 </div>
               </div>
@@ -401,13 +492,7 @@ export const DashboardPage: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
-                      {[
-                        { title: 'Complex onboarding process', mentions: 892, pct: '24.1%', severity: 'High', color: 'red' },
-                        { title: 'Lack of real-time analytics', mentions: 623, pct: '16.8%', severity: 'High', color: 'red' },
-                        { title: 'Poor feature discoverability', mentions: 512, pct: '13.8%', severity: 'Medium', color: 'amber' },
-                        { title: 'Slow performance issues', mentions: 441, pct: '11.9%', severity: 'Medium', color: 'amber' },
-                        { title: 'Limited integration options', mentions: 387, pct: '10.4%', severity: 'Medium', color: 'amber' },
-                      ].map((item, idx) => (
+                      {painPoints.map((item, idx) => (
                         <tr key={idx} className="hover:bg-[#8B5CF6]/5 transition-colors">
                           <td className="py-3 px-3 font-bold text-white">{item.title}</td>
                           <td className="py-3 px-2 text-center text-[#94A3B8]">{item.mentions}</td>
@@ -687,9 +772,11 @@ export const DashboardPage: React.FC = () => {
               <div className="p-4 rounded-xl bg-[#0D1117] border border-[#2D3748] space-y-3 text-xs text-[#CBD5E1]">
                 <p className="font-semibold text-white">Key Takeaways:</p>
                 <ul className="list-disc pl-4 space-y-1.5">
-                  <li><strong>Complex Onboarding (892 mentions):</strong> 68% drop-off in first 10 seconds of app usage.</li>
-                  <li><strong>Lack of Real-Time Analytics (623 mentions):</strong> Enterprise users requesting live WebSocket streaming.</li>
-                  <li><strong>Poor Feature Discoverability (512 mentions):</strong> High churn on secondary product tabs.</li>
+                  {painPoints.map((p, i) => (
+                    <li key={i}>
+                      <strong>{p.title} ({p.mentions} mentions):</strong> Represents {p.pct} of overall feedback signals.
+                    </li>
+                  ))}
                 </ul>
               </div>
 

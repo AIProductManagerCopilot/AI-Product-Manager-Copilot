@@ -302,12 +302,4 @@ dataset_factory/output/validated/
 # =========================================================
 # Keep these tracked
 # =========================================================
-# DO NOT IGNORE:
-# dataset_factory/output/raw/
-# dataset_factory/output/README_DATASET.md
-# README.md
-# requirements.txt
-
-echo pgdata_fresh/ >> .gitignore
-git add .gitignore
-git commit -m "chore: ignore local pgdata_fresh directory"
+# Keep dataset README and raw data tracked
