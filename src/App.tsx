@@ -18,6 +18,7 @@ import { DashboardPage } from './pages/Dashboard';
 import { WorkspaceDetailPage } from './pages/Workspace';
 import { FeedbackIngestionPage } from './pages/FeedbackIngestion';
 import { ProductAnalyticsPage } from './pages/ProductAnalytics';
+import { ThemeExtractionPage } from './pages/ThemeExtraction';
 
 export const App: React.FC = () => {
   return (
@@ -75,8 +76,15 @@ export const App: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/theme-extraction"
+                element={
+                  <ProtectedRoute>
+                    <ThemeExtractionPage />
+                  </ProtectedRoute>
+                }
+              />
               {[
-                '/theme-extraction',
                 '/feature-requests',
                 '/prioritization',
                 '/prd-generator',
