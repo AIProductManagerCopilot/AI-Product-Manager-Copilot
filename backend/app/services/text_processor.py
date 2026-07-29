@@ -51,8 +51,4 @@ class TextProcessorService:
                 score -= 0.25
                 
         # Constrain thresholds within programmatic boundaries
-<<<<<<< HEAD
         return max(-1.0, min(1.0, score))
-=======
-        return max(-1.0, min(1.0, score))
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

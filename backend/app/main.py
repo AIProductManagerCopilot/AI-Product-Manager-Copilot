@@ -13,11 +13,8 @@ setup_logging(json_format=False, log_level="INFO")
 # Registered right after env and logging setup to prevent early initialization drops
 from app.api.v1 import feedback  
 from app.api.v1 import copilot
-<<<<<<< HEAD
 from app.ai.router import router as ai_router
 from app.api.v1 import projects
-=======
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 app = FastAPI(
     title="AI Product Manager Copilot API",
@@ -25,7 +22,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-<<<<<<< HEAD
 # Explicit allowed origins for frontend local dev servers
 origins = [
     "http://localhost:5173",
@@ -38,12 +34,6 @@ origins = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-=======
-# Enable CORS so your React frontend (port 3000) can securely talk to this API
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -52,11 +42,8 @@ app.add_middleware(
 # Register core application routers
 app.include_router(feedback.router, prefix="/api/v1")
 app.include_router(copilot.router, prefix="/api/v1")
-<<<<<<< HEAD
 app.include_router(ai_router, prefix="/api/v1/ai", tags=["AI Subsystem"])
 app.include_router(projects.router, prefix="/api/v1")
-=======
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 @app.get("/")
 def read_root():

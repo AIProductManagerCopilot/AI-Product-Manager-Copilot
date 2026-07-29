@@ -26,8 +26,4 @@ class GeminiService:
                 if chunk.text:
                     yield chunk.text
         except Exception as exc:
-<<<<<<< HEAD
             raise ModelGenerationError(f"Gemini streaming generation failed: {str(exc)}") from exc
-=======
-            raise ModelGenerationError(f"Gemini streaming generation failed: {str(exc)}") from exc
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

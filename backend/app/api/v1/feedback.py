@@ -51,8 +51,4 @@ def import_customer_feedback(project_id: str, payload: FeedbackCreate, db: Sessi
         "ai_insights": ai_metrics              # Structured insights from Gemini
     }
     
-<<<<<<< HEAD
     return response_payload
-=======
-    return response_payload
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
