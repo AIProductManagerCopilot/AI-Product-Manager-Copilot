@@ -16,6 +16,7 @@ import { VerifyEmailPage } from './pages/VerifyEmail';
 // App pages
 import { DashboardPage } from './pages/Dashboard';
 import { WorkspaceDetailPage } from './pages/Workspace';
+import { FeedbackIngestionPage } from './pages/FeedbackIngestion';
 
 export const App: React.FC = () => {
   return (
@@ -57,6 +58,34 @@ export const App: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/feedback-ingestion"
+                element={
+                  <ProtectedRoute>
+                    <FeedbackIngestionPage />
+                  </ProtectedRoute>
+                }
+              />
+              {[
+                '/product-analytics',
+                '/theme-extraction',
+                '/feature-requests',
+                '/prioritization',
+                '/prd-generator',
+                '/roadmap',
+                '/ask-copilot',
+                '/settings',
+              ].map((path) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
+              ))}
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
