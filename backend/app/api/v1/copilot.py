@@ -74,8 +74,4 @@ async def stream_inference(
             "Connection": "keep-alive",
             "X-Accel-Buffering": "no"
         }
-<<<<<<< HEAD
     )
-=======
-    )
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

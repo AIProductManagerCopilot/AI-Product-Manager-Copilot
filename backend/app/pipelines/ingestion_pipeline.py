@@ -3,15 +3,9 @@
 import logging
 import time
 from typing import Dict, Any, List, Tuple
-<<<<<<< HEAD
 from app.etl.csv_pipeline import CSVETLPipeline
 from app.analytics.metrics import AnalyticsEngine, MetricsResult
 from app.etl.base import PipelineTelemetry
-=======
-from backend.app.etl.csv_pipeline import CSVETLPipeline
-from backend.app.analytics.metrics import AnalyticsEngine, MetricsResult
-from backend.app.etl.base import PipelineTelemetry
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 logger = logging.getLogger("pipelines.ingestion_orchestrator")
 
@@ -64,8 +58,4 @@ class IngestionOrchestrator:
         metrics = AnalyticsEngine.compute_batch_metrics(all_normalized_records, total_duration)
         
         logger.info(f"Pipeline execution completed successfully. Ingested: {telemetry.records_processed} rows.")
-<<<<<<< HEAD
         return all_normalized_records, metrics, telemetry
-=======
-        return all_normalized_records, metrics, telemetry
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

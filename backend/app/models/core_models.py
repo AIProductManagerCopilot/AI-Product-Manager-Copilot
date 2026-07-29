@@ -1,12 +1,7 @@
 import uuid
 from sqlalchemy import Column, String, ForeignKey, Text, Float, Integer, DateTime
-<<<<<<< HEAD
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import declarative_base
-=======
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.declarative import declarative_base
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -159,13 +154,10 @@ class Project(Base):
     project_name = Column(String(255), nullable=False)
     project_type = Column(String(100), nullable=False)
     description = Column(Text, nullable=True)
-<<<<<<< HEAD
     target_audience = Column(
         JSONB,
         nullable=True
     )
-=======
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
     technology_stack = Column(Text, nullable=True)
     status = Column(String(50), nullable=False)
     budget_usd = Column(Float, nullable=True)

@@ -126,8 +126,4 @@ class QdrantVectorMeshClient:
             
         except Exception as exc:
             log.error("Database search operation failed inside Qdrant framework mesh", error=str(exc))
-<<<<<<< HEAD
             raise
-=======
-            raise
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

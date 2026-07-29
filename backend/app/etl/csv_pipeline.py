@@ -3,13 +3,8 @@
 import csv
 import time
 from typing import Generator, Dict, Any, List
-<<<<<<< HEAD
 from app.etl.base import BaseETLPipeline, PipelineTelemetry
 from app.etl.exceptions import DataValidationError
-=======
-from backend.app.etl.base import BaseETLPipeline, PipelineTelemetry
-from backend.app.etl.exceptions import DataValidationError
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
 
 class CSVIngestionPipeline(BaseETLPipeline):
     """
@@ -91,8 +86,4 @@ class CSVIngestionPipeline(BaseETLPipeline):
             clean_key = key.lower().strip()
             clean_val = val.strip() if isinstance(val, str) else val
             normalized[clean_key] = clean_val
-<<<<<<< HEAD
         return normalized
-=======
-        return normalized
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

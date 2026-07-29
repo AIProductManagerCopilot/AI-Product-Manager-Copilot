@@ -20,8 +20,4 @@ class ContextAssemblyError(AIEngineError):
 
 class ModelGenerationError(AIEngineError):
     """Raised during LLM generation or streaming operations."""
-<<<<<<< HEAD
     pass
-=======
-    pass
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d

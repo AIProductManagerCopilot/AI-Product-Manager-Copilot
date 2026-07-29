@@ -67,8 +67,4 @@ class EmbeddingService:
 
     async def get_embedding(self, text: str) -> List[float]:
         """Legacy alias to support router / orchestrator callers."""
-<<<<<<< HEAD
         return await self.generate_embedding(text)
-=======
-        return await self.generate_embedding(text)
->>>>>>> 42b4670d97b915d3bb70c75a65efdc71f3a87b1d
