@@ -17,6 +17,7 @@ import { VerifyEmailPage } from './pages/VerifyEmail';
 import { DashboardPage } from './pages/Dashboard';
 import { WorkspaceDetailPage } from './pages/Workspace';
 import { FeedbackIngestionPage } from './pages/FeedbackIngestion';
+import { ProductAnalyticsPage } from './pages/ProductAnalytics';
 
 export const App: React.FC = () => {
   return (
@@ -66,8 +67,15 @@ export const App: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/product-analytics"
+                element={
+                  <ProtectedRoute>
+                    <ProductAnalyticsPage />
+                  </ProtectedRoute>
+                }
+              />
               {[
-                '/product-analytics',
                 '/theme-extraction',
                 '/feature-requests',
                 '/prioritization',
