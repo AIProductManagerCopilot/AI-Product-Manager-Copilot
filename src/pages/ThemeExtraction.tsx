@@ -591,7 +591,7 @@ export const ThemeExtractionPage: React.FC = () => {
                       <div className={`p-2.5 rounded-xl border w-fit ${item.color}`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      <h4 className="text-xs font-bold text-white">{item.step}</h4>
+                      <h4 className="text-xs font-bold" style={{ color: 'var(--text-primary)' }}>{item.step}</h4>
                       <p className="text-[11px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                         {item.desc}
                       </p>
