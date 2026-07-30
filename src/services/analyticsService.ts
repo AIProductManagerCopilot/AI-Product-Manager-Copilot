@@ -31,6 +31,10 @@ export interface BackendCluster {
 }
 
 export interface BackendTrend {
+  category?: string;
+  trajectory?: 'rising' | 'falling' | 'stable';
+  current_volume?: number;
+  history?: Array<{ time_bucket: string; volume: number; avg_sentiment: number }>;
   period?: string;
   count?: number;
   trend_pct?: number;
