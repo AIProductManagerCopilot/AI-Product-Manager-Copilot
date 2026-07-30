@@ -1,10 +1,10 @@
 import pandas as pd
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from sqlalchemy import text
 from typing import List, Dict, Any
 
-async def get_theme_trends_from_db(
-    db: AsyncSession, 
+def get_theme_trends_from_db(
+    db: Session, 
     time_window_days: int = 30
 ) -> List[Dict[str, Any]]:
     """
@@ -24,7 +24,7 @@ async def get_theme_trends_from_db(
         ORDER BY category, time_bucket ASC
     """)
     
-    result = await db.execute(query, {"days": time_window_days})
+    result = db.execute(query, {"days": str(time_window_days)})
     rows = result.mappings().all()
 
     if not rows:

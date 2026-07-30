@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
 class Settings(BaseSettings):
-    gemini_api_key: str = Field(..., env="GEMINI_API_KEY")
+    gemini_api_key: str = Field("demo_gemini_key", env="GEMINI_API_KEY")
     embedding_model: str = Field("gemini-embedding-001", env="EMBEDDING_MODEL")
     gemini_api_model: str = Field("gemini-2.0-flash", env="GEMINI_API_MODEL")
     qdrant_url: str = Field("./qdrant_db", env="QDRANT_URL")

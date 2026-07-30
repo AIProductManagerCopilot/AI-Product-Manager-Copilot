@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Inbox,
@@ -15,12 +15,14 @@ import {
   Search,
   X,
   FileText,
-  Zap
+  Zap,
+  WifiOff
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Sidebar } from '../components/Sidebar';
 import { TopNavbar } from '../components/TopNavbar';
 import { useTheme } from '../context/ThemeContext';
+import { feedbackService, DEFAULT_PROJECT_ID, type ProcessedFeedbackEntry } from '../services/feedbackService';
 
 // ─── SVG Source Logos ──────────────────────────────────────────────────────────
 
@@ -87,71 +89,79 @@ const INITIAL_SOURCES: FeedbackSource[] = [
   { id: 'gplay', name: 'Google Play Reviews', description: 'Android app store feedback', status: 'Connected', logo: GooglePlayLogo },
 ];
 
-const INITIAL_ENTRIES: FeedbackEntry[] = [
-  {
-    id: '1',
-    content: 'The app crashes frequently when trying to export large dat...',
-    source: 'Zendesk',
-    sourceType: 'Zendesk',
-    date: 'May 15, 2026 6:45 PM',
-    category: 'Bug',
-    sentiment: 'Negative',
-  },
-  {
-    id: '2',
-    content: 'Love the new dashboard! The analytics are super helpful.',
-    source: 'App Store',
-    sourceType: 'App Store',
-    date: 'May 15, 2026 5:32 PM',
-    category: 'Feedback',
-    sentiment: 'Positive',
-  },
-  {
-    id: '3',
-    content: 'Please add dark mode support. It would be great for night ...',
-    source: 'Intercom',
-    sourceType: 'Intercom',
-    date: 'May 15, 2026 4:18 PM',
-    category: 'Feature Request',
-    sentiment: 'Neutral',
-  },
-  {
-    id: '4',
-    content: 'The loading time on the reports page is too slow.',
-    source: 'Google Play',
-    sourceType: 'Google Play',
-    date: 'May 15, 2026 3:02 PM',
-    category: 'Performance',
-    sentiment: 'Negative',
-  },
-  {
-    id: '5',
-    content: 'Can we get an option to export to PDF directly?',
-    source: 'Zendesk',
-    sourceType: 'Zendesk',
-    date: 'May 15, 2026 1:47 PM',
-    category: 'Feature Request',
-    sentiment: 'Positive',
-  },
-  {
-    id: '6',
-    content: 'Push notifications are delayed by up to 10 minutes.',
-    source: 'App Store',
-    sourceType: 'App Store',
-    date: 'May 15, 2026 11:20 AM',
-    category: 'Bug',
-    sentiment: 'Negative',
-  },
-  {
-    id: '7',
-    content: 'Awesome AI copilot features! Saves our PM team hours.',
-    source: 'Intercom',
-    sourceType: 'Intercom',
-    date: 'May 15, 2026 10:05 AM',
-    category: 'Feedback',
-    sentiment: 'Positive',
-  },
+// ─── Demo fallback entries shown when backend is offline ───────────────────────
+const DEMO_ENTRIES: FeedbackEntry[] = [
+  { id: 'demo-1', content: 'The app crashes frequently when trying to export large dat...', source: 'Zendesk', sourceType: 'Zendesk', date: 'Demo Mode', category: 'Bug', sentiment: 'Negative' },
+  { id: 'demo-2', content: 'Love the new dashboard! The analytics are super helpful.', source: 'App Store', sourceType: 'App Store', date: 'Demo Mode', category: 'Feedback', sentiment: 'Positive' },
+  { id: 'demo-3', content: 'Please add dark mode support. It would be great for night use.', source: 'Intercom', sourceType: 'Intercom', date: 'Demo Mode', category: 'Feature Request', sentiment: 'Neutral' },
 ];
+
+// ─── Map a ProcessedFeedbackEntry from the API to our local FeedbackEntry shape ─
+function mapApiEntry(entry: ProcessedFeedbackEntry): FeedbackEntry {
+  const insights = entry.ai_insights ?? {};
+  const contentLower = (entry.content || '').toLowerCase();
+
+  let sentiment: FeedbackEntry['sentiment'] = 'Neutral';
+  const rawSentiment = (insights.sentiment as string | undefined)?.toUpperCase() ?? '';
+  if (rawSentiment === 'POSITIVE') {
+    sentiment = 'Positive';
+  } else if (rawSentiment === 'NEGATIVE') {
+    sentiment = 'Negative';
+  } else if (rawSentiment === 'NEUTRAL') {
+    sentiment = 'Neutral';
+  } else {
+    // Fallback keyword analysis
+    const posWords = ['fantastic', 'love', 'awesome', 'great', 'impressive', 'impressed', 'excellent', 'amazing', 'helpful', 'smooth', 'good', 'like', 'best', 'quick', 'intuitive', 'clean', 'thanks', 'thank', 'easy', 'easier', 'saved', 'saves'];
+    const negWords = ['crash', 'crashes', 'slow', 'delay', 'delayed', 'error', 'bug', 'fail', 'fails', 'freeze', 'freezes', 'issue', 'terrible', 'bad', 'worst', 'frustrating', 'horrible', 'broken', 'lacking', 'not worth', 'high memory', 'high battery', 'problem', 'poor', 'unreliable'];
+    const posCount = posWords.filter(w => contentLower.includes(w)).length;
+    const negCount = negWords.filter(w => contentLower.includes(w)).length;
+    if (posCount > negCount) sentiment = 'Positive';
+    else if (negCount > posCount) sentiment = 'Negative';
+  }
+
+  let category: FeedbackEntry['category'] = 'Feedback';
+  const rawTheme = ((insights.theme as string | undefined) ?? '').toLowerCase();
+  if (rawTheme.includes('bug')) {
+    category = 'Bug';
+  } else if (rawTheme.includes('performance')) {
+    category = 'Performance';
+  } else if (rawTheme.includes('feature')) {
+    category = 'Feature Request';
+  } else if (rawTheme) {
+    category = 'Feedback';
+  } else {
+    // Fallback keyword categorization
+    if (['crash', 'crashes', 'bug', 'error', 'fail', 'fails', 'freeze', 'freezes', 'broken'].some(w => contentLower.includes(w))) {
+      category = 'Bug';
+    } else if (['slow', 'loading', 'delay', 'delayed', 'memory', 'battery', 'lag', 'performance'].some(w => contentLower.includes(w))) {
+      category = 'Performance';
+    } else if (['add', 'feature', 'would be great', 'can we', 'option', 'wish', 'want'].some(w => contentLower.includes(w))) {
+      category = 'Feature Request';
+    }
+  }
+
+  const src = entry.source ?? '';
+  const sourceType: FeedbackEntry['sourceType'] =
+    src.toLowerCase().includes('zendesk') ? 'Zendesk'
+    : src.toLowerCase().includes('app store') || src.toLowerCase().includes('ios') ? 'App Store'
+    : src.toLowerCase().includes('intercom') ? 'Intercom'
+    : src.toLowerCase().includes('google') || src.toLowerCase().includes('android') ? 'Google Play'
+    : 'Manual Upload';
+
+  const date = entry.submitted_at
+    ? new Date(entry.submitted_at).toLocaleString([], { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    : 'Just now';
+
+  return {
+    id: entry.id,
+    content: entry.content,
+    source: entry.source,
+    sourceType,
+    date,
+    category,
+    sentiment,
+  };
+}
 
 // ─── Main Component ─────────────────────────────────────────────────────────────
 
@@ -162,7 +172,9 @@ export const FeedbackIngestionPage: React.FC = () => {
 
   // State
   const [sources, setSources] = useState<FeedbackSource[]>(INITIAL_SOURCES);
-  const [entries, setEntries] = useState<FeedbackEntry[]>(INITIAL_ENTRIES);
+  const [entries, setEntries] = useState<FeedbackEntry[]>([]);
+  const [isLoadingEntries, setIsLoadingEntries] = useState(true);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
@@ -174,6 +186,31 @@ export const FeedbackIngestionPage: React.FC = () => {
   const [showAllModal, setShowAllModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  // ── Fetch live entries from backend on mount ───────────────────────────────
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const data = await feedbackService.getFeedbackEntries(DEFAULT_PROJECT_ID);
+        if (!cancelled) {
+          setEntries(data.entries.map(mapApiEntry));
+          setIsDemoMode(false);
+        }
+      } catch {
+        // Backend unreachable — show demo data so team members without
+        // the backend running still see a working UI
+        if (!cancelled) {
+          setEntries(DEMO_ENTRIES);
+          setIsDemoMode(true);
+        }
+      } finally {
+        if (!cancelled) setIsLoadingEntries(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   // Theme Styles
   const cardBg = isDark
@@ -249,40 +286,36 @@ export const FeedbackIngestionPage: React.FC = () => {
     );
   };
 
-  // ── File Upload Handler ────────────────────────────────────────────────────
-  const handleFileUpload = (files: FileList | null) => {
+  // ── File Upload Handler — calls real backend API ───────────────────────────
+  const handleFileUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     const file = files[0];
     setIsUploading(true);
-    setUploadProgress(10);
+    setUploadProgress(5);
 
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setIsUploading(false);
-            setUploadProgress(0);
+    try {
+      const processed = await feedbackService.uploadFeedbackFile(
+        file,
+        DEFAULT_PROJECT_ID,
+        (pct) => setUploadProgress(pct)
+      );
 
-            // Add new simulated entry from uploaded file
-            const newEntry: FeedbackEntry = {
-              id: Date.now().toString(),
-              content: `Uploaded file (${file.name}): ${file.size} bytes ingested successfully.`,
-              source: 'Manual Upload',
-              sourceType: 'Zendesk',
-              date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              category: 'Feedback',
-              sentiment: 'Positive',
-            };
-
-            setEntries((prevEntries) => [newEntry, ...prevEntries]);
-            toast.success(`File "${file.name}" processed & ingested! 🚀`, { style: toastStyle });
-          }, 300);
-          return 100;
-        }
-        return prev + 30;
-      });
-    }, 200);
+      const newEntries = processed.map(mapApiEntry);
+      setEntries((prev) => [...newEntries, ...prev]);
+      setIsDemoMode(false);
+      toast.success(
+        `"${file.name}" processed — ${processed.length} entr${processed.length === 1 ? 'y' : 'ies'} ingested! 🚀`,
+        { style: toastStyle }
+      );
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Upload failed';
+      toast.error(msg, { style: toastStyle });
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
+      // Reset the file input so the same file can be re-selected
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -401,6 +434,21 @@ export const FeedbackIngestionPage: React.FC = () => {
             </motion.p>
           </div>
 
+          {/* ── Demo Mode Banner ─────────────────────────────────────────── */}
+          {isDemoMode && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#F59E0B]/30 bg-[#F59E0B]/10 text-[#F59E0B] text-xs font-medium"
+            >
+              <WifiOff className="w-4 h-4 flex-shrink-0" />
+              <span>
+                <strong>Demo Mode</strong> — Backend is offline or unreachable. Showing sample data.
+                Start the backend server and refresh to load live entries.
+              </span>
+            </motion.div>
+          )}
+
           {/* ── Top Metric Cards (3 Column Grid) ─────────────────────────── */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
 
@@ -416,10 +464,12 @@ export const FeedbackIngestionPage: React.FC = () => {
               </div>
               <div className="space-y-0.5">
                 <p className={`text-xs font-medium ${textSecondary}`}>Total Records</p>
-                <h3 className={`text-2xl font-extrabold tracking-tight ${textPrimary}`}>8,342</h3>
+                <h3 className={`text-2xl font-extrabold tracking-tight ${textPrimary}`}>
+                  {isLoadingEntries ? '—' : entries.length.toLocaleString()}
+                </h3>
                 <div className="flex items-center gap-1 text-xs font-semibold text-[#10B981] pt-0.5">
                   <TrendingUp className="w-3.5 h-3.5" />
-                  <span>12.5% vs last 7 days</span>
+                  <span>{isDemoMode ? 'Demo data' : 'Live from backend'}</span>
                 </div>
               </div>
             </motion.div>
@@ -436,10 +486,12 @@ export const FeedbackIngestionPage: React.FC = () => {
               </div>
               <div className="space-y-0.5">
                 <p className={`text-xs font-medium ${textSecondary}`}>Last Sync</p>
-                <h3 className={`text-2xl font-extrabold tracking-tight ${textPrimary}`}>2h ago</h3>
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#10B981] pt-0.5">
-                  <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-                  <span>All sources live</span>
+                <h3 className={`text-2xl font-extrabold tracking-tight ${textPrimary}`}>Just now</h3>
+                <div className="flex items-center gap-1.5 text-xs font-semibold pt-0.5">
+                  <span className={`w-2 h-2 rounded-full ${isDemoMode ? 'bg-[#F59E0B]' : 'bg-[#10B981] animate-pulse'}`} />
+                  <span className={isDemoMode ? 'text-[#F59E0B]' : 'text-[#10B981]'}>
+                    {isDemoMode ? 'Backend offline' : 'All sources live'}
+                  </span>
                 </div>
               </div>
             </motion.div>
@@ -625,7 +677,13 @@ export const FeedbackIngestionPage: React.FC = () => {
                   <MessageSquare className="w-4 h-4 text-[#3B82F6]" />
                   <h2 className={`text-base font-bold ${textPrimary}`}>Recent Feedback Entries</h2>
                 </div>
-                <p className={`text-xs mt-0.5 ${textSecondary}`}>Latest ingested feedback from all sources</p>
+                <p className={`text-xs mt-0.5 ${textSecondary}`}>
+                  {isLoadingEntries
+                    ? 'Loading from backend...'
+                    : isDemoMode
+                      ? 'Demo data — connect backend for live entries'
+                      : `${entries.length} live entr${entries.length === 1 ? 'y' : 'ies'} from backend`}
+                </p>
               </div>
 
               <button
@@ -638,6 +696,18 @@ export const FeedbackIngestionPage: React.FC = () => {
 
             {/* Table */}
             <div className="overflow-x-auto">
+              {isLoadingEntries ? (
+                <div className="py-16 flex flex-col items-center gap-3">
+                  <div className="w-8 h-8 rounded-full border-2 border-[#3B82F6] border-t-transparent animate-spin" />
+                  <p className={`text-xs ${textSecondary}`}>Fetching feedback from backend...</p>
+                </div>
+              ) : entries.length === 0 ? (
+                <div className="py-16 flex flex-col items-center gap-2">
+                  <Inbox className={`w-10 h-10 ${textMuted}`} />
+                  <p className={`text-sm font-semibold ${textPrimary}`}>No feedback yet</p>
+                  <p className={`text-xs ${textSecondary}`}>Upload a file or submit feedback to see entries here.</p>
+                </div>
+              ) : (
               <table className="w-full text-left border-collapse min-w-[700px]">
                 <thead>
                   <tr className={`border-b text-[11px] font-bold uppercase tracking-wider ${tableHeaderBorder}`}>
@@ -743,6 +813,7 @@ export const FeedbackIngestionPage: React.FC = () => {
                   ))}
                 </tbody>
               </table>
+              )}
             </div>
 
             {/* Pagination Controls */}
