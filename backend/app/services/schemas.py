@@ -31,8 +31,7 @@ class RAGContextSnippet(BaseModel):
 
 class RAGContextResponse(BaseModel):
     model_config = ConfigDict(frozen=True)
-    snippets: List[RAGContextSnippet] = Field(..., max_items=5, description="Prioritized array of matched semantic snippets")
-
+    snippets: List[RAGContextSnippet] = Field(..., max_length=5, description="Prioritized array of matched semantic snippets")
 class TokenTelemetryMetrics(BaseModel):
     model_config = ConfigDict(frozen=True)
     prompt_tokens: int = Field(..., description="Count of prompt tokens processed")
