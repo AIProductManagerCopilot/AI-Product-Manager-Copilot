@@ -12,16 +12,21 @@ def get_theme_clusters_from_db(
     Fetches raw feedback from PostgreSQL and extracts theme clusters 
     and prioritized customer pain points.
     """
-    # 1. Live SQL query to fetch raw feedback data
+    # 1. Live SQL query to fetch raw feedback data mapped to Akhila's schema
     query = text("""
         SELECT 
             id AS feedback_id,
-            category,
-            sentiment_score,
-            severity_weight,
+            source AS category,
+            CASE 
+                WHEN sentiment = 'positive' THEN 0.8
+                WHEN sentiment = 'neutral' THEN 0.0
+                WHEN sentiment = 'negative' THEN -0.8
+                ELSE 0.0
+            END AS sentiment_score,
+            2.0 AS severity_weight,
             content,
             created_at
-        FROM customer_feedback
+        FROM feedback
         WHERE (:start_date IS NULL OR created_at >= CAST(:start_date AS TIMESTAMP))
           AND (:end_date IS NULL OR created_at <= CAST(:end_date AS TIMESTAMP))
     """)
