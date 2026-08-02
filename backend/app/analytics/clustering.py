@@ -1,38 +1,19 @@
 import pandas as pd
-from sqlalchemy.orm import Session
-from sqlalchemy import text
 from typing import List, Dict, Any
+from app.repositories.analytics_repository import AnalyticsRepository
 
-def get_theme_clusters_from_db(
-    db: Session, 
-    start_date: str = None, 
-    end_date: str = None
+
+async def get_theme_clusters_from_db(
+    repo: AnalyticsRepository, 
+    start_date: Any = None, 
+    end_date: Any = None
 ) -> List[Dict[str, Any]]:
     """
-    Fetches raw feedback from PostgreSQL and extracts theme clusters 
-    and prioritized customer pain points.
+    Fetches raw feedback using AnalyticsRepository and extracts theme clusters 
+    and prioritized customer pain points using Pandas.
     """
-    # 1. Live SQL query to fetch raw feedback data mapped to Akhila's schema
-    query = text("""
-        SELECT 
-            id AS feedback_id,
-            source AS category,
-            CASE 
-                WHEN sentiment = 'positive' THEN 0.8
-                WHEN sentiment = 'neutral' THEN 0.0
-                WHEN sentiment = 'negative' THEN -0.8
-                ELSE 0.0
-            END AS sentiment_score,
-            2.0 AS severity_weight,
-            content,
-            created_at
-        FROM feedback
-        WHERE (:start_date IS NULL OR created_at >= CAST(:start_date AS TIMESTAMP))
-          AND (:end_date IS NULL OR created_at <= CAST(:end_date AS TIMESTAMP))
-    """)
-    
-    result = db.execute(query, {"start_date": start_date, "end_date": end_date})
-    rows = result.mappings().all()
+    # 1. Fetch clean feedback data from PostgreSQL repository (Async await)
+    rows = await repo.fetch_feedback_for_clustering(start_date, end_date)
     
     if not rows:
         return []
@@ -41,9 +22,9 @@ def get_theme_clusters_from_db(
     df = pd.DataFrame(rows)
 
     # 3. Perform clustering & weighted priority calculation
-    # Priority Score = Avg Severity Weight * (1 - Avg Sentiment Score) * Log(Volume)
+    # Priority Score = Avg Severity Weight * (1 - Avg Sentiment Score) * Log/Sqrt(Volume)
     grouped = df.groupby('category').agg(
-        total_volume=('feedback_id', 'count'),
+        total_volume=('id', 'count'),
         avg_sentiment=('sentiment_score', 'mean'),
         avg_severity=('severity_weight', 'mean')
     ).reset_index()
