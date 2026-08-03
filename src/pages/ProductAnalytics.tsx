@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BarChart2,
@@ -31,6 +31,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Sidebar } from '../components/Sidebar';
 import { TopNavbar } from '../components/TopNavbar';
 import { useTheme } from '../context/ThemeContext';
+import { analyticsService, BackendCluster } from '../services/analyticsService';
 
 // ─── Sparkline SVG Components ──────────────────────────────────────────────────
 
@@ -183,6 +184,35 @@ const DROP_OFF_POINTS: DropOffItem[] = [
   },
 ];
 
+// Helper to calculate date range parameters for GET /api/v1/analytics/clusters
+function getDateRangeParams(range: string): { start_date?: string; end_date?: string } {
+  const format = (d: Date) => d.toISOString().split('T')[0];
+  const now = new Date();
+  
+  if (range === 'Last 7 Days') {
+    const start = new Date();
+    start.setDate(now.getDate() - 7);
+    return { start_date: format(start), end_date: format(now) };
+  }
+  if (range === 'Last 30 Days') {
+    const start = new Date();
+    start.setDate(now.getDate() - 30);
+    return { start_date: format(start), end_date: format(now) };
+  }
+  if (range === 'Last 90 Days') {
+    const start = new Date();
+    start.setDate(now.getDate() - 90);
+    return { start_date: format(start), end_date: format(now) };
+  }
+  if (range === 'Year to Date (2026)') {
+    return { start_date: '2026-01-01', end_date: format(now) };
+  }
+  if (range === 'May 8 - May 15, 2026') {
+    return { start_date: '2026-05-08', end_date: '2026-05-15' };
+  }
+  return {};
+}
+
 // ─── Main Component ────────────────────────────────────────────────────────────
 
 export const ProductAnalyticsPage: React.FC = () => {
@@ -194,6 +224,11 @@ export const ProductAnalyticsPage: React.FC = () => {
   const [usageTimeframe, setUsageTimeframe] = useState('Last 7 Days');
   const [searchQuery, setSearchQuery] = useState('');
   
+  // Backend Integration State
+  const [backendClusters, setBackendClusters] = useState<BackendCluster[]>([]);
+  const [isLiveConnected, setIsLiveConnected] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   // Modals / Drawers
   const [isFunnelModalOpen, setIsFunnelModalOpen] = useState(false);
   const [isCopilotModalOpen, setIsCopilotModalOpen] = useState(false);
@@ -201,6 +236,113 @@ export const ProductAnalyticsPage: React.FC = () => {
 
   // Toast theme styles
   const toast_ok  = { background: isDark ? '#161B22' : '#ffffff', color: isDark ? '#F8FAFC' : '#0F172A', border: `1px solid ${isDark ? '#2D3748' : '#E2E8F0'}` };
+
+  // Fetch Live Database Clusters
+  const fetchLiveClusters = useCallback(async (range: string) => {
+    setIsLoading(true);
+    const { start_date, end_date } = getDateRangeParams(range);
+    try {
+      const response = await analyticsService.getThemeClusters(start_date, end_date);
+      // Backend returns either direct array or wrapping object with a 'data' property
+      const clusters = Array.isArray(response) 
+        ? response 
+        : (response as any)?.data || [];
+
+      setBackendClusters(clusters);
+      setIsLiveConnected(true);
+    } catch (err) {
+      console.error('Failed to retrieve PostgreSQL analytics data:', err);
+      setIsLiveConnected(false);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchLiveClusters(selectedDateRange);
+  }, [selectedDateRange, fetchLiveClusters]);
+
+  // Dynamically recalculate feature usage based on database feedback clusters
+  const getDynamicFeatureUsage = (): FeatureUsageItem[] => {
+    if (!isLiveConnected || backendClusters.length === 0) return FEATURE_USAGE;
+
+    return FEATURE_USAGE.map((feat) => {
+      // Find matching user friction cluster
+      const matchingCluster = backendClusters.find((c) => {
+        const cat = (c.category || c.name || c.theme || '').toLowerCase();
+        if (feat.id === 'investment-tab' && (cat.includes('onboarding') || cat.includes('complex'))) return true;
+        if (feat.id === 'reports-statements' && (cat.includes('pdf') || cat.includes('export') || cat.includes('statement'))) return true;
+        if (feat.id === 'bill-payments' && (cat.includes('payment') || cat.includes('gateway'))) return true;
+        if (feat.id === 'fund-transfer' && (cat.includes('transfer') || cat.includes('discoverability'))) return true;
+        if (feat.id === 'transaction-history' && cat.includes('performance')) return true;
+        if (feat.id === 'notifications' && cat.includes('notification')) return true;
+        return false;
+      });
+
+      if (!matchingCluster) return feat;
+
+      // Adjust the usage rate downward based on cluster volume and severity
+      const volume = matchingCluster.total_volume || matchingCluster.count || 0;
+      const severity = matchingCluster.avg_severity || 3;
+      const reduction = Math.min(40, Math.round(volume * 0.15 + severity * 2));
+      const newRate = Math.max(5, feat.rate - reduction);
+
+      return {
+        ...feat,
+        rate: newRate,
+        trend: reduction > 5 ? `-${(reduction * 0.1).toFixed(1)}%` : feat.trend,
+      };
+    });
+  };
+
+  // Dynamically adjust drop-off points based on database feedback clusters
+  const getDynamicDropOffPoints = (): DropOffItem[] => {
+    if (!isLiveConnected || backendClusters.length === 0) return DROP_OFF_POINTS;
+
+    return DROP_OFF_POINTS.map((drop) => {
+      const matchingCluster = backendClusters.find((c) => {
+        const cat = (c.category || c.name || c.theme || '').toLowerCase();
+        if (drop.id === 'investment-onboarding' && (cat.includes('onboarding') || cat.includes('complex'))) return true;
+        if (drop.id === 'statement-download' && (cat.includes('pdf') || cat.includes('export') || cat.includes('statement'))) return true;
+        if (drop.id === 'new-user-reg' && (cat.includes('login') || cat.includes('registration'))) return true;
+        return false;
+      });
+
+      if (!matchingCluster) return drop;
+
+      const volume = matchingCluster.total_volume || matchingCluster.count || 0;
+      const priorityScore = matchingCluster.priority_score || 0;
+      
+      let impact: 'High Impact' | 'Medium Impact' | 'Low Impact' = 'Low Impact';
+      let impactColor: 'red' | 'amber' | 'blue' = 'blue';
+
+      if (priorityScore > 20 || volume > 40) {
+        impact = 'High Impact';
+        impactColor = 'red';
+      } else if (priorityScore > 10 || volume > 20) {
+        impact = 'Medium Impact';
+        impactColor = 'amber';
+      }
+
+      return {
+        ...drop,
+        impact,
+        impactColor,
+        description: `${volume} users reported critical friction in database telemetry`,
+      };
+    });
+  };
+
+  // Dynamic values
+  const activeFeatures = getDynamicFeatureUsage();
+  const activeDropOffs = getDynamicDropOffPoints();
+
+  // Find investment cluster count for Copilot Insights
+  const investmentCluster = backendClusters.find((c) => 
+    (c.category || c.name || c.theme || '').toLowerCase().includes('onboarding') ||
+    (c.category || c.name || c.theme || '').toLowerCase().includes('complex')
+  );
+  const investmentIssueCount = investmentCluster ? (investmentCluster.total_volume || investmentCluster.count || 156) : 156;
 
   const handleDateSelect = (range: string) => {
     setSelectedDateRange(range);
@@ -248,6 +390,7 @@ export const ProductAnalyticsPage: React.FC = () => {
               </div>
               <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
                 Track user behavior, feature adoption, and product performance metrics.
+
               </p>
             </div>
 
@@ -488,7 +631,7 @@ export const ProductAnalyticsPage: React.FC = () => {
 
                 {/* Progress bar list */}
                 <div className="space-y-4">
-                  {FEATURE_USAGE.map((item) => {
+                  {activeFeatures.map((item) => {
                     const Icon = item.icon;
                     const isInvestment = item.id === 'investment-tab';
                     return (
@@ -566,7 +709,7 @@ export const ProductAnalyticsPage: React.FC = () => {
 
                 {/* Cards List */}
                 <div className="space-y-4">
-                  {DROP_OFF_POINTS.map((drop) => {
+                  {activeDropOffs.map((drop) => {
                     const Icon = drop.icon;
                     const borderStyle =
                       drop.impactColor === 'amber'
@@ -670,7 +813,7 @@ export const ProductAnalyticsPage: React.FC = () => {
             <div className={`p-5 rounded-xl border text-sm leading-relaxed ${innerPanelBg}`} style={{ color: 'var(--text-secondary)' }}>
               The Investment Tab has only <strong className="text-[#F59E0B]">23% adoption</strong> despite being heavily promoted on the dashboard. Cross-referencing feedback data reveals{' '}
               <span className="px-2 py-0.5 rounded-md font-bold bg-[#8B5CF6]/20 text-[#C084FC] border border-[#8B5CF6]/30">
-                156
+                {investmentIssueCount}
               </span>{' '}
               users mentioned <strong className="text-[#C084FC] font-semibold">"I don't understand what to do here."</strong> This suggests a significant onboarding flow problem rather than lack of interest. Users are likely confused by the complex UI and insufficient guidance. Consider implementing a step-by-step tutorial, simplifying the initial experience, and adding contextual help tooltips.
             </div>
@@ -807,7 +950,7 @@ export const ProductAnalyticsPage: React.FC = () => {
 
               <div className="flex items-center justify-between pt-2">
                 <span className="text-[11px] text-[#64748B] flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Grounded in 156 feedback tickets
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Grounded in {investmentIssueCount} feedback tickets
                 </span>
                 <button
                   onClick={() => {
