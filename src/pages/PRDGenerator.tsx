@@ -71,7 +71,7 @@ export const PRDGeneratorPage: React.FC = () => {
                     <h2 className="flex items-center gap-2 text-lg font-bold text-[#8B5CF6] mb-3">
                       <ClipboardList className="w-5 h-5" /> 1. Problem Statement
                     </h2>
-                    <p className={`text-[#CBD5E1] text-sm leading-relaxed`}>
+                    <p className={`${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} text-sm leading-relaxed`}>
                       Users currently cannot download their transaction history in PDF format for record keeping, tax filing, or accounting purposes. This leads to manual workarounds, user frustration, and high volume of support tickets related to statement exports.
                     </p>
                   </section>
@@ -83,28 +83,28 @@ export const PRDGeneratorPage: React.FC = () => {
                     </h2>
                     <div className={`rounded-xl border border-[#2D3748] overflow-hidden`}>
                       <div className={`grid grid-cols-2 divide-x divide-[#2D3748] border-b border-[#2D3748]`}>
-                        <div className={`p-3 text-sm text-[#CBD5E1] flex items-center gap-2`}>
+                        <div className={`p-3 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} flex items-center gap-2`}>
                           <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]"></div>
                           Enable users to export transaction history as PDF
                         </div>
                         <div className={`p-3 text-sm text-[#94A3B8]`}>Improve user convenience</div>
                       </div>
                       <div className={`grid grid-cols-2 divide-x divide-[#2D3748] border-b border-[#2D3748]`}>
-                        <div className={`p-3 text-sm text-[#CBD5E1] flex items-center gap-2`}>
+                        <div className={`p-3 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} flex items-center gap-2`}>
                           <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]"></div>
                           Reduce support tickets related to statement requests
                         </div>
                         <div className={`p-3 text-sm text-[#94A3B8]`}>Decrease by 40%</div>
                       </div>
                       <div className={`grid grid-cols-2 divide-x divide-[#2D3748] border-b border-[#2D3748]`}>
-                        <div className={`p-3 text-sm text-[#CBD5E1] flex items-center gap-2`}>
+                        <div className={`p-3 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} flex items-center gap-2`}>
                           <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]"></div>
                           Improve retention among enterprise users
                         </div>
                         <div className={`p-3 text-sm text-[#94A3B8]`}>Increase NPS by 15 points</div>
                       </div>
                       <div className="grid grid-cols-2 divide-x divide-[#2D3748]">
-                        <div className={`p-3 text-sm text-[#CBD5E1] flex items-center gap-2`}>
+                        <div className={`p-3 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} flex items-center gap-2`}>
                           <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]"></div>
                           Ensure secure and compliant document generation
                         </div>
@@ -122,7 +122,7 @@ export const PRDGeneratorPage: React.FC = () => {
                       <div className={`p-4 rounded-xl border flex items-start justify-between ${sectionBg}`}>
                         <div className="flex items-start gap-3">
                           <User className="w-5 h-5 text-[#8B5CF6] mt-0.5" />
-                          <p className={`text-sm text-[#CBD5E1]`}>As a finance manager, I want to download transaction statements in PDF so that I can share reports with my team.</p>
+                          <p className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'}`}>As a finance manager, I want to download transaction statements in PDF so that I can share reports with my team.</p>
                         </div>
                         <span className="px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#8B5CF6]/10 text-[#8B5CF6] border border-[#8B5CF6]/20 whitespace-nowrap ml-4">
                           Finance Manager
@@ -131,7 +131,7 @@ export const PRDGeneratorPage: React.FC = () => {
                       <div className={`p-4 rounded-xl border flex items-start justify-between ${sectionBg}`}>
                         <div className="flex items-start gap-3">
                           <User className="w-5 h-5 text-[#8B5CF6] mt-0.5" />
-                          <p className={`text-sm text-[#CBD5E1]`}>As an individual user, I want to export my statements for tax filing without visiting a branch.</p>
+                          <p className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'}`}>As an individual user, I want to export my statements for tax filing without visiting a branch.</p>
                         </div>
                         <span className="px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#8B5CF6]/10 text-[#8B5CF6] border border-[#8B5CF6]/20 whitespace-nowrap ml-4">
                           Individual User
@@ -140,7 +140,7 @@ export const PRDGeneratorPage: React.FC = () => {
                       <div className={`p-4 rounded-xl border flex items-start justify-between ${sectionBg}`}>
                         <div className="flex items-start gap-3">
                           <User className="w-5 h-5 text-[#8B5CF6] mt-0.5" />
-                          <p className={`text-sm text-[#CBD5E1]`}>As an accountant, I want bulk PDF exports of client statements for auditing and compliance.</p>
+                          <p className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'}`}>As an accountant, I want bulk PDF exports of client statements for auditing and compliance.</p>
                         </div>
                         <span className="px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#8B5CF6]/10 text-[#8B5CF6] border border-[#8B5CF6]/20 whitespace-nowrap ml-4">
                           Accountant
@@ -163,7 +163,7 @@ export const PRDGeneratorPage: React.FC = () => {
                           'Audit log is created for each export',
                           'Works on web and mobile platforms'
                         ].map((item, idx) => (
-                          <li key={idx} className={`flex items-start gap-2 text-sm text-[#CBD5E1]`}>
+                          <li key={idx} className={`flex items-start gap-2 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'}`}>
                             <Check className="w-4 h-4 text-[#10B981] mt-0.5 flex-shrink-0" />
                             <span>{item}</span>
                           </li>
@@ -184,7 +184,7 @@ export const PRDGeneratorPage: React.FC = () => {
                           'Offline PDF generation',
                           'Printed statement delivery by post'
                         ].map((item, idx) => (
-                          <li key={idx} className={`flex items-start gap-2 text-sm text-[#CBD5E1]`}>
+                          <li key={idx} className={`flex items-start gap-2 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'}`}>
                             <X className="w-4 h-4 text-[#F43F5E] mt-0.5 flex-shrink-0" />
                             <span>{item}</span>
                           </li>

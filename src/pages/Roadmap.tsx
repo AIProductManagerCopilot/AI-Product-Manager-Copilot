@@ -92,7 +92,7 @@ export const RoadmapPage: React.FC = () => {
                   <tr>
                     <td className={`p-4 border-r ${tableBorder}`}>
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-[#1E293B] border border-[#334155] text-[#CBD5E1]`}>
+                        <div className={`p-2 rounded-lg border ${isDark ? 'bg-[#1E293B] border-[#334155] text-[#CBD5E1]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#475569]'}`}>
                           <Gauge className="w-4 h-4" />
                         </div>
                         <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Performance</span>
@@ -117,7 +117,7 @@ export const RoadmapPage: React.FC = () => {
                   <tr>
                     <td className={`p-4 border-r ${tableBorder}`}>
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-[#1E293B] border border-[#334155] text-[#CBD5E1]`}>
+                        <div className={`p-2 rounded-lg border ${isDark ? 'bg-[#1E293B] border-[#334155] text-[#CBD5E1]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#475569]'}`}>
                           <Lock className="w-4 h-4" />
                         </div>
                         <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Auth</span>
@@ -143,7 +143,7 @@ export const RoadmapPage: React.FC = () => {
                   <tr>
                     <td className={`p-4 border-r ${tableBorder}`}>
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-[#1E293B] border border-[#334155] text-[#CBD5E1]`}>
+                        <div className={`p-2 rounded-lg border ${isDark ? 'bg-[#1E293B] border-[#334155] text-[#CBD5E1]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#475569]'}`}>
                           <CloudLightning className="w-4 h-4" />
                         </div>
                         <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Ingestion</span>
@@ -168,7 +168,7 @@ export const RoadmapPage: React.FC = () => {
                   <tr>
                     <td className={`p-4 border-r ${tableBorder}`}>
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-[#1E293B] border border-[#334155] text-[#CBD5E1]`}>
+                        <div className={`p-2 rounded-lg border ${isDark ? 'bg-[#1E293B] border-[#334155] text-[#CBD5E1]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#475569]'}`}>
                           <PenTool className="w-4 h-4" />
                         </div>
                         <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>UI/UX</span>
@@ -206,7 +206,7 @@ export const RoadmapPage: React.FC = () => {
                   <tr>
                     <td className={`p-4 border-r ${tableBorder}`}>
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-[#1E293B] border border-[#334155] text-[#CBD5E1]`}>
+                        <div className={`p-2 rounded-lg border ${isDark ? 'bg-[#1E293B] border-[#334155] text-[#CBD5E1]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#475569]'}`}>
                           <BarChart className="w-4 h-4" />
                         </div>
                         <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Analytics</span>
@@ -230,7 +230,7 @@ export const RoadmapPage: React.FC = () => {
                   <tr>
                     <td className={`p-4 border-r ${tableBorder}`}>
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-[#1E293B] border border-[#334155] text-[#CBD5E1]`}>
+                        <div className={`p-2 rounded-lg border ${isDark ? 'bg-[#1E293B] border-[#334155] text-[#CBD5E1]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#475569]'}`}>
                           <Building className="w-4 h-4" />
                         </div>
                         <span className={`text-sm font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>Enterprise</span>
@@ -301,7 +301,7 @@ export const RoadmapPage: React.FC = () => {
                 </span>
               </div>
               
-              <div className={`space-y-4 text-sm leading-relaxed text-[#CBD5E1]`}>
+              <div className={`space-y-4 text-sm leading-relaxed ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'}`}>
                 <p>
                   Based on enterprise renewal dates in August and current framework velocity, I recommend shipping{' '}
                   <span className="font-semibold text-[#8B5CF6]">PDF Export before July 31</span> to capture Q3 value and reduce churn risk from{' '}

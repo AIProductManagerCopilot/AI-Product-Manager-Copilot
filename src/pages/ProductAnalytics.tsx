@@ -933,17 +933,17 @@ export const ProductAnalyticsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-[#0D1117] border border-[#2D3748] space-y-3 text-xs text-[#94A3B8] leading-relaxed">
-                <p className="font-semibold text-white">Suggested 3-Step Action Plan:</p>
-                <ol className="list-decimal pl-4 space-y-2 text-[#CBD5E1]">
+              <div className={`p-4 rounded-xl border space-y-3 text-xs leading-relaxed ${isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#94A3B8]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#64748B]'}`}>
+                <p className={`font-semibold ${isDark ? 'text-white' : 'text-[#0F172A]'}`}>Suggested 3-Step Action Plan:</p>
+                <ol className={`list-decimal pl-4 space-y-2 ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'}`}>
                   <li>
-                    <strong className="text-white">Interactive Guided Tour:</strong> Add a 4-slide modal explaining portfolio options upon first visit.
+                    <strong className={isDark ? 'text-white' : 'text-[#0F172A]'}>Interactive Guided Tour:</strong> Add a 4-slide modal explaining portfolio options upon first visit.
                   </li>
                   <li>
-                    <strong className="text-white">Clearer CTA Labels:</strong> Change "Initialize Asset Vault" to "Start Investing with $10".
+                    <strong className={isDark ? 'text-white' : 'text-[#0F172A]'}>Clearer CTA Labels:</strong> Change "Initialize Asset Vault" to "Start Investing with $10".
                   </li>
                   <li>
-                    <strong className="text-white">Contextual Tooltips:</strong> Highlight risk profile choices with inline hover tooltips.
+                    <strong className={isDark ? 'text-white' : 'text-[#0F172A]'}>Contextual Tooltips:</strong> Highlight risk profile choices with inline hover tooltips.
                   </li>
                 </ol>
               </div>

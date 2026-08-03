@@ -650,23 +650,23 @@ export const ThemeExtractionPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-[#0D1117] border border-[#2D3748] space-y-3">
+              <div className={`p-4 rounded-xl border space-y-3 ${isDark ? 'bg-[#0D1117] border-[#2D3748]' : 'bg-[#F8FAFC] border-[#E2E8F0]'}`}>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B]">Verbatim Sample</span>
-                <p className="text-xs italic text-[#CBD5E1]">"{selectedTheme.quote}"</p>
+                <p className={`text-xs italic ${isDark ? 'text-[#CBD5E1]' : 'text-[#334155]'}`}>"{selectedTheme.quote}"</p>
               </div>
 
               <div className="grid grid-cols-3 gap-3 text-center text-xs">
-                <div className="p-3 rounded-xl bg-[#0D1117] border border-[#2D3748]">
+                <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#0D1117] border-[#2D3748]' : 'bg-[#F8FAFC] border-[#E2E8F0]'}`}>
                   <p className="text-[#64748B] text-[10px]">Zendesk</p>
-                  <p className="font-bold text-white text-sm mt-0.5">{selectedTheme.sources.zendesk}</p>
+                  <p className={`font-bold text-sm mt-0.5 ${isDark ? 'text-white' : 'text-[#0F172A]'}`}>{selectedTheme.sources.zendesk}</p>
                 </div>
-                <div className="p-3 rounded-xl bg-[#0D1117] border border-[#2D3748]">
+                <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#0D1117] border-[#2D3748]' : 'bg-[#F8FAFC] border-[#E2E8F0]'}`}>
                   <p className="text-[#64748B] text-[10px]">App Store</p>
-                  <p className="font-bold text-white text-sm mt-0.5">{selectedTheme.sources.appStore}</p>
+                  <p className={`font-bold text-sm mt-0.5 ${isDark ? 'text-white' : 'text-[#0F172A]'}`}>{selectedTheme.sources.appStore}</p>
                 </div>
-                <div className="p-3 rounded-xl bg-[#0D1117] border border-[#2D3748]">
+                <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#0D1117] border-[#2D3748]' : 'bg-[#F8FAFC] border-[#E2E8F0]'}`}>
                   <p className="text-[#64748B] text-[10px]">Intercom</p>
-                  <p className="font-bold text-white text-sm mt-0.5">{selectedTheme.sources.intercom}</p>
+                  <p className={`font-bold text-sm mt-0.5 ${isDark ? 'text-white' : 'text-[#0F172A]'}`}>{selectedTheme.sources.intercom}</p>
                 </div>
               </div>
 
@@ -721,7 +721,7 @@ export const ThemeExtractionPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-[#0D1117] border border-[#2D3748] space-y-2 text-xs font-mono text-[#CBD5E1]">
+              <div className={`p-4 rounded-xl border space-y-2 text-xs font-mono ${isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#CBD5E1]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#334155]'}`}>
                 <div className="flex justify-between"><span className="text-[#64748B]">Embedding Model:</span><span>text-embedding-3-large (1536d)</span></div>
                 <div className="flex justify-between"><span className="text-[#64748B]">Vector Database:</span><span>Qdrant Cloud (v1.8.1)</span></div>
                 <div className="flex justify-between"><span className="text-[#64748B]">Clustering Algorithm:</span><span>HDBSCAN (min_cluster_size=15)</span></div>

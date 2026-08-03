@@ -1107,12 +1107,12 @@ export const DashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-[#0D1117] border border-[#2D3748] space-y-3 text-xs text-[#CBD5E1]">
-                <p className="font-semibold text-white">Key Takeaways:</p>
+              <div className={`p-4 rounded-xl border space-y-3 text-xs ${isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#CBD5E1]' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#334155]'}`}>
+                <p className={`font-semibold ${isDark ? 'text-white' : 'text-[#0F172A]'}`}>Key Takeaways:</p>
                 <ul className="list-disc pl-4 space-y-1.5">
                   {painPoints.map((p, i) => (
                     <li key={i}>
-                      <strong>{p.title} ({p.mentions} mentions):</strong> Represents {p.pct} of overall feedback signals.
+                      <strong className={isDark ? 'text-white' : 'text-[#0F172A]'}>{p.title} ({p.mentions} mentions):</strong> Represents {p.pct} of overall feedback signals.
                     </li>
                   ))}
                 </ul>
