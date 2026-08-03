@@ -56,7 +56,8 @@ export const analyticsService = {
       const res = await fetch(url, { headers });
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-      return await res.json();
+      const json = await res.json();
+      return Array.isArray(json) ? json : (json?.data || []);
     } catch (error) {
       console.warn('Backend /analytics/clusters fetch failed, returning default telemetry:', error);
       return [];
@@ -73,7 +74,8 @@ export const analyticsService = {
       const res = await fetch(`${BASE_URL}/analytics/trends?time_window_days=${timeWindowDays}`, { headers });
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-      return await res.json();
+      const json = await res.json();
+      return Array.isArray(json) ? json : (json?.data || []);
     } catch (error) {
       console.warn('Backend /analytics/trends fetch failed, returning default telemetry:', error);
       return [];
