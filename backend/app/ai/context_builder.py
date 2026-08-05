@@ -23,7 +23,7 @@ class ContextBuilder:
 
         formatted_blocks = []
         for idx, doc in enumerate(retrieved_docs, 1):
-            metadata = doc.get("metadata", {})
+            metadata = doc.get("metadata", {}) or {}
             text = doc.get("text", "").strip()
             score = doc.get("score", 0.0)
             category = metadata.get("category", "General")

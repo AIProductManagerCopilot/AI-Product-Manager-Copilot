@@ -26,13 +26,13 @@ class EmbeddingService:
         return model_name
 
     async def generate_embedding(self, text: str) -> List[float]:
-        """Generates embeddings with strictly enforced 3072 output dimensionality."""
+        """Generates embeddings with strictly enforced output dimensionality matching settings (768)."""
         try:
             cleaned_text = (text or "").strip()
             if not cleaned_text:
                 raise EmbeddingError("Cannot generate embedding for empty or whitespace text string.")
 
-            target_dim = getattr(settings, "embedding_dimension", 3072) or 3072
+            target_dim = getattr(settings, "embedding_dimension", 768) or 768
             
             config = types.EmbedContentConfig(
                 output_dimensionality=target_dim

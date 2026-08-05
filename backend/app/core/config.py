@@ -20,15 +20,15 @@ class Settings(BaseSettings):
         default="demo_gemini_key", validation_alias="GEMINI_API_KEY"
     )
     gemini_model: str = Field(
-        default="gemini-1.5-flash", validation_alias="GEMINI_MODEL"
+        default="gemini-2.5-flash", validation_alias="GEMINI_MODEL"
     )
     gemini_api_model: str = Field(
-        default="gemini-1.5-flash", validation_alias="GEMINI_API_MODEL"
+        default="gemini-2.5-flash", validation_alias="GEMINI_API_MODEL"
     )
 
     # Embedding Settings
     embedding_model: str = Field(
-        default="models/text-embedding-004", validation_alias="EMBEDDING_MODEL"
+        default="text-embedding-004", validation_alias="EMBEDDING_MODEL"
     )
     embedding_dimension: int = Field(
         default=768, validation_alias="EMBEDDING_DIMENSION"

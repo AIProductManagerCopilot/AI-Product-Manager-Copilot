@@ -1,4 +1,3 @@
-# backend/app/ai/router.py
 """
 AI Subsystem Router.
 Provides endpoints for Copilot streaming, PRD generation, Theme Intelligence, and RAG-grounded responses.
@@ -171,8 +170,10 @@ async def theme_insights_endpoint(request: ThemeIntelligenceRequest):
             category_filter=request.category_filter,
         )
 
+        model_name = settings.gemini_model.replace("models/", "") if settings.gemini_model else "gemini-2.5-flash"
+
         response = ai_client.models.generate_content(
-            model=settings.gemini_model,
+            model=model_name,
             contents=context_data["prompt"],
             config=types.GenerateContentConfig(
                 system_instruction=context_data["system_instruction"],

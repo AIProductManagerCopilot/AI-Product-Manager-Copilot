@@ -5,6 +5,7 @@ Vector Database & Embedding Integration Service for Qdrant and Google GenAI.
 import logging
 from typing import Any, Dict, List, Optional
 from google import genai
+from google.genai import types
 from qdrant_client import AsyncQdrantClient
 from qdrant_client.http import models as qmodels
 
@@ -82,20 +83,28 @@ class VectorService:
 
     def generate_embedding(self, text: str) -> List[float]:
         """
-        Generates dense vector embeddings using Google GenAI SDK.
+        Generates dense vector embeddings using Google GenAI SDK enforced to target dimensions.
         """
         try:
             # Clean model string format for google-genai SDK
-            model_name = settings.embedding_model.replace("models/", "") if settings.embedding_model else "text-embedding-004"
+            model_name = (
+                settings.embedding_model.replace("models/", "")
+                if settings.embedding_model
+                else "text-embedding-004"
+            )
 
+            # Pass output_dimensionality=768 so the vector matches the Qdrant schema
             response = self.ai_client.models.embed_content(
                 model=model_name,
                 contents=text,
+                config=types.EmbedContentConfig(
+                    output_dimensionality=self.vector_size
+                ),
             )
             return response.embeddings[0].values
         except Exception as e:
             logger.error(f"Error generating embedding via Google GenAI API: {str(e)}")
-            # Fallback zero vector so similarity search doesn't crash if embedding call fails
+            # Fallback zero vector matching target dimension so similarity search does not crash
             return [0.0] * self.vector_size
 
     async def upsert_documents(
