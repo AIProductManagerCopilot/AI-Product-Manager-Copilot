@@ -1,4 +1,3 @@
-# File: backend/app/api/v1/projects.py
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from app.schemas.project import ProjectCreate, ProjectResponse, ErrorResponse
@@ -6,11 +5,11 @@ from app.auth.rbac import RoleChecker
 from app.services.application.project_service import ProjectService
 from app.core.database import get_db
 from app.repositories.project_repository import ProjectRepository
+
 router = APIRouter(
     prefix="/projects",
     tags=["Projects Workspace Management"]
 )
-
 
 
 # Shared factory pattern to cleanly deliver our app service boundary
@@ -22,6 +21,7 @@ def get_project_service(
     """
     repository = ProjectRepository(db)
     return ProjectService(repository)  # <-- Pass as positional argument or repository=repository
+
 
 @router.post(
     "",
@@ -46,3 +46,22 @@ def create_project(
 
     # Process transactional execution strictly through the business service tier
     return service.orchestrate_creation(payload=payload, owner_id=owner_id)
+
+
+@router.get(
+    "",
+    response_model=list[ProjectResponse],
+    status_code=status.HTTP_200_OK,
+    summary="List all AI Product Workspaces",
+    description="Retrieves all existing project workspaces for authorized team members.",
+    responses={
+        401: {"model": ErrorResponse, "description": "Unauthorized / Invalid Token"},
+        403: {"model": ErrorResponse, "description": "Forbidden / Insufficient Role Scope"},
+    }
+)
+def list_projects(
+    service: ProjectService = Depends(get_project_service),
+    current_user_claims: dict = Depends(RoleChecker(["product_manager", "admin", "viewer"]))
+) -> list[ProjectResponse]:
+    """Retrieves all project workspaces using the repository service layer."""
+    return service.repository.list_all()
