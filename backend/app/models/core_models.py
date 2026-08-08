@@ -100,7 +100,6 @@ class User(Base):
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
     email = Column(String(255), unique=True, nullable=False)
-    role = Column(String(100), nullable=False)
     country = Column(String(100), nullable=False)
     workspace = relationship(
         "Workspace",
@@ -357,7 +356,8 @@ class Feedback(Base):
     created_at = Column(
         DateTime,
         server_default=func.now(),
-        nullable=False
+        nullable=False,
+        index=True
     )
     updated_at = Column(
         DateTime,
