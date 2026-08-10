@@ -113,4 +113,44 @@ export const analyticsService = {
       onChunk('AI assistant connection currently unavailable.');
     }
   },
+
+  /**
+   * Stream RAG-grounded PRD generation using SSE endpoint.
+   * Endpoint: POST /api/v1/ai/generate-prd
+   */
+  async streamPRDGeneration(
+    payload: {
+      feature_name: string;
+      user_query: string;
+      category_filter?: string;
+      limit?: number;
+    },
+    onChunk: (chunk: string) => void
+  ): Promise<void> {
+    try {
+      const headers = await getAuthHeaders();
+      const res = await fetch(`${BASE_URL}/ai/generate-prd`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...headers,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.body) throw new Error('Response body missing');
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        const text = decoder.decode(value, { stream: true });
+        onChunk(text);
+      }
+    } catch (error) {
+      console.error('PRD generation streaming failed:', error);
+      onChunk('[ERROR]: Connection to the PRD generation service is currently unavailable.');
+    }
+  },
 };

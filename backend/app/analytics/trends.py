@@ -14,14 +14,21 @@ def get_theme_trends_from_db(
     # 1. SQL query to retrieve aggregated category volume over time intervals
     query = text("""
         SELECT 
-            category,
+            channel AS category,
             DATE_TRUNC('week', created_at) AS time_bucket,
             COUNT(id) AS volume,
-            AVG(sentiment_score) AS avg_sentiment
-        FROM customer_feedback
+            AVG(
+                CASE 
+                    WHEN LOWER(sentiment) = 'positive' THEN 0.8
+                    WHEN LOWER(sentiment) = 'neutral' THEN 0.0
+                    WHEN LOWER(sentiment) = 'negative' THEN -0.8
+                    ELSE 0.0
+                END
+            ) AS avg_sentiment
+        FROM feedback
         WHERE created_at >= NOW() - (:days || ' days')::INTERVAL
-        GROUP BY category, time_bucket
-        ORDER BY category, time_bucket ASC
+        GROUP BY channel, time_bucket
+        ORDER BY channel, time_bucket ASC
     """)
     
     result = db.execute(query, {"days": str(time_window_days)})

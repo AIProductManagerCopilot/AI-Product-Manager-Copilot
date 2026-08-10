@@ -41,14 +41,16 @@ async def main():
     collections = await qdrant_client.get_collections()
     existing_names = [c.name for c in collections.collections]
     
+    vector_size = int(os.getenv("EMBEDDING_DIMENSION", "768"))
+
     if collection_name in existing_names:
-        print(f"Re-creating collection '{collection_name}' to update vector dimensions to 3072...")
+        print(f"Re-creating collection '{collection_name}' to update vector dimensions to {vector_size}...")
         await qdrant_client.delete_collection(collection_name=collection_name)
 
-    print(f"Creating vector collection '{collection_name}' with 3072 dimensions...")
+    print(f"Creating vector collection '{collection_name}' with {vector_size} dimensions...")
     await qdrant_client.create_collection(
         collection_name=collection_name,
-        vectors_config=VectorParams(size=3072, distance=Distance.COSINE)
+        vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE)
     )
 
     sample_docs = [

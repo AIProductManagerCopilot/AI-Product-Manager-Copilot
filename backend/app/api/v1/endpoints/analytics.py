@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.seed.db_session import get_db
 from app.repositories.analytics_repository import AnalyticsRepository
 from app.analytics.clustering import get_theme_clusters_from_db
+from app.analytics.trends import get_theme_trends_from_db
 
 router = APIRouter()
 
@@ -49,33 +50,22 @@ async def get_clusters(
 
 
 @router.get("/trends")
-async def get_feedback_trends(
-    time_window_days: int = Query(default=30, description="Time window in days for trend aggregation"),
+async def get_trends(
+    time_window_days: int = Query(default=30, description="Time window in days"),
     db: AsyncSession = Depends(get_db)
 ) -> Dict[str, Any]:
     """
-    Retrieve customer feedback trends over a given time window.
+    Fetch category trajectory vectors and historical trend buckets directly from PostgreSQL.
     """
     try:
-        repo = AnalyticsRepository(db)
-        
-        # Check if a trend method exists on repository or process via analytics pipeline
-        if hasattr(repo, "get_trends"):
-            trends = await repo.get_trends(time_window_days=time_window_days)
-        else:
-            trends = []
-
+        trends = await get_theme_trends_from_db(db, time_window_days)
         return {
             "success": True,
-            "message": f"Successfully fetched feedback trends for the last {time_window_days} days.",
-            "data": {
-                "time_window_days": time_window_days,
-                "trends": trends
-            }
+            "message": "Successfully fetched analytics trends.",
+            "data": trends
         }
-
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail={"error_code": "TRENDS_FETCH_ERROR", "message": str(e)}
+            detail={"error_code": "DATABASE_ERROR", "message": str(e)}
         )
