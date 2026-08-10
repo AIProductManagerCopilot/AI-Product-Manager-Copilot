@@ -104,44 +104,27 @@ export const AskCopilotPage: React.FC = () => {
             }
           }
 
-          if (eventType === 'token' && dataStr) {
-            try {
-              const parsed = JSON.parse(dataStr);
-              const delta = parsed.delta || '';
-              fullText += delta;
-              
-              setMessages(prev => prev.map(msg => {
-                if (msg.id === copilotMsgId) {
-                  return { ...msg, text: fullText, statusText: undefined };
-                }
-                return msg;
-              }));
-            } catch (e) {
-              console.warn('Failed to parse SSE data:', dataStr, e);
+          if (dataStr) {
+            if (dataStr.startsWith('[ERROR]:')) {
+              fullText += `\n\n*Error: ${dataStr.replace('[ERROR]:', '').trim()}*`;
+            } else if (dataStr.startsWith('{')) {
+              try {
+                const parsed = JSON.parse(dataStr);
+                const delta = parsed.delta || parsed.text || parsed.message || parsed.detail || '';
+                fullText += delta;
+              } catch {
+                fullText += dataStr;
+              }
+            } else {
+              fullText += dataStr;
             }
-          } else if (eventType === 'status' && dataStr) {
-            try {
-              const parsed = JSON.parse(dataStr);
-              const statusText = parsed.message || '';
-              setMessages(prev => prev.map(msg => {
-                if (msg.id === copilotMsgId && msg.text === '') {
-                  return { ...msg, statusText };
-                }
-                return msg;
-              }));
-            } catch {}
-          } else if (eventType === 'error' && dataStr) {
-            try {
-              const parsed = JSON.parse(dataStr);
-              const errorDetail = parsed.detail || 'An error occurred during generation.';
-              fullText += `\n\n*Error: ${errorDetail}*`;
-              setMessages(prev => prev.map(msg => {
-                if (msg.id === copilotMsgId) {
-                  return { ...msg, text: fullText, isStreaming: false, statusText: undefined };
-                }
-                return msg;
-              }));
-            } catch {}
+
+            setMessages(prev => prev.map(msg => {
+              if (msg.id === copilotMsgId) {
+                return { ...msg, text: fullText, statusText: undefined };
+              }
+              return msg;
+            }));
           }
         }
       });
