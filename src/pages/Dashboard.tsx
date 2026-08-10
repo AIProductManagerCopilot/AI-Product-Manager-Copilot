@@ -36,10 +36,10 @@ import { workspaceService } from '../services/workspaceService';
 
 // ─── Feedback Volume Chart SVG Component ───────────────────────────────────────
 
-const FeedbackVolumeChart: React.FC = () => {
+const FeedbackVolumeChart: React.FC<{ trends?: BackendTrend[] }> = ({ trends = [] }) => {
   const { isDark } = useTheme();
 
-  const points = [
+  let points = [
     { week: 'Week 1', val: 1240, x: 50,  y: 150 },
     { week: 'Week 2', val: 1580, x: 135, y: 125 },
     { week: 'Week 3', val: 1920, x: 220, y: 92  },
@@ -50,9 +50,49 @@ const FeedbackVolumeChart: React.FC = () => {
     { week: 'Week 8', val: 2480, x: 645, y: 42  },
   ];
 
-  // Smooth cubic bezier path string
-  const pathD = 'M 50 150 C 90 140, 100 125, 135 125 C 170 125, 185 92, 220 92 C 255 92, 270 115, 305 115 C 340 115, 355 72, 390 72 C 425 72, 440 98, 475 98 C 510 98, 525 55, 560 55 C 595 55, 610 42, 645 42';
-  const areaD = `${pathD} L 645 190 L 50 190 Z`;
+  let pathD = 'M 50 150 C 90 140, 100 125, 135 125 C 170 125, 185 92, 220 92 C 255 92, 270 115, 305 115 C 340 115, 355 72, 390 72 C 425 72, 440 98, 475 98 C 510 98, 525 55, 560 55 C 595 55, 610 42, 645 42';
+
+  if (trends && trends.length > 0) {
+    const bucketMap: Record<string, number> = {};
+    trends.forEach(t => {
+      if (Array.isArray(t.history)) {
+        t.history.forEach(h => {
+          bucketMap[h.time_bucket] = (bucketMap[h.time_bucket] || 0) + (h.volume || 0);
+        });
+      }
+    });
+
+    const sortedBuckets = Object.keys(bucketMap).sort();
+    if (sortedBuckets.length > 1) {
+      const minVal = Math.min(...Object.values(bucketMap));
+      const maxVal = Math.max(...Object.values(bucketMap));
+      const range = maxVal - minVal || 1;
+
+      points = sortedBuckets.map((bucket, idx) => {
+        const val = bucketMap[bucket];
+        const pctX = idx / (sortedBuckets.length - 1);
+        const x = 50 + pctX * (645 - 50);
+        const y = 190 - ((val - minVal) / range) * (190 - 42);
+        
+        const dateObj = new Date(bucket);
+        const weekLabel = isNaN(dateObj.getTime()) ? `W${idx + 1}` : `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
+        return { week: weekLabel, val, x, y };
+      });
+
+      pathD = `M ${points[0].x} ${points[0].y}`;
+      for (let i = 1; i < points.length; i++) {
+        const prev = points[i - 1];
+        const curr = points[i];
+        const cpX1 = prev.x + (curr.x - prev.x) / 2;
+        const cpY1 = prev.y;
+        const cpX2 = prev.x + (curr.x - prev.x) / 2;
+        const cpY2 = curr.y;
+        pathD += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${curr.x} ${curr.y}`;
+      }
+    }
+  }
+
+  const areaD = `${pathD} L ${points[points.length - 1].x} 190 L ${points[0].x} 190 Z`;
 
   const gridStroke = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
   const labelColor = isDark ? '#94A3B8' : '#64748B';
@@ -791,13 +831,17 @@ export const DashboardPage: React.FC = () => {
 
                 {/* SVG Area Chart */}
                 <div className="my-2">
-                  <FeedbackVolumeChart />
+                  <FeedbackVolumeChart trends={backendTrends} />
                 </div>
               </div>
 
               {/* Footer */}
               <div className="mt-4 pt-4 border-t flex items-center justify-between text-xs" style={{ borderColor: 'var(--border-subtle)' }}>
-                <span className="font-bold" style={{ color: 'var(--text-primary)' }}>Total: 13,191 records</span>
+                <span className="font-bold" style={{ color: 'var(--text-primary)' }}>
+                  {backendClusters.length > 0
+                    ? `Total: ${backendClusters.reduce((sum, item) => sum + (item.total_volume || 0), 0).toLocaleString()} records`
+                    : 'Total: 13,191 records'}
+                </span>
                 <span className="font-bold text-[#10B981] flex items-center gap-1">
                   ↑ 15.3% <span style={{ color: 'var(--text-muted)' }}>vs previous 8 weeks</span>
                 </span>
