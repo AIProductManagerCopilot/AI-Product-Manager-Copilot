@@ -7,15 +7,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.seed.db_session import get_db
 from app.repositories.analytics_repository import AnalyticsRepository
 
-# CRITICAL UPDATE: Imported get_feature_request_analytics here
 from app.analytics.clustering import (
     get_theme_clusters_from_db, 
     get_trends, 
     get_feature_request_analytics
 )
-
-from app.analytics.clustering import get_theme_clusters_from_db
-from app.analytics.trends import get_theme_trends_from_db
 
 router = APIRouter()
 
@@ -76,19 +72,13 @@ async def get_feedback_trends(
             time_window_days=time_window_days
         )
 
-async def get_trends(
-    time_window_days: int = Query(default=30, description="Time window in days"),
-    db: AsyncSession = Depends(get_db)
-) -> Dict[str, Any]:
-    """
-    Fetch category trajectory vectors and historical trend buckets directly from PostgreSQL.
-    """
-    try:
-        trends = await get_theme_trends_from_db(db, time_window_days)
         return {
             "success": True,
-            "message": "Successfully fetched analytics trends.",
-            "data": trends
+            "message": f"Successfully fetched feedback trends for the last {time_window_days} days.",
+            "data": {
+                "time_window_days": time_window_days,
+                "trends": trends
+            }
         }
     except Exception as e:
         raise HTTPException(
@@ -131,6 +121,4 @@ async def get_executive_summary(
         raise HTTPException(
             status_code=500,
             detail={"error_code": "EXECUTIVE_SUMMARY_ERROR", "message": str(e)}
-
-            detail={"error_code": "DATABASE_ERROR", "message": str(e)}
         )
