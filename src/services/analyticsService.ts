@@ -142,11 +142,39 @@ export const analyticsService = {
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
 
+      let buffer = '';
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        const text = decoder.decode(value, { stream: true });
-        onChunk(text);
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split('\n\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const partLines = line.split('\n');
+          for (const pl of partLines) {
+            if (pl.startsWith('data:')) {
+              const dataStr = pl.substring(5);
+              if (dataStr) {
+                if (dataStr.trim().startsWith('{')) {
+                  try {
+                    const parsed = JSON.parse(dataStr.trim());
+                    onChunk(parsed.delta || parsed.text || parsed.message || '');
+                  } catch {
+                    onChunk(dataStr + '\n');
+                  }
+                } else {
+                  onChunk(dataStr + '\n');
+                }
+              }
+            }
+          }
+        }
+      }
+      if (buffer.trim().startsWith('data:')) {
+        onChunk(buffer.substring(5) + '\n');
       }
     } catch (error) {
       console.error('PRD generation streaming failed:', error);

@@ -150,6 +150,14 @@ export const PRDGeneratorPage: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
+  const DEFAULT_CLUSTERS: BackendCluster[] = [
+    { category: 'PDF Statement Export', name: 'PDF Statement Export', total_volume: 612 },
+    { category: 'Dark Mode Support', name: 'Dark Mode Support', total_volume: 489 },
+    { category: 'Automated User Onboarding Flow', name: 'Automated User Onboarding Flow', total_volume: 342 },
+    { category: 'Payment Gateway Retry Logic', name: 'Payment Gateway Retry Logic', total_volume: 278 },
+    { category: 'Real-Time Push Notifications', name: 'Real-Time Push Notifications', total_volume: 195 },
+  ];
+
   // Load backend clusters on mount
   useEffect(() => {
     async function loadClusters() {
@@ -159,10 +167,13 @@ export const PRDGeneratorPage: React.FC = () => {
           setBackendClusters(clusters);
           setSelectedCluster(clusters[0]);
           setIsLiveConnected(true);
+          return;
         }
       } catch (err) {
         console.error('Failed to load database themes for PRD selection dropdown:', err);
       }
+      setBackendClusters(DEFAULT_CLUSTERS);
+      setSelectedCluster(DEFAULT_CLUSTERS[0]);
     }
     loadClusters();
   }, []);
