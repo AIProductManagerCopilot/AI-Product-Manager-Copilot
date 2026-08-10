@@ -1,27 +1,55 @@
-# backend/app/api/v1/feedback.py
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from typing import List, Dict, Any
+"""
+API Endpoints for Feedback Ingestion and Analytics (Single PM Context).
+"""
+
 import json
 import uuid
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-from app.schemas.feedback import FeedbackCreate, FeedbackResponse
-from app.services.preprocess import clean_customer_feedback
-from app.services.ai_engine import analyze_feedback_themes
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+import structlog
+
+from app.api.deps import get_current_user
 from app.core.database import get_db
+from app.core.exceptions import ResourceNotFoundException
+from app.schemas.common import APIErrorResponse
+from app.schemas.feedback import FeedbackCreate, FeedbackResponse
+from app.services.ai_engine import analyze_feedback_themes
+from app.services.preprocess import clean_customer_feedback
 
-router = APIRouter(prefix="/projects/{project_id}/feedback", tags=["Feedback Ingestion"])
+logger = structlog.get_logger(__name__)
+
+router = APIRouter(
+    prefix="/projects/{project_id}/feedback",
+    tags=["Feedback Ingestion"]
+)
 
 # ── In-memory store of processed entries per project ──────────────────────────
-# This lets the GET endpoint return entries that were submitted via POST in the
-# current server session. It is keyed by project_id so multiple projects are
-# isolated from each other.
+# Keyed by project_id so multiple projects remain isolated during the session.
 _feedback_store: Dict[str, List[Dict[str, Any]]] = {}
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
-def list_project_feedback(project_id: str, limit: int = 50):
+@router.get(
+    "",
+    status_code=status.HTTP_200_OK,
+    summary="List project feedback entries",
+    description="Returns recently processed feedback entries for a given project workspace.",
+    responses={
+        401: {"model": APIErrorResponse, "description": "Unauthorized / Invalid Token"},
+    }
+)
+@router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    include_in_schema=False
+)
+def list_project_feedback(
+    project_id: str,
+    limit: int = 50,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Returns recently processed feedback entries for a given project.
     Entries are stored in-memory after each POST submission so the frontend
@@ -29,16 +57,43 @@ def list_project_feedback(project_id: str, limit: int = 50):
     """
     entries = _feedback_store.get(project_id, [])
     # Return newest first, capped at `limit`
-    return {"project_id": project_id, "entries": entries[-limit:][::-1], "total": len(entries)}
+    return {
+        "project_id": project_id,
+        "entries": entries[-limit:][::-1],
+        "total": len(entries)
+    }
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=FeedbackResponse)
-def import_customer_feedback(project_id: str, payload: FeedbackCreate, db: Session = Depends(get_db)):
+@router.post(
+    "",
+    response_model=FeedbackResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Import and process customer feedback",
+    description="Accepts raw feedback payloads, triggers preprocessing cleaning, passes text to Gemini AI engine, and prepares records.",
+    responses={
+        400: {"model": APIErrorResponse, "description": "Bad Request / Preprocessing Failure"},
+        401: {"model": APIErrorResponse, "description": "Unauthorized / Invalid Token"},
+    }
+)
+@router.post(
+    "/",
+    response_model=FeedbackResponse,
+    status_code=status.HTTP_201_CREATED,
+    include_in_schema=False
+)
+def import_customer_feedback(
+    project_id: str,
+    payload: FeedbackCreate,
+    db: Session = Depends(get_db),
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> FeedbackResponse:
     """
     Accepts raw multi-channel feedback data payloads, triggers the cleaning
     and preprocessing utility pipeline, passes the text to the Gemini AI engine,
     and prepares records for the analytics engine.
     """
+    user_id: str = current_user.get("uid", "anonymous")
+
     # 1. Run the text cleaning routine
     processed_text = clean_customer_feedback(payload.content)
 
@@ -59,24 +114,36 @@ def import_customer_feedback(project_id: str, payload: FeedbackCreate, db: Sessi
         elif isinstance(raw_res, dict):
             ai_metrics = raw_res
     except Exception as e:
-        import structlog
-        logger = structlog.get_logger(__name__)
-        logger.warning("Gemini inference skipped, using fallback heuristics", error=str(e), feedback_id=feedback_id)
+        logger.warning(
+            "Gemini inference skipped, using fallback heuristics",
+            error=str(e),
+            feedback_id=feedback_id
+        )
 
     if not ai_metrics or not ai_metrics.get("sentiment"):
         lower = processed_text.lower()
-        pos_words = ["fantastic", "love", "awesome", "great", "impressive", "impressed", "excellent", "amazing", "helpful", "smooth", "good", "like", "best", "quick", "intuitive", "clean", "thanks", "thank", "easy", "easier", "saved", "saves"]
-        neg_words = ["crash", "crashes", "slow", "delay", "delayed", "error", "bug", "fail", "fails", "freeze", "freezes", "issue", "terrible", "bad", "worst", "frustrating", "horrible", "broken", "lacking", "not worth", "high memory", "high battery", "problem", "poor", "unreliable"]
+        pos_words = [
+            "fantastic", "love", "awesome", "great", "impressive", "impressed",
+            "excellent", "amazing", "helpful", "smooth", "good", "like", "best",
+            "quick", "intuitive", "clean", "thanks", "thank", "easy", "easier",
+            "saved", "saves"
+        ]
+        neg_words = [
+            "crash", "crashes", "slow", "delay", "delayed", "error", "bug", "fail",
+            "fails", "freeze", "freezes", "issue", "terrible", "bad", "worst",
+            "frustrating", "horrible", "broken", "lacking", "not worth", "high memory",
+            "high battery", "problem", "poor", "unreliable"
+        ]
         pos_count = sum(1 for w in pos_words if w in lower)
         neg_count = sum(1 for w in neg_words if w in lower)
-        
+
         if pos_count > neg_count:
             sentiment = "POSITIVE"
         elif neg_count > pos_count:
             sentiment = "NEGATIVE"
         else:
             sentiment = "NEUTRAL"
-            
+
         if any(w in lower for w in ["crash", "crashes", "bug", "error", "fail", "fails", "freeze", "freezes", "broken"]):
             theme = "Bug Fix"
         elif any(w in lower for w in ["slow", "loading", "delay", "delayed", "memory", "battery", "lag", "performance"]):
@@ -103,6 +170,7 @@ def import_customer_feedback(project_id: str, payload: FeedbackCreate, db: Sessi
         "status": "Processed",
         "ai_insights": ai_metrics,
         "submitted_at": datetime.utcnow().isoformat(),
+        "user_id": user_id,
     }
 
     # 4. Persist to in-memory store so GET /feedback can return it
@@ -111,3 +179,30 @@ def import_customer_feedback(project_id: str, payload: FeedbackCreate, db: Sessi
     _feedback_store[project_id].append(response_payload)
 
     return response_payload
+
+
+@router.get(
+    "/{feedback_id}",
+    response_model=FeedbackResponse,
+    summary="Get single feedback item",
+    description="Retrieves details of a specific feedback item within a project context.",
+    responses={
+        401: {"model": APIErrorResponse, "description": "Unauthorized / Invalid Token"},
+        404: {"model": APIErrorResponse, "description": "Feedback item not found"},
+    }
+)
+def get_feedback_item(
+    project_id: str,
+    feedback_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
+    """Retrieves a single feedback item by ID within a project context."""
+    entries = _feedback_store.get(project_id, [])
+    for entry in entries:
+        if entry.get("id") == feedback_id:
+            return entry
+
+    raise ResourceNotFoundException(
+        error_code="RESOURCE_NOT_FOUND",
+        message=f"Feedback item '{feedback_id}' was not found in project '{project_id}'."
+    )
