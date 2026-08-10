@@ -16,6 +16,11 @@ import { VerifyEmailPage } from './pages/VerifyEmail';
 // App pages
 import { DashboardPage } from './pages/Dashboard';
 import { WorkspaceDetailPage } from './pages/Workspace';
+import { FeatureRequestsPage } from './pages/FeatureRequests';
+import { PrioritizationPage } from './pages/Prioritization';
+import { PRDGeneratorPage } from './pages/PRDGenerator';
+import { RoadmapPage } from './pages/Roadmap';
+import { AskCopilotPage } from './pages/AskCopilot';
 import { FeedbackIngestionPage } from './pages/FeedbackIngestion';
 import { ProductAnalyticsPage } from './pages/ProductAnalytics';
 import { ThemeExtractionPage } from './pages/ThemeExtraction';
@@ -84,12 +89,47 @@ export const App: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/feature-requests"
+                element={
+                  <ProtectedRoute>
+                    <FeatureRequestsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/prioritization"
+                element={
+                  <ProtectedRoute>
+                    <PrioritizationPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/prd-generator"
+                element={
+                  <ProtectedRoute>
+                    <PRDGeneratorPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/roadmap"
+                element={
+                  <ProtectedRoute>
+                    <RoadmapPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/ask-copilot"
+                element={
+                  <ProtectedRoute>
+                    <AskCopilotPage />
+                  </ProtectedRoute>
+                }
+              />
               {[
-                '/feature-requests',
-                '/prioritization',
-                '/prd-generator',
-                '/roadmap',
-                '/ask-copilot',
                 '/settings',
               ].map((path) => (
                 <Route

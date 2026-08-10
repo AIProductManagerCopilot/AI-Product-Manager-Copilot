@@ -23,15 +23,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
   const navBg = isDark
     ? 'bg-[#0D1117]/90 border-[#1e2530]'
-    : 'bg-white/90 border-[#E2E8F0]';
+    : 'bg-white/80 backdrop-blur-md border-[#E2E8F0] shadow-sm';
 
   const inputClass = isDark
     ? 'bg-[#161B22] border-[#1e2530] text-[#F8FAFC] placeholder-[#64748B] focus:border-[#3B82F6]/50 focus:ring-[#3B82F6]/20'
-    : 'bg-[#F1F5F9] border-[#E2E8F0] text-[#0F172A] placeholder-[#94A3B8] focus:border-[#3B82F6]/50 focus:ring-[#3B82F6]/20';
+    : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A] placeholder-[#64748B] focus:bg-white focus:border-[#3B82F6]/50 focus:ring-[#3B82F6]/20';
 
   const kbdClass = isDark
     ? 'text-[#64748B] bg-[#1e2530] border-[#2D3748]'
-    : 'text-[#94A3B8] bg-[#E2E8F0] border-[#CBD5E1]';
+    : 'text-[#64748B] bg-[#F1F5F9] border-[#CBD5E1]';
 
   const bellClass = isDark
     ? 'bg-[#161B22] border-[#1e2530] text-[#64748B] hover:text-white hover:border-[#2D3748]'
@@ -43,16 +43,16 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
 
   const menuClass = isDark
     ? 'bg-[#161B22] border-[#2D3748]'
-    : 'bg-white border-[#E2E8F0]';
+    : 'bg-white border-[#E2E8F0] shadow-xl';
 
   const menuItemClass = isDark
     ? 'text-[#94A3B8] hover:text-white hover:bg-[#1e2530]'
-    : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9]';
+    : 'text-[#475569] hover:text-[#0F172A] hover:bg-[#F1F5F9]';
 
   const menuBorderClass = isDark ? 'border-[#2D3748]' : 'border-[#E2E8F0]';
 
   const nameClass = isDark ? 'text-white' : 'text-[#0F172A]';
-  const orgClass = isDark ? 'text-[#64748B]' : 'text-[#94A3B8]';
+  const orgClass = isDark ? 'text-[#64748B]' : 'text-[#64748B]';
 
   return (
     <header

@@ -57,30 +57,30 @@ export const Sidebar: React.FC = () => {
   };
 
   // Theme-aware CSS classes
-  const sidebarBg   = isDark ? 'bg-[#090f15] border-[#1e2530]' : 'bg-[#F1F5F9] border-[#E2E8F0]';
+  const sidebarBg   = isDark ? 'bg-[#090f15] border-[#1e2530]' : 'bg-[#F8FAFC] border-[#E2E8F0]/80 shadow-sm';
   const logoText    = isDark ? 'text-white' : 'text-[#0F172A]';
-  const logoSub     = isDark ? 'text-[#64748B]' : 'text-[#94A3B8]';
+  const logoSub     = isDark ? 'text-[#64748B]' : 'text-[#64748B]';
   const divider     = isDark ? 'border-[#1e2530]' : 'border-[#E2E8F0]';
 
   const navActive   = 'bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white shadow-lg shadow-blue-500/25 scale-[1.01] font-semibold';
 
   const navInactive = isDark
     ? 'text-[#94A3B8] border border-transparent hover:bg-[#1e2530]/80 hover:text-white hover:border-[#3B82F6]/30 hover:shadow-md hover:shadow-blue-500/5 hover:translate-x-1 transition-all duration-200'
-    : 'text-[#64748B] border border-transparent hover:bg-white hover:text-[#0F172A] hover:border-[#CBD5E1] hover:shadow-sm hover:translate-x-1 transition-all duration-200';
+    : 'text-[#475569] border border-transparent hover:bg-white hover:text-[#0F172A] hover:border-[#E2E8F0] hover:shadow-sm hover:translate-x-1 transition-all duration-200';
 
   const iconActive  = 'text-white';
-  const iconDefault = isDark ? 'text-[#64748B] group-hover:text-white' : 'text-[#94A3B8] group-hover:text-[#0F172A]';
+  const iconDefault = isDark ? 'text-[#64748B] group-hover:text-white' : 'text-[#64748B] group-hover:text-[#0F172A]';
 
   const profileBg   = isDark
     ? 'bg-[#1b2027] border-[#1e2530] hover:border-[#3B82F6]/40 hover:bg-[#202730] hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-0.5 transition-all cursor-pointer group'
     : 'bg-white border-[#E2E8F0] shadow-sm hover:border-[#3B82F6]/40 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group';
   
   const profileName = isDark ? 'text-white group-hover:text-[#3B82F6] transition-colors' : 'text-[#0F172A] group-hover:text-[#2563EB] transition-colors';
-  const profileRole = isDark ? 'text-[#64748B]' : 'text-[#94A3B8]';
+  const profileRole = isDark ? 'text-[#64748B]' : 'text-[#64748B]';
 
   const logoutClass = isDark
     ? 'text-[#EF4444]/80 hover:text-[#EF4444] hover:bg-[#EF4444]/15 hover:border-[#EF4444]/30 hover:shadow-md hover:shadow-red-500/10 border border-transparent transition-all group'
-    : 'text-[#EF4444]/80 hover:text-[#EF4444] hover:bg-[#FEF2F2] hover:border-[#FCA5A5] hover:shadow-sm border border-transparent transition-all group';
+    : 'text-[#EF4444] hover:bg-[#FEF2F2] hover:border-[#FCA5A5] hover:shadow-sm border border-transparent transition-all group';
 
   return (
     <aside

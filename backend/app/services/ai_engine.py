@@ -54,7 +54,7 @@ def clean_environment_token(raw_token: str) -> str:
         return ""
     cleaned = raw_token.strip()
     if "set GEMINI_API_KEY=" in cleaned:
-        cleaned = cleaned.split("set GEMINI_API_KEY=")[-1].strip()
+        cleaned = cleaned.split("set GEMINI_API_KEY=")[-1].replace('"', '').strip()
     return cleaned
 
 
@@ -63,14 +63,16 @@ def analyze_feedback_themes(cleaned_text: str) -> dict:
     api_key = clean_environment_token(
         os.getenv("GEMINI_API_KEY", getattr(settings, "gemini_api_key", ""))
     )
-    model_env = os.getenv("GEMINI_API_MODEL", "gemini-2.0-flash")
+    
+    # Updated default model alias from gemini-1.5-flash to gemini-2.5-flash
+    model_env = os.getenv("GEMINI_API_MODEL", "gemini-2.5-flash")
     model_target = model_env if model_env.startswith("models/") else f"models/{model_env}"
     
     client = genai.Client(api_key=api_key)
     
     system_prompt = (
         "You are an expert Principal AI Product Manager. Your task is to analyze raw "
-        "customer reviews, support tickets, and features requests. You must categorize "
+        "customer reviews, support tickets, and feature requests. You must categorize "
         "the text and provide deep insights strictly following the requested JSON schema."
     )
     
@@ -97,7 +99,7 @@ def analyze_feedback_themes(cleaned_text: str) -> dict:
 class AIEngine:
     """
     Service Orchestrator that coordinates:
-    1. Query Embedding Generation (3072-dim via EmbeddingService)
+    1. Query Embedding Generation (768-dim via EmbeddingService)
     2. Context Retrieval & Schema Validation (VectorService)
     3. Prompt Assembly (PromptBuilder)
     4. Real-time Token Streaming (GeminiService)
@@ -199,7 +201,7 @@ class AIEngine:
         start_time = time.perf_counter()
 
         try:
-            # Stage 1: Generate Embedding Vector (Enforced 3072 Dimensions)
+            # Stage 1: Generate Embedding Vector (Enforced 768 Dimensions)
             log.info("STAGE_1_START: Generating Query Embedding Vector")
             query_vector = await self.embedding_service.generate_embedding(user_query)
             log.info("STAGE_1_COMPLETE: Vector Generated", vector_dim=len(query_vector))

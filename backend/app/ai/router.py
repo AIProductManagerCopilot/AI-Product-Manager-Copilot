@@ -1,33 +1,34 @@
-# backend/app/ai/router.py
-"""FastAPI router exposing AI streaming endpoints.
-
-Repository-compatible implementation for production review.
-This file provides endpoints that Madhu (Backend Lead) can mount into main.py.
+"""
+AI Subsystem Router.
+Provides endpoints for Copilot streaming, PRD generation, Theme Intelligence, and RAG-grounded responses.
 """
 
-from typing import Any, Dict, Optional
-from fastapi import APIRouter, Depends, HTTPException, status
+import logging
+from typing import Any, AsyncGenerator, Dict, Optional
+from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
+from google import genai
+from google.genai import types
 from pydantic import BaseModel, Field
 
-from app.ai.context.builder import ContextPayload
-from app.ai.prompts.registry import PromptRegistry, PromptVersion
-from app.ai.streaming.generator import stream_ai_response
+from app.ai.context_builder import context_builder
+from app.core.config import settings
 
+logger = logging.getLogger(__name__)
 
-# CHANGE THIS:
-# router = APIRouter(prefix="/ai", tags=["AI Copilot"])
-
-# TO THIS:
 router = APIRouter(tags=["AI Subsystem"])
 
+# Instantiate GenAI Client for the Router
+ai_client = genai.Client(api_key=settings.gemini_api_key)
 
+
+# Request Schemas
 class CopilotQueryRequest(BaseModel):
     """Incoming query payload from frontend or client."""
 
     query: str = Field(..., min_length=1, description="User prompt or question")
-    prompt_version: Optional[PromptVersion] = Field(
-        default=PromptVersion.V1_0, description="Target prompt version"
+    prompt_version: Optional[str] = Field(
+        default="v1.0", description="Target prompt version"
     )
     analytics_context: Dict[str, Any] = Field(
         default_factory=dict,
@@ -39,43 +40,69 @@ class CopilotQueryRequest(BaseModel):
     )
 
 
+class PRDGenerationRequest(BaseModel):
+    feature_name: str = Field(..., example="Automated User Onboarding Flow")
+    user_query: str = Field(..., example="Focus on reducing drop-off during step 2")
+    category_filter: Optional[str] = Field(None, example="Onboarding")
+    limit: int = Field(default=5, ge=1, le=20)
+
+
+class ThemeIntelligenceRequest(BaseModel):
+    cluster_topic: str = Field(..., example="Checkout Payment Gateway Errors")
+    category_filter: Optional[str] = Field(None, example="Billing")
+
+
+async def generate_gemini_stream(
+    system_instruction: str, prompt: str
+) -> AsyncGenerator[str, None]:
+    """
+    Asynchronous generator yielding streamed chunks from Google Gemini using SSE format.
+    """
+    try:
+        # Strip models/ prefix if present to prevent 404 NOT_FOUND on v1beta endpoints
+        model_name = settings.gemini_model.replace("models/", "") if settings.gemini_model else "gemini-2.5-flash"
+
+        response = ai_client.models.generate_content_stream(
+            model=model_name,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.2,
+            ),
+        )
+
+        for chunk in response:
+            if chunk.text:
+                yield f"data: {chunk.text}\n\n"
+
+    except Exception as e:
+        logger.error(f"Error during Gemini streaming: {str(e)}")
+        yield f"data: [ERROR]: {str(e)}\n\n"
+
+
 @router.post(
     "/stream",
     summary="Stream AI Copilot Response over SSE",
     response_class=StreamingResponse,
 )
-async def stream_copilot_response(
-    request: CopilotQueryRequest,
-    # Dependencies like Gemini Client or Vector Store can be injected via FastAPI Depends
-):
-    """Endpoint for streaming AI responses over Server-Sent Events (SSE)."""
+async def stream_copilot_response(request: CopilotQueryRequest):
+    """Endpoint for streaming general AI Copilot responses over Server-Sent Events (SSE)."""
     try:
-        # 1. Fetch system prompt from registry
-        registry = PromptRegistry()
-        system_prompt = registry.get_prompt("copilot_assistant", version=request.prompt_version)
-
-        # 2. Assemble Context Window
-        context_payload = ContextPayload(
-            query=request.query,
-            vector_citations=[],  # Injected via retriever in live workflow
-            analytics_evidence=request.analytics_context,
-            entity_snapshots=request.entity_context,
-            system_instructions=system_prompt.template,
+        system_instruction = (
+            "You are an expert AI Product Manager Copilot. "
+            "Analyze the provided analytics context and entity context to answer the user request."
         )
 
-        formatted_prompt = context_payload.build_formatted_prompt()
+        prompt = (
+            f"User Query: {request.query}\n\n"
+            f"Analytics Context: {request.analytics_context}\n"
+            f"Entity Context: {request.entity_context}"
+        )
 
-        # Mock async generator for stream demonstration until Gemini API key is configured
-        async def mock_gemini_stream():
-            mock_tokens = ["Analyzing ", "your ", "product ", "metrics... ", "All ", "systems ", "optimal."]
-            for token in mock_tokens:
-                yield type("Chunk", (), {"text": token})()
-
-        # 3. Stream SSE response using generator
         return StreamingResponse(
-            stream_ai_response(
-                gemini_stream=mock_gemini_stream(),
-                citations=context_payload.vector_citations,
+            generate_gemini_stream(
+                system_instruction=system_instruction,
+                prompt=prompt,
             ),
             media_type="text/event-stream",
             headers={
@@ -86,7 +113,84 @@ async def stream_copilot_response(
         )
 
     except Exception as exc:
+        logger.error(f"AI Stream initialization failed: {str(exc)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"AI Stream initialization failed: {str(exc)}",
+        )
+
+
+@router.post(
+    "/generate-prd",
+    summary="Generate RAG-Grounded PRD (Streaming)",
+    description="Streams a Product Requirement Document generated by Gemini, grounded in Qdrant vector feedback evidence.",
+)
+async def generate_prd_endpoint(request: PRDGenerationRequest):
+    """Generates PRD with real-time SSE streaming."""
+    try:
+        # Build Grounded Context Prompt
+        context_data = await context_builder.build_prd_prompt(
+            feature_name=request.feature_name,
+            user_query=request.user_query,
+            category_filter=request.category_filter,
+            limit=request.limit,
+        )
+
+        return StreamingResponse(
+            generate_gemini_stream(
+                system_instruction=context_data["system_instruction"],
+                prompt=context_data["prompt"],
+            ),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            },
+        )
+
+    except Exception as e:
+        logger.error(f"PRD Generation Endpoint Error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to generate PRD: {str(e)}",
+        )
+
+
+@router.post(
+    "/theme-insights",
+    summary="Generate Theme Intelligence Memo",
+    description="Analyzes feedback cluster topics and produces strategic recommendations.",
+)
+async def theme_insights_endpoint(request: ThemeIntelligenceRequest):
+    """Generates strategic theme intelligence memo."""
+    try:
+        context_data = await context_builder.build_theme_intelligence_prompt(
+            cluster_topic=request.cluster_topic,
+            category_filter=request.category_filter,
+        )
+
+        model_name = settings.gemini_model.replace("models/", "") if settings.gemini_model else "gemini-2.5-flash"
+
+        response = ai_client.models.generate_content(
+            model=model_name,
+            contents=context_data["prompt"],
+            config=types.GenerateContentConfig(
+                system_instruction=context_data["system_instruction"],
+                temperature=0.3,
+            ),
+        )
+
+        return {
+            "status": "success",
+            "cluster_topic": request.cluster_topic,
+            "evidence_count": context_data["evidence_count"],
+            "insights": response.text,
+        }
+
+    except Exception as e:
+        logger.error(f"Theme Insights Endpoint Error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to generate theme insights: {str(e)}",
         )
