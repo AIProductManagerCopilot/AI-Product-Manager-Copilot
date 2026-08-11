@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FileText,
@@ -138,6 +139,8 @@ const MarkdownRenderer: React.FC<{ text: string }> = ({ text }) => {
 
 export const PRDGeneratorPage: React.FC = () => {
   const { isDark } = useTheme();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   // State Variables
   const [backendClusters, setBackendClusters] = useState<BackendCluster[]>([]);
@@ -161,11 +164,20 @@ export const PRDGeneratorPage: React.FC = () => {
   // Load backend clusters on mount
   useEffect(() => {
     async function loadClusters() {
+      const featureParam = searchParams.get('feature') || (location.state as { feature_name?: string })?.feature_name;
+
       try {
         const clusters = await analyticsService.getThemeClusters();
         if (Array.isArray(clusters) && clusters.length > 0) {
           setBackendClusters(clusters);
-          setSelectedCluster(clusters[0]);
+          if (featureParam) {
+            const matched = clusters.find(
+              c => (c.category || c.name || c.theme || '').toLowerCase() === featureParam.toLowerCase()
+            );
+            setSelectedCluster(matched || { category: featureParam, name: featureParam, total_volume: 500 });
+          } else {
+            setSelectedCluster(clusters[0]);
+          }
           setIsLiveConnected(true);
           return;
         }
@@ -173,10 +185,14 @@ export const PRDGeneratorPage: React.FC = () => {
         console.error('Failed to load database themes for PRD selection dropdown:', err);
       }
       setBackendClusters(DEFAULT_CLUSTERS);
-      setSelectedCluster(DEFAULT_CLUSTERS[0]);
+      if (featureParam) {
+        setSelectedCluster({ category: featureParam, name: featureParam, total_volume: 500 });
+      } else {
+        setSelectedCluster(DEFAULT_CLUSTERS[0]);
+      }
     }
     loadClusters();
-  }, []);
+  }, [searchParams, location.state]);
 
   // Generate PRD Handler
   const handleGenerate = async () => {

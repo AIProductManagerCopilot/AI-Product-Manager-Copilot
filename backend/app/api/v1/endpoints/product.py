@@ -45,9 +45,9 @@ async def list_products(
 
     stmt = (
         select(Product)
-        where(Product.owner_id == current_user.id, Product.is_deleted == False)  # noqa: E712
-        offset(offset)
-        limit(page_size)
+        .where(Product.owner_id == current_user.id, Product.is_deleted == False)  # noqa: E712
+        .offset(offset)
+        .limit(page_size)
     )
     result = await db.execute(stmt)
     products = result.scalars().all()
@@ -108,11 +108,11 @@ async def get_product(
     """Retrieves product details including features and specifications by ID."""
     stmt = (
         select(Product)
-        options(
+        .options(
             selectinload(Product.features),
             selectinload(Product.specifications),
         )
-        where(
+        .where(
             Product.id == product_id,
             Product.owner_id == current_user.id,
             Product.is_deleted == False,  # noqa: E712

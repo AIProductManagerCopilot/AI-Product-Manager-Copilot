@@ -55,14 +55,8 @@ async def get_current_user(
     db: AsyncSession = Depends(get_db),
 ) -> User:
     """
-    Dependency to validate JWT Bearer token and fetch the current authenticated Product Manager.
-    Supports a development mode bypass when ENV=development or DEBUG=true.
-
-    :param bearer_creds: Credentials extracted from HTTPBearer header.
-    :param oauth2_token: Token extracted from OAuth2 scheme.
-    :param db: Async SQLAlchemy database session.
-    :return: Authenticated active User ORM instance.
-    :raises UnauthorizedAccessException: If token is missing/invalid or user is inactive/deleted.
+    Dependency to validate JWT Bearer token and fetch current authenticated User.
+    In development environment, gracefully falls back to dev PM context.
     """
     token: Optional[str] = None
     if bearer_creds and bearer_creds.credentials:
@@ -70,42 +64,44 @@ async def get_current_user(
     elif oauth2_token:
         token = oauth2_token
 
-    # 1. Development Bypass (allows unauthenticated requests during local dev)
-    if is_development_env() and not token:
+    # 1. Try decoding valid token first if provided
+    if token:
+        try:
+            payload = decode_access_token(token)
+            user_id_str: Optional[str] = (
+                payload.get("sub") or payload.get("user_id") or payload.get("uid")
+            )
+            if user_id_str:
+                try:
+                    user_uuid = uuid.UUID(user_id_str)
+                    stmt = select(User).where(User.id == user_uuid, User.is_deleted == False)  # noqa: E712
+                    result = await db.execute(stmt)
+                    user = result.scalar_one_or_none()
+                    if user and user.is_active:
+                        return user
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    # 2. Local Development Bypass Fallback
+    if is_development_env():
         dev_user = get_current_user_override()
-        # Retrieve existing dev user from DB if seeded, else return model instance
-        stmt = select(User).where(User.email == dev_user.email, User.is_deleted == False)  # noqa: E712
-        result = await db.execute(stmt)
-        existing_user = result.scalar_one_or_none()
-        if existing_user:
-            return existing_user
+        try:
+            stmt = select(User).where(User.email == dev_user.email, User.is_deleted == False)  # noqa: E712
+            result = await db.execute(stmt)
+            existing_user = result.scalar_one_or_none()
+            if existing_user:
+                return existing_user
+        except Exception:
+            pass
         return dev_user
 
-    # 2. Token Extraction Validation
-    if not token:
-        raise UnauthorizedAccessException(
-            message="Missing or invalid Bearer authentication token.",
-            error_code="AUTHENTICATION_REQUIRED",
-        )
-
-    # 3. Token Decoding & Payload Validation
-    try:
-        payload = decode_access_token(token)
-    except Exception as exc:
-        raise UnauthorizedAccessException(
-            message=getattr(exc, "message", "Provided authentication token is invalid or expired."),
-            error_code="INVALID_TOKEN",
-        )
-
-    user_id_str: Optional[str] = (
-        payload.get("sub") or payload.get("user_id") or payload.get("uid")
+    # 3. Production auth requirement
+    raise UnauthorizedAccessException(
+        message="Missing or invalid Bearer authentication token.",
+        error_code="AUTHENTICATION_REQUIRED",
     )
-
-    if not user_id_str:
-        raise UnauthorizedAccessException(
-            message="Token payload is missing subject/user_id claim.",
-            error_code="INVALID_TOKEN",
-        )
 
     try:
         user_uuid = uuid.UUID(user_id_str)

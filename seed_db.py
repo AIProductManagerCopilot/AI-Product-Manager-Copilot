@@ -1,5 +1,5 @@
 # seed_db.py
-from backend.app.core.database import engine, SessionLocal
+from backend.app.core.database import sync_engine, SessionLocal
 from backend.app.models.core_models import Base, Organization, Workspace, Project
 from sqlalchemy import text
 import uuid
@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 def seed_system():
     print("🚀 Initializing relational database structural layout...")
     # Automatically creates all matching tables in PostgreSQL if they don't exist
-    Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=sync_engine)
     
     db = SessionLocal()
     try:
@@ -96,7 +96,7 @@ def seed_system():
                         VALUES (:id, :category, :sentiment_score, :severity_weight, :content, :created_at)
                     """),
                     {
-                        "id": fb_id,
+                        "id": str(fb_id),
                         "category": cat,
                         "sentiment_score": round(sent, 2),
                         "severity_weight": round(sev, 2),

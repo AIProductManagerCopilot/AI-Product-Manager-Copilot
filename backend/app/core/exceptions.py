@@ -86,11 +86,12 @@ class UnauthorizedAccessException(UnauthorizedException):
     def __init__(
         self,
         message: str = "Authentication credentials were invalid or missing.",
+        error_code: str = "UNAUTHORIZED_ACCESS",
         details: Optional[Union[Dict[str, Any], List[Any]]] = None,
     ) -> None:
         super().__init__(
             message=message,
-            error_code="UNAUTHORIZED_ACCESS",
+            error_code=error_code,
             details=details,
         )
 

@@ -1,9 +1,11 @@
 import uuid
-from sqlalchemy import Column, String, ForeignKey, Text, Float, Integer, DateTime
+from sqlalchemy import Column, String, ForeignKey, Text, Float, Integer, DateTime, JSON
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
+JSON_TYPE = JSONB().with_variant(JSON(), "sqlite")
 
 Base = declarative_base()
 
@@ -154,7 +156,7 @@ class Project(Base):
     project_type = Column(String(100), nullable=False)
     description = Column(Text, nullable=True)
     target_audience = Column(
-        JSONB,
+        JSON_TYPE,
         nullable=True
     )
     technology_stack = Column(Text, nullable=True)

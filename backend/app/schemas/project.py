@@ -25,6 +25,14 @@ class ProjectCreate(ProjectBase):
     )
 
 
+class ProjectUpdate(BaseModel):
+    """Payload schema for updating a project workspace."""
+    title: Optional[CleanStr] = Field(None, description="Updated title of the product workspace.")
+    description: Optional[LongCleanStr] = Field(None, description="Updated objective statement.")
+    target_audience: Optional[List[CleanStr]] = Field(None, description="Updated target user segments.")
+    status: Optional[str] = Field(None, description="Updated lifecycle status.")
+
+
 class ProjectResponse(ProjectBase):
     """Public serialized data shape returned to API clients."""
     id: UUID

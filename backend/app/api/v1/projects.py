@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 """
 API Endpoints for Project Workspaces (Single Product Manager Context).
 """
 
 from typing import Dict, Any, List, Optional
 from fastapi import APIRouter, Depends, status, HTTPException
-=======
-from fastapi import APIRouter, Depends, status
->>>>>>> be04ed13b328ad7d80dee9fc15e4fe0fd66ae188
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
@@ -23,10 +19,6 @@ router = APIRouter(
 )
 
 
-<<<<<<< HEAD
-=======
-# Shared factory pattern to cleanly deliver our app service boundary
->>>>>>> be04ed13b328ad7d80dee9fc15e4fe0fd66ae188
 def get_project_service(
     db: Session = Depends(get_db),
 ) -> ProjectService:
@@ -55,7 +47,6 @@ def list_projects(
     return service.get_projects_by_owner(owner_id=owner_id)
 
 
-
 @router.post(
     "",
     response_model=ProjectResponse,
@@ -76,7 +67,6 @@ def create_project(
     owner_id: str = current_user.get("uid", "anonymous")
     return service.orchestrate_creation(payload=payload, owner_id=owner_id)
 
-<<<<<<< HEAD
 
 @router.get(
     "/{project_id}",
@@ -156,26 +146,3 @@ def delete_project(
             message=f"Project workspace '{project_id}' was not found or could not be deleted."
         )
     return None
-=======
-    # Process transactional execution strictly through the business service tier
-    return service.orchestrate_creation(payload=payload, owner_id=owner_id)
-
-
-@router.get(
-    "",
-    response_model=list[ProjectResponse],
-    status_code=status.HTTP_200_OK,
-    summary="List all AI Product Workspaces",
-    description="Retrieves all existing project workspaces for authorized team members.",
-    responses={
-        401: {"model": ErrorResponse, "description": "Unauthorized / Invalid Token"},
-        403: {"model": ErrorResponse, "description": "Forbidden / Insufficient Role Scope"},
-    }
-)
-def list_projects(
-    service: ProjectService = Depends(get_project_service),
-    current_user_claims: dict = Depends(RoleChecker(["product_manager", "admin", "viewer"]))
-) -> list[ProjectResponse]:
-    """Retrieves all project workspaces using the repository service layer."""
-    return service.repository.list_all()
->>>>>>> be04ed13b328ad7d80dee9fc15e4fe0fd66ae188
