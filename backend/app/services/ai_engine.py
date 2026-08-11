@@ -64,8 +64,8 @@ def analyze_feedback_themes(cleaned_text: str) -> dict:
         os.getenv("GEMINI_API_KEY", getattr(settings, "gemini_api_key", ""))
     )
     
-    # Updated default model alias from gemini-1.5-flash to gemini-2.5-flash
-    model_env = os.getenv("GEMINI_API_MODEL", "gemini-2.5-flash")
+    # Updated default model alias from gemini-1.5-flash to gemini-3.5-flash
+    model_env = os.getenv("GEMINI_API_MODEL", "gemini-3.5-flash")
     model_target = model_env if model_env.startswith("models/") else f"models/{model_env}"
     
     client = genai.Client(api_key=api_key)

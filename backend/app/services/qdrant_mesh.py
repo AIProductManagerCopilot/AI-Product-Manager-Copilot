@@ -17,8 +17,8 @@ class QdrantVectorMeshClient:
         self.api_key = os.environ.get("QDRANT_API_KEY")
         self.allow_init = os.environ.get("ALLOW_QDRANT_INIT", "true").lower() == "true"
         
-        # Updated dimension constraint to match Gemini gemini-embedding-001 model output
-        self.target_dimension = 3072  
+        # Aligned dimension constraint to match Gemini embedding model (text-embedding-004) output
+        self.target_dimension = 768
         
         # Handle in-memory fallback, remote HTTP, and local directory paths explicitly
         if self.url == ":memory:":
