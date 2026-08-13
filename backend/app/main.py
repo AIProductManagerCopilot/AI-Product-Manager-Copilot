@@ -12,6 +12,7 @@ from typing import AsyncGenerator
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 import structlog
 
 from app.api.v1.api import api_router
@@ -59,9 +60,9 @@ def create_application() -> FastAPI:
         title=title,
         description="Core backend analytics, AI ingestion pipeline engines, and workspace APIs",
         version="1.0.0",
-        docs_url=f"{api_v1_prefix}/docs",
-        redoc_url=f"{api_v1_prefix}/redoc",
-        openapi_url=f"{api_v1_prefix}/openapi.json",
+        docs_url="/docs",
+        redoc_url="/redoc",
+        openapi_url="/openapi.json",
         lifespan=lifespan,
     )
 
@@ -102,6 +103,12 @@ def create_application() -> FastAPI:
 
 
 app = create_application()
+
+
+@app.get("/api/v1/docs", include_in_schema=False)
+async def redirect_v1_docs():
+    """Redirects legacy /api/v1/docs calls directly to /docs."""
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/", tags=["Health Check"])
