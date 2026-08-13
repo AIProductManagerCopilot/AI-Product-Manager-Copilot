@@ -302,4 +302,5 @@ dataset_factory/output/validated/
 # =========================================================
 # Keep these tracked
 # =========================================================
-# Keep dataset README and raw data tracked
+# Keep dataset README and raw data trackedapp.db 
+*.db 
