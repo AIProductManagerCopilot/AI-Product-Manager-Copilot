@@ -8,7 +8,7 @@ database dependency is asynchronous.
 import uuid
 from typing import List, Optional
 
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.core_models import Project, User
@@ -21,19 +21,12 @@ class ProjectRepository(IProjectRepository):
     PostgreSQL implementation of the Project Repository.
 
     Responsibilities:
-    - Resolve authenticated owner to the database User
+    - Resolve authenticated owner to the database User (via UUID, user_code, or email)
     - Create projects
     - List projects owned by the authenticated Product Manager
     - Retrieve one project
     - Update projects
     - Delete projects
-
-    Important:
-    The application supplies the authenticated owner's UUID as owner_id
-    in the current development/authentication flow.
-
-    The repository therefore resolves owner_id primarily through
-    User.id rather than incorrectly treating a UUID as User.user_code.
     """
 
     def __init__(self, db: AsyncSession):
@@ -45,45 +38,38 @@ class ProjectRepository(IProjectRepository):
 
     async def _resolve_owner(self, owner_id: str) -> Optional[User]:
         """
-        Resolve the external owner identifier to the business User ORM row.
-
-        Current authentication flow supplies the User UUID.
-
-        For compatibility, if owner_id is not a valid UUID, we also
-        support lookup by user_code.
+        Resolve the external owner identifier to the User ORM row.
+        Checks by UUID primary key first, then falls back to user_code or email.
         """
+        if not owner_id:
+            return None
 
-        # -------------------------------------------------------------
-        # First: try owner_id as a UUID.
-        # -------------------------------------------------------------
-
+        # 1. Try owner_id as a UUID
         try:
             owner_uuid = uuid.UUID(str(owner_id))
-        except (ValueError, TypeError, AttributeError):
-            owner_uuid = None
-
-        if owner_uuid is not None:
             result = await self.db.execute(
                 select(User).where(
-                    User.id == owner_uuid
+                    or_(
+                        User.id == owner_uuid,
+                        User.user_code == str(owner_id),
+                    )
                 )
             )
-
             user = result.scalar_one_or_none()
-
             if user is not None:
                 return user
+        except (ValueError, TypeError, AttributeError):
+            pass
 
-        # -------------------------------------------------------------
-        # Compatibility fallback: user_code.
-        # -------------------------------------------------------------
-
+        # 2. Fallback: Lookup by user_code or email
         result = await self.db.execute(
             select(User).where(
-                User.user_code == str(owner_id)
+                or_(
+                    User.user_code == str(owner_id),
+                    User.email == str(owner_id),
+                )
             )
         )
-
         return result.scalar_one_or_none()
 
     # ---------------------------------------------------------------------
@@ -97,27 +83,13 @@ class ProjectRepository(IProjectRepository):
     ) -> Project:
         """
         Persist a new project.
-
-        Steps:
-        1. Resolve authenticated owner.
-        2. Obtain the owner's workspace.
-        3. Generate project_code.
-        4. Create the Project ORM object.
-        5. Flush so PostgreSQL assigns generated values.
-        6. Refresh the object.
-        7. Return the persisted object.
-
-        Transaction commit is intentionally handled by get_db().
         """
-
         user = await self._resolve_owner(owner_id)
 
         if user is None:
-            raise ValueError(
-                f"User '{owner_id}' not found."
-            )
+            raise ValueError(f"User '{owner_id}' not found.")
 
-        # Generate a unique project code.
+        # Generate a unique project code if not provided
         project_code = (
             getattr(payload, "project_code", None)
             or f"prj_{uuid.uuid4().hex[:8]}"
@@ -135,12 +107,7 @@ class ProjectRepository(IProjectRepository):
         )
 
         self.db.add(project)
-
-        # Flush sends INSERT to PostgreSQL without committing the
-        # request transaction. This lets us obtain generated values.
         await self.db.flush()
-
-        # Load generated database values such as id/created_at.
         await self.db.refresh(project)
 
         return project
@@ -157,40 +124,29 @@ class ProjectRepository(IProjectRepository):
     ) -> List[Project]:
         """
         Retrieve projects belonging to the authenticated Product Manager.
-
-        This intentionally queries Project.owner_id directly after
-        resolving the authenticated user.
-
-        This preserves the successful GET behavior already demonstrated
-        by the application.
         """
-
         user = await self._resolve_owner(owner_id)
 
         if user is None:
-            raise ValueError(
-                f"User '{owner_id}' not found."
-            )
+            raise ValueError(f"User '{owner_id}' not found.")
 
-        # Defensive pagination.
         skip = max(int(skip), 0)
         limit = max(min(int(limit), 100), 1)
 
-        result = await self.db.execute(
-            select(Project)
-            .where(
-                Project.owner_id == user.id
-            )
-            .order_by(
-                Project.created_at.desc()
-            )
-            .offset(skip)
-            .limit(limit)
-        )
+        stmt = select(Project).where(Project.owner_id == user.id)
 
-        projects = result.scalars().all()
+        # Apply soft-delete check if is_deleted column exists on Project
+        if hasattr(Project, "is_deleted"):
+            stmt = stmt.where(Project.is_deleted == False)  # noqa: E712
 
-        return list(projects)
+        # Sort by creation date if available
+        if hasattr(Project, "created_at"):
+            stmt = stmt.order_by(Project.created_at.desc())
+
+        stmt = stmt.offset(skip).limit(limit)
+
+        result = await self.db.execute(stmt)
+        return list(result.scalars().all())
 
     # ---------------------------------------------------------------------
     # GET ONE
@@ -203,31 +159,26 @@ class ProjectRepository(IProjectRepository):
     ) -> Optional[Project]:
         """
         Retrieve one project belonging to the authenticated owner.
-
-        Returns None when:
-        - the owner does not exist
-        - the project does not exist
-        - the project belongs to another owner
         """
-
         user = await self._resolve_owner(owner_id)
 
         if user is None:
             return None
 
-        # Validate the project UUID before querying PostgreSQL.
         try:
             project_uuid = uuid.UUID(str(project_id))
         except (ValueError, TypeError, AttributeError):
             return None
 
-        result = await self.db.execute(
-            select(Project).where(
-                Project.id == project_uuid,
-                Project.owner_id == user.id,
-            )
+        stmt = select(Project).where(
+            Project.id == project_uuid,
+            Project.owner_id == user.id,
         )
 
+        if hasattr(Project, "is_deleted"):
+            stmt = stmt.where(Project.is_deleted == False)  # noqa: E712
+
+        result = await self.db.execute(stmt)
         return result.scalar_one_or_none()
 
     # ---------------------------------------------------------------------
@@ -242,10 +193,7 @@ class ProjectRepository(IProjectRepository):
     ) -> Optional[Project]:
         """
         Update an existing project owned by the authenticated user.
-
-        Only fields supplied by the request are updated.
         """
-
         project = await self.get_by_id(
             project_id=project_id,
             owner_id=owner_id,
@@ -254,22 +202,14 @@ class ProjectRepository(IProjectRepository):
         if project is None:
             return None
 
-        # Pydantic v2.
         update_data = payload.model_dump(
             exclude_unset=True,
             exclude_none=False,
         )
 
-        # -------------------------------------------------------------
-        # API -> database field mapping
-        # -------------------------------------------------------------
-
+        # Map API title to database column project_name
         if "title" in update_data:
             project.project_name = update_data.pop("title")
-
-        # -------------------------------------------------------------
-        # Fields that exist in the current Project ORM model.
-        # -------------------------------------------------------------
 
         allowed_fields = {
             "description",
@@ -283,12 +223,8 @@ class ProjectRepository(IProjectRepository):
         }
 
         for field_name, value in update_data.items():
-            if field_name in allowed_fields:
-                setattr(
-                    project,
-                    field_name,
-                    value,
-                )
+            if field_name in allowed_fields and hasattr(project, field_name):
+                setattr(project, field_name, value)
 
         await self.db.flush()
         await self.db.refresh(project)
@@ -306,12 +242,7 @@ class ProjectRepository(IProjectRepository):
     ) -> bool:
         """
         Delete a project belonging to the authenticated owner.
-
-        Returns:
-            True  -> project was found and deleted.
-            False -> project was not found/inaccessible.
         """
-
         project = await self.get_by_id(
             project_id=project_id,
             owner_id=owner_id,
@@ -320,9 +251,12 @@ class ProjectRepository(IProjectRepository):
         if project is None:
             return False
 
-        await self.db.delete(project)
-
-        # Flush the deletion but leave transaction commit to get_db().
-        await self.db.flush()
+        # Soft delete if column is present, otherwise hard delete
+        if hasattr(project, "is_deleted"):
+            project.is_deleted = True
+            await self.db.flush()
+        else:
+            await self.db.delete(project)
+            await self.db.flush()
 
         return True

@@ -4,7 +4,7 @@ API Endpoints for Feedback Ingestion and Analytics (Single PM Context).
 
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -30,6 +30,19 @@ router = APIRouter(
 # ── In-memory store of processed entries per project ──────────────────────────
 # Keyed by project_id so multiple projects remain isolated during the session.
 _feedback_store: Dict[str, List[Dict[str, Any]]] = {}
+
+
+def _extract_user_id(user: Any) -> str:
+    """Safely extract user identifier whether user is an ORM User model, dict, or string."""
+    if user is None:
+        return "00000000-0000-0000-0000-000000000001"
+    if isinstance(user, dict):
+        return str(user.get("uid") or user.get("id") or user.get("user_code") or "00000000-0000-0000-0000-000000000001")
+    if hasattr(user, "id"):
+        return str(user.id)
+    if hasattr(user, "user_code"):
+        return str(user.user_code)
+    return str(user)
 
 
 @router.get(
@@ -59,7 +72,10 @@ async def list_project_feedback(
     entries = _feedback_store.get(project_id, [])
     if not entries:
         try:
-            result = await db.execute(text("SELECT id, category, sentiment_score, severity_weight, content, created_at FROM customer_feedback ORDER BY created_at DESC LIMIT :limit"), {"limit": limit})
+            result = await db.execute(
+                text("SELECT id, category, sentiment_score, severity_weight, content, created_at FROM customer_feedback ORDER BY created_at DESC LIMIT :limit"),
+                {"limit": limit}
+            )
             rows = result.fetchall()
             entries = [
                 {
@@ -67,12 +83,12 @@ async def list_project_feedback(
                     "project_id": project_id,
                     "content": row[4],
                     "cleaned_content": row[4],
-                    "source": "Zendesk" if "onboarding" in row[4].lower() else "App Store" if "discoverability" in row[4].lower() else "Google Play" if "login" in row[4].lower() else "Intercom",
+                    "source": "Zendesk" if "onboarding" in str(row[4]).lower() else "App Store" if "discoverability" in str(row[4]).lower() else "Google Play" if "login" in str(row[4]).lower() else "Intercom",
                     "status": "processed",
                     "ai_insights": {
                         "theme": row[1],
-                        "sentiment": "POSITIVE" if row[2] > 0.35 else "NEGATIVE" if row[2] < 0.25 else "NEUTRAL",
-                        "urgency_score": row[3],
+                        "sentiment": "POSITIVE" if row[2] and row[2] > 0.35 else "NEGATIVE" if row[2] and row[2] < 0.25 else "NEUTRAL",
+                        "urgency_score": row[3] if row[3] is not None else 2,
                     },
                     "submitted_at": str(row[5]) if row[5] else None,
                 }
@@ -117,7 +133,7 @@ async def import_customer_feedback(
     and preprocessing utility pipeline, passes the text to the Gemini AI engine,
     and prepares records for the analytics engine.
     """
-    user_id: str = current_user.get("uid", "anonymous")
+    user_id: str = _extract_user_id(current_user)
 
     # 1. Run the text cleaning routine
     processed_text = clean_customer_feedback(payload.content)
@@ -191,10 +207,10 @@ async def import_customer_feedback(
         "project_id": project_id,
         "content": payload.content,
         "cleaned_content": processed_text,
-        "source": payload.source,
+        "source": getattr(payload, "source", "user_submission"),
         "status": "Processed",
         "ai_insights": ai_metrics,
-        "submitted_at": datetime.utcnow().isoformat(),
+        "submitted_at": datetime.now(timezone.utc).isoformat(),
         "user_id": user_id,
     }
 

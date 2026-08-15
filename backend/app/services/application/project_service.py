@@ -194,20 +194,28 @@ class ProjectService:
         """
         Convert a SQLAlchemy Project ORM object into ProjectResponse.
 
-        Database field:
-            project_name
-
-        API field:
-            title
+        Handles data normalizations:
+        - Ensures target_audience is always a list (even if database column has NULL/None)
+        - Safely extracts project_code and status
         """
+        raw_audience = getattr(db_project, "target_audience", None)
+        if raw_audience is None:
+            target_audience = []
+        elif isinstance(raw_audience, list):
+            target_audience = raw_audience
+        elif isinstance(raw_audience, str):
+            target_audience = [raw_audience]
+        else:
+            target_audience = list(raw_audience)
 
         return ProjectResponse(
             id=str(db_project.id),
-            title=db_project.project_name,
-            description=db_project.description,
-            target_audience=db_project.target_audience,
-            owner_id=str(db_project.owner_id),
-            status=db_project.status,
-            created_at=db_project.created_at,
-            updated_at=db_project.updated_at,
+            project_code=getattr(db_project, "project_code", ""),
+            title=getattr(db_project, "project_name", getattr(db_project, "title", "")),
+            description=getattr(db_project, "description", None),
+            target_audience=target_audience,
+            owner_id=str(db_project.owner_id) if getattr(db_project, "owner_id", None) else None,
+            status=getattr(db_project, "status", "active"),
+            created_at=getattr(db_project, "created_at", None),
+            updated_at=getattr(db_project, "updated_at", None),
         )

@@ -5,7 +5,7 @@ Handles user registration, login authentication, token refreshing, session logou
 and current user profile retrieval.
 """
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import structlog
 from fastapi import APIRouter, Depends, status
@@ -56,10 +56,15 @@ async def register(
         raise ConflictException("An account with this email address already exists.")
 
     hashed_pwd = get_password_hash(payload.password)
+    
+    # Construct new User entity handling all optional payload attributes safely
     new_user = User(
         email=payload.email,
         hashed_password=hashed_pwd,
-        full_name=payload.full_name,
+        full_name=getattr(payload, "full_name", None) or f"{getattr(payload, 'first_name', '')} {getattr(payload, 'last_name', '')}".strip() or "Product Manager",
+        first_name=getattr(payload, "first_name", None),
+        last_name=getattr(payload, "last_name", None),
+        country=getattr(payload, "country", None),
         is_active=True,
     )
     db.add(new_user)
@@ -84,7 +89,7 @@ async def login(
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
 
-    if not user or not verify_password(payload.password, user.hashed_password):
+    if not user or not user.hashed_password or not verify_password(payload.password, user.hashed_password):
         raise UnauthorizedAccessException("Invalid email or password.")
 
     if not user.is_active:
@@ -125,7 +130,7 @@ async def refresh_token(
     if not token_payload or token_payload.get("type") != "refresh":
         raise UnauthorizedAccessException("Invalid or expired refresh token.")
 
-    user_id_str = token_payload.get("sub")
+    user_id_str = token_payload.get("sub") or token_payload.get("user_id")
     if not user_id_str:
         raise UnauthorizedAccessException("Invalid token payload claims.")
 

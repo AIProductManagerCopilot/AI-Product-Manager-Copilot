@@ -8,7 +8,7 @@ login credentials, JWT token payloads, and profile retrieval.
 from datetime import datetime
 import uuid
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserRegisterRequest(BaseModel):
@@ -49,6 +49,7 @@ class UserResponse(BaseModel):
     id: uuid.UUID = Field(..., description="Unique user UUID")
     email: EmailStr = Field(..., description="Primary email address")
     full_name: Optional[str] = Field(None, description="Full display name")
-    is_active: bool = Field(..., description="Account active status flag")
-    is_superuser: bool = Field(..., description="Superuser privilege flag")
-    created_at: datetime = Field(..., description="Account creation timestamp")
+    is_active: bool = Field(True, description="Account active status flag")
+    is_superuser: bool = Field(False, description="Superuser privilege flag")
+    is_verified: bool = Field(True, description="Account verification status flag")
+    created_at: Optional[datetime] = Field(None, description="Account creation timestamp")

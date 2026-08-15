@@ -1,17 +1,17 @@
 """
 Core Security Utilities for Authentication, Password Hashing, and JWT Verification.
 
-Provides password hashing via PassLib CryptContext (bcrypt), JWT token generation 
-(access & refresh tokens) with custom claims, structlog structured logging, and 
-exception-driven token verification.
+Provides password hashing via native bcrypt (eliminating passlib 72-byte/version bugs), 
+JWT token generation (access & refresh tokens) with custom claims, structlog structured logging, 
+and exception-driven token verification.
 """
 
 from datetime import datetime, timedelta, timezone
 import os
 from typing import Any, Dict, Optional, Union
 
+import bcrypt
 import jwt
-from passlib.context import CryptContext
 import structlog
 
 from app.core.config import settings
@@ -32,14 +32,8 @@ except ImportError:
 logger = structlog.get_logger(__name__)
 
 # -----------------------------------------------------------------------------
-# Cryptographic Context & Environment Settings Configuration
+# Cryptographic & Environment Settings Configuration
 # -----------------------------------------------------------------------------
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto",
-)
-
-# Secret key & Algorithm resolution (Settings prioritizing environment fallback)
 SECRET_KEY = (
     getattr(settings, "SECRET_KEY", None)
     or os.getenv("JWT_SECRET_KEY")
@@ -68,20 +62,31 @@ REFRESH_TOKEN_EXPIRE_DAYS = int(
 
 
 # -----------------------------------------------------------------------------
-# Password Hashing Utilities
+# Password Hashing Utilities (Direct bcrypt implementation)
 # -----------------------------------------------------------------------------
+def _truncate_password(password: str) -> bytes:
+    """Ensures password does not exceed bcrypt 72-byte limit."""
+    pwd_bytes = password.encode("utf-8")
+    return pwd_bytes[:72]
+
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verifies a plain-text password against a hashed password string."""
     try:
-        return pwd_context.verify(plain_password, hashed_password)
+        password_bytes = _truncate_password(plain_password)
+        hash_bytes = hashed_password.encode("utf-8")
+        return bcrypt.checkpw(password_bytes, hash_bytes)
     except Exception as exc:
         logger.error("Password verification failed", error=str(exc))
         return False
 
 
 def get_password_hash(password: str) -> str:
-    """Generates a secure cryptographic hash from a plain-text password."""
-    return pwd_context.hash(password)
+    """Generates a secure salted bcrypt hash for the provided password."""
+    password_bytes = _truncate_password(password)
+    salt = bcrypt.gensalt(rounds=12)
+    hashed = bcrypt.hashpw(password_bytes, salt)
+    return hashed.decode("utf-8")
 
 
 # -----------------------------------------------------------------------------
@@ -91,6 +96,7 @@ def create_access_token(
     subject: Union[str, Any],
     expires_delta: Optional[timedelta] = None,
     extra_claims: Optional[Dict[str, Any]] = None,
+    claims: Optional[Dict[str, Any]] = None,
 ) -> str:
     """
     Generates a signed JWT access token with expiration and custom payload claims.
@@ -98,6 +104,7 @@ def create_access_token(
     :param subject: Primary user identifier (UUID or email).
     :param expires_delta: Optional custom duration override.
     :param extra_claims: Additional key-value metadata to embed in payload.
+    :param claims: Alias for extra_claims.
     :return: Encoded JWT string.
     """
     now = datetime.now(timezone.utc)
@@ -116,6 +123,8 @@ def create_access_token(
 
     if extra_claims:
         to_encode.update(extra_claims)
+    if claims:
+        to_encode.update(claims)
 
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -125,6 +134,7 @@ def create_refresh_token(
     subject: Union[str, Any],
     expires_delta: Optional[timedelta] = None,
     extra_claims: Optional[Dict[str, Any]] = None,
+    claims: Optional[Dict[str, Any]] = None,
 ) -> str:
     """
     Generates a signed JWT refresh token with extended validity duration.
@@ -132,6 +142,7 @@ def create_refresh_token(
     :param subject: Primary user identifier (UUID or email).
     :param expires_delta: Optional custom duration override.
     :param extra_claims: Additional key-value metadata to embed in payload.
+    :param claims: Alias for extra_claims.
     :return: Encoded JWT string.
     """
     now = datetime.now(timezone.utc)
@@ -150,6 +161,8 @@ def create_refresh_token(
 
     if extra_claims:
         to_encode.update(extra_claims)
+    if claims:
+        to_encode.update(claims)
 
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt

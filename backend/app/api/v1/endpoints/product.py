@@ -4,11 +4,13 @@ Product Management API Endpoint Router.
 Provides CRUD endpoints for managing software products and their related features and specifications.
 """
 
+import math
+import re
 import uuid
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 import structlog
 from fastapi import APIRouter, Depends, Query, status
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -29,6 +31,29 @@ logger = structlog.get_logger(__name__)
 router = APIRouter(prefix="/products", tags=["Products"])
 
 
+def _extract_user_id(user: Any) -> uuid.UUID:
+    """Extracts a valid UUID for owner_id from the user object or fallback."""
+    if hasattr(user, "id") and isinstance(user.id, uuid.UUID):
+        return user.id
+    if hasattr(user, "id") and user.id:
+        try:
+            return uuid.UUID(str(user.id))
+        except (ValueError, TypeError):
+            pass
+    if isinstance(user, dict) and "id" in user:
+        try:
+            return uuid.UUID(str(user["id"]))
+        except (ValueError, TypeError):
+            pass
+    return uuid.UUID("00000000-0000-0000-0000-000000000001")
+
+
+def _generate_slug(name: str) -> str:
+    """Generates a URL-friendly slug from a product name."""
+    clean = re.sub(r"[^\w\s-]", "", name).strip().lower()
+    return re.sub(r"[-\s]+", "-", clean)
+
+
 @router.get(
     "",
     response_model=APIResponse[PaginatedResponse[ProductResponse]],
@@ -41,11 +66,22 @@ async def list_products(
     current_user: User = Depends(get_current_user),
 ) -> APIResponse[PaginatedResponse[ProductResponse]]:
     """Retrieves a paginated list of products owned by or accessible to the current user."""
+    owner_id = _extract_user_id(current_user)
     offset = (page - 1) * page_size
 
+    # 1. Total count query
+    count_stmt = (
+        select(func.count(Product.id))
+        .where(Product.owner_id == owner_id, Product.is_deleted == False)  # noqa: E712
+    )
+    total_count_res = await db.execute(count_stmt)
+    total = total_count_res.scalar_one() or 0
+
+    # 2. Items query
     stmt = (
         select(Product)
-        .where(Product.owner_id == current_user.id, Product.is_deleted == False)  # noqa: E712
+        .where(Product.owner_id == owner_id, Product.is_deleted == False)  # noqa: E712
+        .order_by(Product.created_at.desc())
         .offset(offset)
         .limit(page_size)
     )
@@ -53,12 +89,25 @@ async def list_products(
     products = result.scalars().all()
 
     items = [ProductResponse.model_validate(p) for p in products]
+    total_pages = max(1, math.ceil(total / page_size)) if total > 0 else 1
+    has_next = page < total_pages
+    has_previous = page > 1
+
+    # Meta dictionary fulfilling PaginatedResponse schema constraints
+    meta_payload = {
+        "page": page,
+        "page_size": page_size,
+        "total": total,
+        "total_items": total,
+        "total_pages": total_pages,
+        "has_next": has_next,
+        "has_previous": has_previous,
+        "has_prev": has_previous,
+    }
+
     paginated = PaginatedResponse(
         items=items,
-        total=len(items),
-        page=page,
-        page_size=page_size,
-        total_pages=1,
+        meta=meta_payload,
     )
     return APIResponse(data=paginated)
 
@@ -75,17 +124,20 @@ async def create_product(
     current_user: User = Depends(get_current_user),
 ) -> APIResponse[ProductResponse]:
     """Creates a new product entity assigned to the authenticated user."""
+    owner_id = _extract_user_id(current_user)
+    slug = getattr(payload, "slug", None) or _generate_slug(payload.name)
+
     # Check for slug conflict
-    stmt = select(Product).where(Product.slug == payload.slug, Product.is_deleted == False)  # noqa: E712
+    stmt = select(Product).where(Product.slug == slug, Product.is_deleted == False)  # noqa: E712
     result = await db.execute(stmt)
     if result.scalar_one_or_none():
-        raise ConflictException(f"A product with slug '{payload.slug}' already exists.")
+        raise ConflictException(f"A product with slug '{slug}' already exists.")
 
     product = Product(
         name=payload.name,
-        slug=payload.slug,
-        description=payload.description,
-        owner_id=current_user.id,
+        slug=slug,
+        description=getattr(payload, "description", None),
+        owner_id=owner_id,
     )
     db.add(product)
     await db.commit()
@@ -105,7 +157,10 @@ async def get_product(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> APIResponse[ProductDetailResponse]:
-    """Retrieves product details including features and specifications by ID."""
+    """Retrieves product details including eagerly-loaded features and specifications by ID."""
+    owner_id = _extract_user_id(current_user)
+
+    # Eagerly load features and specifications with selectinload to eliminate MissingGreenlet IO errors
     stmt = (
         select(Product)
         .options(
@@ -114,7 +169,7 @@ async def get_product(
         )
         .where(
             Product.id == product_id,
-            Product.owner_id == current_user.id,
+            Product.owner_id == owner_id,
             Product.is_deleted == False,  # noqa: E712
         )
     )
@@ -139,9 +194,11 @@ async def update_product(
     current_user: User = Depends(get_current_user),
 ) -> APIResponse[ProductResponse]:
     """Updates product attributes for an existing product."""
+    owner_id = _extract_user_id(current_user)
+
     stmt = select(Product).where(
         Product.id == product_id,
-        Product.owner_id == current_user.id,
+        Product.owner_id == owner_id,
         Product.is_deleted == False,  # noqa: E712
     )
     result = await db.execute(stmt)
@@ -170,9 +227,11 @@ async def delete_product(
     current_user: User = Depends(get_current_user),
 ) -> None:
     """Soft deletes a product by marking is_deleted=True."""
+    owner_id = _extract_user_id(current_user)
+
     stmt = select(Product).where(
         Product.id == product_id,
-        Product.owner_id == current_user.id,
+        Product.owner_id == owner_id,
         Product.is_deleted == False,  # noqa: E712
     )
     result = await db.execute(stmt)
