@@ -192,6 +192,11 @@ class Project(Base):
         back_populates="project",
         cascade="all, delete-orphan"
     )
+    analytics_metrics = relationship(
+        "AnalyticsMetric",
+        back_populates="project",
+        cascade="all, delete-orphan"
+    )
     created_at = Column(
         DateTime,
         server_default=func.now(),
@@ -361,6 +366,62 @@ class Feedback(Base):
         nullable=False,
         index=True
     )
+    updated_at = Column(
+        DateTime,
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
+class AnalyticsMetric(Base):
+    __tablename__ = "analytics_metrics"
+
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4
+    )
+
+    metric_code = Column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+
+    project_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("projects.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True
+    )
+
+    metric_name = Column(
+        String(100),
+        nullable=False
+    )
+
+    metric_value = Column(
+        Float,
+        nullable=False
+    )
+
+    recorded_date = Column(
+        DateTime,
+        nullable=False,
+        index=True
+    )
+
+    project = relationship(
+        "Project",
+        back_populates="analytics_metrics"
+    )
+
+    created_at = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+
     updated_at = Column(
         DateTime,
         server_default=func.now(),
