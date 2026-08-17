@@ -8,7 +8,7 @@ and exception-driven token verification.
 
 from datetime import datetime, timedelta, timezone
 import os
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 import bcrypt
 import jwt
@@ -47,6 +47,8 @@ ALGORITHM = (
     or os.getenv("ALGORITHM")
     or "HS256"
 )
+
+ALLOWED_ALGORITHMS: List[str] = list({ALGORITHM, "HS256", "HS384", "HS512"})
 
 ACCESS_TOKEN_EXPIRE_MINUTES = int(
     getattr(settings, "ACCESS_TOKEN_EXPIRE_MINUTES", None)
@@ -179,7 +181,12 @@ def decode_token(token: str) -> Optional[Dict[str, Any]]:
     :return: Decoded payload dictionary if valid, else None.
     """
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=ALLOWED_ALGORITHMS,
+            options={"verify_aud": False},
+        )
         return payload
     except Exception as exc:
         logger.warning("JWT decoding error", error=str(exc))
@@ -195,7 +202,12 @@ def decode_access_token(token: str) -> Dict[str, Any]:
     :raises UnauthorizedAccessException: If token signature is invalid, missing subject, or expired.
     """
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=ALLOWED_ALGORITHMS,
+            options={"verify_aud": False},
+        )
         user_id: Optional[str] = payload.get("sub") or payload.get("user_id")
         if not user_id:
             raise UnauthorizedAccessException(

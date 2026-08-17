@@ -6,7 +6,7 @@ database dependency is asynchronous.
 """
 
 import uuid
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -36,7 +36,7 @@ class ProjectRepository(IProjectRepository):
     # OWNER RESOLUTION
     # ---------------------------------------------------------------------
 
-    async def _resolve_owner(self, owner_id: str) -> Optional[User]:
+    async def _resolve_owner(self, owner_id: Union[str, uuid.UUID]) -> Optional[User]:
         """
         Resolve the external owner identifier to the User ORM row.
         Checks by UUID primary key first, then falls back to user_code or email.
@@ -79,7 +79,7 @@ class ProjectRepository(IProjectRepository):
     async def create(
         self,
         payload: ProjectCreate,
-        owner_id: str,
+        owner_id: Union[str, uuid.UUID],
     ) -> Project:
         """
         Persist a new project.
@@ -97,7 +97,7 @@ class ProjectRepository(IProjectRepository):
 
         project = Project(
             project_code=project_code,
-            workspace_id=user.workspace_id,
+            workspace_id=getattr(user, "workspace_id", None),
             owner_id=user.id,
             project_name=payload.title,
             description=payload.description,
@@ -118,17 +118,18 @@ class ProjectRepository(IProjectRepository):
 
     async def get_by_owner(
         self,
-        owner_id: str,
+        owner_id: Union[str, uuid.UUID],
         skip: int = 0,
         limit: int = 100,
     ) -> List[Project]:
         """
         Retrieve projects belonging to the authenticated Product Manager.
+        Returns an empty list gracefully if the user is not found or has no projects.
         """
         user = await self._resolve_owner(owner_id)
 
         if user is None:
-            raise ValueError(f"User '{owner_id}' not found.")
+            return []
 
         skip = max(int(skip), 0)
         limit = max(min(int(limit), 100), 1)
@@ -154,8 +155,8 @@ class ProjectRepository(IProjectRepository):
 
     async def get_by_id(
         self,
-        project_id: str,
-        owner_id: str,
+        project_id: Union[str, uuid.UUID],
+        owner_id: Union[str, uuid.UUID],
     ) -> Optional[Project]:
         """
         Retrieve one project belonging to the authenticated owner.
@@ -187,9 +188,9 @@ class ProjectRepository(IProjectRepository):
 
     async def update(
         self,
-        project_id: str,
+        project_id: Union[str, uuid.UUID],
         payload: ProjectUpdate,
-        owner_id: str,
+        owner_id: Union[str, uuid.UUID],
     ) -> Optional[Project]:
         """
         Update an existing project owned by the authenticated user.
@@ -237,8 +238,8 @@ class ProjectRepository(IProjectRepository):
 
     async def delete(
         self,
-        project_id: str,
-        owner_id: str,
+        project_id: Union[str, uuid.UUID],
+        owner_id: Union[str, uuid.UUID],
     ) -> bool:
         """
         Delete a project belonging to the authenticated owner.
