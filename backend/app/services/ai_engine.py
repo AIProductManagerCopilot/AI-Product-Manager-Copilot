@@ -1,3 +1,7 @@
+"""
+Production AI Engine Orchestrator for RAG Context Retrieval and Streaming Inference.
+"""
+
 import os
 import json
 import asyncio
@@ -26,7 +30,7 @@ logger = structlog.get_logger(__name__)
 
 
 # ==========================================
-# SECTION 1: PRESERVED UTILITY SCHEMAS & HELPERS
+# SECTION 1: UTILITY SCHEMAS & HELPERS
 # ==========================================
 
 class ExtractedThemeSchema(BaseModel):
@@ -49,7 +53,7 @@ class ExtractedThemeSchema(BaseModel):
 
 
 def clean_environment_token(raw_token: str) -> str:
-    """Extracts raw API key token, stripping accidental terminal command duplication noise."""
+    """Extracts raw API key token, stripping accidental terminal command noise."""
     if not raw_token:
         return ""
     cleaned = raw_token.strip()
@@ -61,12 +65,17 @@ def clean_environment_token(raw_token: str) -> str:
 def analyze_feedback_themes(cleaned_text: str) -> dict:
     """Triggers static semantic pattern processing for feedback analysis."""
     api_key = clean_environment_token(
-        os.getenv("GEMINI_API_KEY", getattr(settings, "gemini_api_key", ""))
+        getattr(settings, "gemini_api_key", None)
+        or getattr(settings, "GEMINI_API_KEY", None)
+        or os.getenv("GEMINI_API_KEY", "")
     )
     
-    # Updated default model alias from gemini-1.5-flash to gemini-3.5-flash
-    model_env = os.getenv("GEMINI_API_MODEL", "gemini-3.5-flash")
-    model_target = model_env if model_env.startswith("models/") else f"models/{model_env}"
+    model_env = (
+        getattr(settings, "gemini_api_model", None)
+        or getattr(settings, "gemini_model", None)
+        or os.getenv("GEMINI_API_MODEL", "gemini-3.6-flash")
+    )
+    model_target = model_env.replace("models/", "")
     
     client = genai.Client(api_key=api_key)
     
@@ -100,8 +109,8 @@ class AIEngine:
     """
     Service Orchestrator that coordinates:
     1. Query Embedding Generation (768-dim via EmbeddingService)
-    2. Context Retrieval & Schema Validation (VectorService)
-    3. Prompt Assembly (PromptBuilder)
+    2. Context Retrieval & Schema Extraction (VectorService)
+    3. Prompt Assembly with injected context (PromptBuilder)
     4. Real-time Token Streaming (GeminiService)
     """
 
@@ -130,7 +139,7 @@ class AIEngine:
         return await self.embedding_service.generate_embedding(text)
 
     async def search_similar_chunks(
-        self, query_vector: List[float], top_k: int = 3
+        self, query_vector: List[float], top_k: int = 8
     ) -> List[Dict[str, Any]]:
         """Delegates similarity search to VectorService."""
         return await self.vector_service.search_similar_chunks(query_vector, top_k=top_k)
@@ -145,13 +154,11 @@ class AIEngine:
         **kwargs
     ) -> AsyncGenerator[str, None]:
         """
-        Legacy/Route-compatible wrapper expected by app/api/v1/copilot.py.
+        Main entry point for Copilot streaming routes.
         Delegates directly to the 4-stage RAG SSE pipeline.
         """
-        # Safely extract user query across various route payload structures
         user_query = prompt or query or kwargs.get("user_query") or ""
         
-        # If kwargs contains a Pydantic contract object (e.g. payload=...)
         if not user_query and "payload" in kwargs:
             payload_obj = kwargs["payload"]
             user_query = getattr(payload_obj, "prompt", getattr(payload_obj, "query", ""))
@@ -176,9 +183,9 @@ class AIEngine:
             yield sse_chunk
 
     async def stream_rag_response(
-        self, user_query: str, top_k: int = 3
+        self, user_query: str, top_k: int = 8
     ) -> AsyncGenerator[str, None]:
-        """Simplified stream generator for backward compatibility."""
+        """Simplified stream generator for direct prompt/context streaming."""
         query_vector = await self.embedding_service.generate_embedding(user_query)
         context_chunks = await self.vector_service.search_similar_chunks(query_vector, top_k=top_k)
         formatted_prompt = self.prompt_builder.build_rag_prompt(user_query, context_chunks)
@@ -201,20 +208,20 @@ class AIEngine:
         start_time = time.perf_counter()
 
         try:
-            # Stage 1: Generate Embedding Vector (Enforced 768 Dimensions)
+            # Stage 1: Generate Embedding Vector (768 Dimensions)
             log.info("STAGE_1_START: Generating Query Embedding Vector")
             query_vector = await self.embedding_service.generate_embedding(user_query)
             log.info("STAGE_1_COMPLETE: Vector Generated", vector_dim=len(query_vector))
 
-            # Stage 2: Vector Search & Schema Validation
+            # Stage 2: Vector Search in Qdrant
             log.info("STAGE_2_START: Querying Qdrant Vector Mesh")
             retrieved_chunks = await self.vector_service.search_similar_chunks(
                 query_vector=query_vector, 
-                top_k=3
+                top_k=8
             )
             log.info("STAGE_2_COMPLETE: Context Retrieved", chunks_found=len(retrieved_chunks))
 
-            # Stage 3: Prompt Construction
+            # Stage 3: Prompt Construction with Injected Chunks
             log.info("STAGE_3_START: Constructing RAG Prompt")
             full_prompt = self.prompt_builder.build_rag_prompt(
                 user_query=user_query, 
@@ -227,7 +234,6 @@ class AIEngine:
             chunk_count = 0
 
             async for text_chunk in self.gemini_service.stream_generation(full_prompt):
-                # Check for client disconnect
                 if request and await request.is_disconnected():
                     log.warn("Edge client disconnected. Terminating stream execution.")
                     break

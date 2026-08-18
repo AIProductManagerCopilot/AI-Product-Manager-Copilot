@@ -59,11 +59,11 @@ async def generate_gemini_stream(
     Asynchronous generator yielding streamed chunks from Google Gemini using SSE format.
     """
     try:
-        # Strip models/ prefix if present to prevent 404 NOT_FOUND on v1beta endpoints; default to gemini-3.5-flash
+        # Strip models/ prefix if present to prevent 404 NOT_FOUND on v1beta endpoints; default to gemini-3.6-flash
         model_name = (
             getattr(settings, "gemini_model", "").replace("models/", "")
             if getattr(settings, "gemini_model", None)
-            else "gemini-3.5-flash"
+            else "gemini-3.6-flash"
         )
 
         response = ai_client.models.generate_content_stream(
@@ -177,7 +177,7 @@ async def theme_insights_endpoint(request: ThemeIntelligenceRequest):
         model_name = (
             getattr(settings, "gemini_model", "").replace("models/", "")
             if getattr(settings, "gemini_model", None)
-            else "gemini-3.5-flash"
+            else "gemini-3.6-flash"
         )
 
         response = ai_client.models.generate_content(

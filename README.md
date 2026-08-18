@@ -46,7 +46,7 @@ Real-time SSE Token Stream
 1. **Feedback Ingestion & Vectorization**: Customer reviews, support tickets, and product context are processed and converted into 768-dimensional dense vector embeddings using Google GenAI (`text-embedding-004`).
 2. **Qdrant Vector Mesh**: Embedded vectors and structured payloads (`category`, `sentiment`, `priority_score`) are indexed in Qdrant (`feedback_clusters`) for semantic similarity search.
 3. **Analytics Integration**: Pre-computed analytics summaries enrich RAG system prompts with high-level KPI trends.
-4. **AI Copilot & PRD Token Streaming**: Google Gemini (`gemini-3.5-flash`) streams markdown responses real-time over Server-Sent Events (SSE) directly to the frontend interface.
+4. **AI Copilot & PRD Token Streaming**: Google Gemini (`gemini-3.6-flash`) streams markdown responses real-time over Server-Sent Events (SSE) directly to the frontend interface.
 
 ---
 

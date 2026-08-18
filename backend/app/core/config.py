@@ -47,10 +47,10 @@ class Settings(BaseSettings):
         default="demo_gemini_key", validation_alias=AliasChoices("GEMINI_API_KEY", "gemini_api_key")
     )
     gemini_model: str = Field(
-        default="gemini-2.5-flash", validation_alias=AliasChoices("GEMINI_MODEL", "gemini_model")
+        default="gemini-3.6-flash", validation_alias=AliasChoices("GEMINI_MODEL", "gemini_model")
     )
     gemini_api_model: str = Field(
-        default="gemini-2.5-flash", validation_alias=AliasChoices("GEMINI_API_MODEL", "gemini_api_model")
+        default="gemini-3.6-flash", validation_alias=AliasChoices("GEMINI_API_MODEL", "gemini_api_model")
     )
 
     # Embedding Settings

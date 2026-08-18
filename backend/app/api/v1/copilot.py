@@ -1,73 +1,54 @@
 import asyncio
-from typing import AsyncGenerator
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import AsyncGenerator, Optional
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.responses import StreamingResponse
 import structlog
 
 from app.services.schemas import AIInferenceInternalContract
-from app.services.ai_engine import GeminiOrchestrationEngine
-from app.services.qdrant_mesh import QdrantVectorMeshClient
+from app.services.ai_engine import AIEngine, GeminiOrchestrationEngine
 
 logger = structlog.get_logger(__name__)
 router = APIRouter(prefix="/copilot", tags=["AI Copilot"])
 
 
-def get_ai_engine() -> GeminiOrchestrationEngine:
-    return GeminiOrchestrationEngine()
-
-
-def get_vector_client() -> QdrantVectorMeshClient:
-    return QdrantVectorMeshClient()
+def get_ai_engine() -> AIEngine:
+    """Dependency provider for the AI Orchestration Engine."""
+    return AIEngine()
 
 
 async def stream_copilot_response(
-    request: AIInferenceInternalContract,
-    ai_engine: GeminiOrchestrationEngine,
-    vector_client: QdrantVectorMeshClient,
+    request_payload: AIInferenceInternalContract,
+    http_request: Optional[Request],
+    ai_engine: AIEngine,
 ) -> AsyncGenerator[str, None]:
+    """
+    Executes real-time SSE streaming for AI Copilot queries.
+    Passes user prompt and telemetry context directly into the 4-stage RAG engine.
+    """
     try:
-        context_docs = []
-        correlation_id = request.correlation_id or "stream-corr-id"
-        workspace_id = request.workspace_id or "default_workspace"
+        correlation_id = (
+            getattr(request_payload, "correlation_id", None)
+            or "stream-corr-id"
+        )
+        workspace_id = (
+            getattr(request_payload, "workspace_id", None)
+            or "default_workspace"
+        )
         user_prompt = (
-            getattr(request, "prompt", "")
-            or getattr(request, "query", "")
+            getattr(request_payload, "prompt", "")
+            or getattr(request_payload, "query", "")
             or ""
         )
 
-        # 1. Generate Query Vector Embedding using real AI Engine
-        query_vector = await ai_engine.generate_embedding(user_prompt)
-
-        # 2. Query Tenant-Isolated Vector Mesh Space
-        try:
-            rag_response = await vector_client.query_semantic_context(
-                vector=query_vector,
-                workspace_id=workspace_id,
-                correlation_id=correlation_id,
-            )
-            context_docs = getattr(rag_response, "snippets", [])
-        except Exception as e:
-            logger.error("vector_context_retrieval_failed", error=str(e))
-
-        # 3. Process Content Snippets into Context String
-        context_str = ""
-        if context_docs:
-            context_str = "\n".join(
-                [
-                    doc.text
-                    for doc in context_docs
-                    if getattr(doc, "text", None)
-                ]
-            )
-
-        # 4. Stream Tokens from Orchestration Engine
         async for chunk in ai_engine.generate_inference_stream(
             prompt=user_prompt,
-            context_text=context_str,
+            query=user_prompt,
             correlation_id=correlation_id,
-            request=None,
+            workspace_id=workspace_id,
+            request=http_request,
+            payload=request_payload,
         ):
-            yield chunk  # ai_engine already formats as "data: {...}\n\n"
+            yield chunk
 
     except Exception as e:
         logger.error("stream_generation_failed", error=str(e))
@@ -76,12 +57,15 @@ async def stream_copilot_response(
 
 @router.post("/stream", response_class=StreamingResponse)
 async def stream_inference(
-    request: AIInferenceInternalContract,
-    ai_engine: GeminiOrchestrationEngine = Depends(get_ai_engine),
-    vector_client: QdrantVectorMeshClient = Depends(get_vector_client),
+    request_payload: AIInferenceInternalContract,
+    http_request: Request,
+    ai_engine: AIEngine = Depends(get_ai_engine),
 ):
+    """
+    Server-Sent Events (SSE) endpoint for Copilot natural language product queries.
+    """
     return StreamingResponse(
-        stream_copilot_response(request, ai_engine, vector_client),
+        stream_copilot_response(request_payload, http_request, ai_engine),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",

@@ -6,7 +6,7 @@ from app.core.exceptions import VectorDimensionMismatchError, VectorSearchError
 
 
 class VectorService:
-    """Manages Qdrant vector operations with automated schema validation and 3072-dim support."""
+    """Manages Qdrant vector operations with automated schema validation and 768-dim support."""
 
     def __init__(self, client: Optional[AsyncQdrantClient] = None):
         if client is not None:
@@ -24,7 +24,7 @@ class VectorService:
             )
 
     async def ensure_collection_exists(self) -> None:
-        """Ensures the vector collection is created and configured for 3072-dimensional embeddings."""
+        """Ensures the vector collection is created and configured for embeddings."""
         try:
             collections = await self.client.get_collections()
             existing_names = [c.name for c in collections.collections]
@@ -33,7 +33,7 @@ class VectorService:
                 await self.client.create_collection(
                     collection_name=settings.qdrant_collection,
                     vectors_config=models.VectorParams(
-                        size=settings.embedding_dimension,  # Enforced 3072
+                        size=settings.embedding_dimension,
                         distance=models.Distance.COSINE
                     )
                 )
@@ -66,7 +66,7 @@ class VectorService:
     async def search_similar_chunks(
         self, 
         query_vector: List[float], 
-        top_k: int = 3
+        top_k: int = 5
     ) -> List[Dict[str, Any]]:
         """Validates dimension alignment before querying Qdrant vector mesh."""
         if len(query_vector) != settings.embedding_dimension:
@@ -86,9 +86,26 @@ class VectorService:
             retrieved = []
             for point in results:
                 payload = point.payload or {}
+                # Extract text across all dataset key variations
+                chunk_text = (
+                    payload.get("chunk_text")
+                    or payload.get("text")
+                    or payload.get("content")
+                    or payload.get("feedback_text")
+                    or ""
+                )
+                chunk_id = (
+                    payload.get("chunk_id")
+                    or payload.get("feedback_id")
+                    or payload.get("ticket_id")
+                    or str(point.id)
+                )
+
                 retrieved.append({
-                    "ticket_id": payload.get("ticket_id", str(point.id)),
-                    "content": payload.get("text") or payload.get("content", ""),
+                    "ticket_id": chunk_id,
+                    "chunk_id": chunk_id,
+                    "content": chunk_text,
+                    "text": chunk_text,
                     "score": point.score,
                     "metadata": payload
                 })
