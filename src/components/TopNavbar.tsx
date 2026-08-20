@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Bell, ChevronDown, Sparkles, Command } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,6 +17,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
   onSearchChange,
   searchPlaceholder = 'Search workspaces...',
 }) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { isDark } = useTheme();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -138,6 +140,10 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                   {['Profile Settings', 'Billing', 'API Keys'].map((item) => (
                     <button
                       key={item}
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                        navigate('/settings');
+                      }}
                       className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${menuItemClass}`}
                     >
                       {item}

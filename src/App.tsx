@@ -24,6 +24,7 @@ import { AskCopilotPage } from './pages/AskCopilot';
 import { FeedbackIngestionPage } from './pages/FeedbackIngestion';
 import { ProductAnalyticsPage } from './pages/ProductAnalytics';
 import { ThemeExtractionPage } from './pages/ThemeExtraction';
+import { SettingsPage } from './pages/Settings';
 
 export const App: React.FC = () => {
   return (
@@ -129,19 +130,14 @@ export const App: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
-              {[
-                '/settings',
-              ].map((path) => (
-                <Route
-                  key={path}
-                  path={path}
-                  element={
-                    <ProtectedRoute>
-                      <DashboardPage />
-                    </ProtectedRoute>
-                  }
-                />
-              ))}
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <SettingsPage />
+                  </ProtectedRoute>
+                }
+              />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />

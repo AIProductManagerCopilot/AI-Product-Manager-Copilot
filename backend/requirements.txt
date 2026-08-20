@@ -18,3 +18,5 @@ firebase-admin==6.5.0
 pandas==2.2.3
 passlib==1.7.4
 bcrypt==5.0.0
+aiosqlite==0.22.1
+
