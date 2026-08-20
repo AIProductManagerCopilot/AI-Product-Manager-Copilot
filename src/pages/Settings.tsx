@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Settings as SettingsIcon,
@@ -45,9 +46,19 @@ import { SecurityPolicyModal } from '../components/modals/SecurityPolicyModal';
 export const SettingsPage: React.FC = () => {
   const { user } = useAuth();
   const { isDark } = useTheme();
+  const location = useLocation();
 
   // Active sub-tab state
   const [activeTab, setActiveTab] = useState<'rbac' | 'profile' | 'billing' | 'apikeys'>('rbac');
+
+  useEffect(() => {
+    if (location.hash) {
+      const hashTab = location.hash.replace('#', '');
+      if (['rbac', 'profile', 'billing', 'apikeys'].includes(hashTab)) {
+        setActiveTab(hashTab as any);
+      }
+    }
+  }, [location.hash]);
 
   // Data states
   const [connectedProject, setConnectedProject] = useState('BankApp Pro');

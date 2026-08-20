@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Layers,
@@ -240,6 +241,7 @@ function transformBackendClustersToThemes(clusters: BackendCluster[]): ThemeItem
 
 export const ThemeExtractionPage: React.FC = () => {
   const { isDark } = useTheme();
+  const navigate = useNavigate();
 
   // State
   const [searchQuery, setSearchQuery] = useState('');
@@ -679,7 +681,7 @@ export const ThemeExtractionPage: React.FC = () => {
                 </button>
                 <button
                   onClick={() => {
-                    toast.success(`Generating PRD for ${selectedTheme.title}!`, { style: toast_ok });
+                    navigate('/prd-generator', { state: { feature_name: selectedTheme.title, autoGenerate: true } });
                     setSelectedTheme(null);
                   }}
                   className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white hover:opacity-90"

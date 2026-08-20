@@ -36,21 +36,10 @@ import { workspaceService } from '../services/workspaceService';
 
 // ─── Feedback Volume Chart SVG Component ───────────────────────────────────────
 
-const FeedbackVolumeChart: React.FC<{ trends?: BackendTrend[] }> = ({ trends = [] }) => {
+const FeedbackVolumeChart: React.FC<{ trends?: BackendTrend[], timeframe?: string }> = ({ trends = [], timeframe = 'Last 8 Weeks' }) => {
   const { isDark } = useTheme();
 
-  let points = [
-    { week: 'Week 1', val: 1240, x: 50,  y: 150 },
-    { week: 'Week 2', val: 1580, x: 135, y: 125 },
-    { week: 'Week 3', val: 1920, x: 220, y: 92  },
-    { week: 'Week 4', val: 1680, x: 305, y: 115 },
-    { week: 'Week 5', val: 2150, x: 390, y: 72  },
-    { week: 'Week 6', val: 1890, x: 475, y: 98  },
-    { week: 'Week 7', val: 2340, x: 560, y: 55  },
-    { week: 'Week 8', val: 2480, x: 645, y: 42  },
-  ];
-
-  let pathD = 'M 50 150 C 90 140, 100 125, 135 125 C 170 125, 185 92, 220 92 C 255 92, 270 115, 305 115 C 340 115, 355 72, 390 72 C 425 72, 440 98, 475 98 C 510 98, 525 55, 560 55 C 595 55, 610 42, 645 42';
+  let points: Array<{ week: string; val: number; x: number; y: number }> = [];
 
   if (trends && trends.length > 0) {
     const bucketMap: Record<string, number> = {};
@@ -78,18 +67,39 @@ const FeedbackVolumeChart: React.FC<{ trends?: BackendTrend[] }> = ({ trends = [
         const weekLabel = isNaN(dateObj.getTime()) ? `W${idx + 1}` : `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
         return { week: weekLabel, val, x, y };
       });
-
-      pathD = `M ${points[0].x} ${points[0].y}`;
-      for (let i = 1; i < points.length; i++) {
-        const prev = points[i - 1];
-        const curr = points[i];
-        const cpX1 = prev.x + (curr.x - prev.x) / 2;
-        const cpY1 = prev.y;
-        const cpX2 = prev.x + (curr.x - prev.x) / 2;
-        const cpY2 = curr.y;
-        pathD += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${curr.x} ${curr.y}`;
-      }
     }
+  }
+
+  // Generate responsive placeholder data if no database trends available
+  if (points.length < 2) {
+    let numPoints = 8;
+    if (timeframe === 'Last 12 Weeks') numPoints = 12;
+    else if (timeframe === 'Last 30 Days') numPoints = 4;
+
+    points = Array.from({ length: numPoints }).map((_, i) => {
+      const pct = i / (numPoints - 1);
+      const x = 50 + pct * (645 - 50);
+      const val = Math.floor(1000 + (i * 180) + (Math.sin(i * 1.5) * 400));
+      const mockMin = 600;
+      const mockMax = 4000;
+      const y = 190 - ((val - mockMin) / (mockMax - mockMin)) * (190 - 42);
+      
+      let label = `Week ${i + 1}`;
+      if (timeframe === 'Last 30 Days') label = `W${i + 1}`;
+      
+      return { week: label, val, x, y };
+    });
+  }
+
+  let pathD = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1];
+    const curr = points[i];
+    const cpX1 = prev.x + (curr.x - prev.x) / 2;
+    const cpY1 = prev.y;
+    const cpX2 = prev.x + (curr.x - prev.x) / 2;
+    const cpY2 = curr.y;
+    pathD += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${curr.x} ${curr.y}`;
   }
 
   const areaD = `${pathD} L ${points[points.length - 1].x} 190 L ${points[0].x} 190 Z`;
@@ -571,7 +581,7 @@ export const DashboardPage: React.FC = () => {
         // Fetch live theme clusters & trends directly from PostgreSQL endpoints
         const [clusters, trends] = await Promise.all([
           analyticsService.getThemeClusters(),
-          analyticsService.getThemeTrends()
+          analyticsService.getThemeTrends(56) // 8 Weeks Default
         ]);
 
         if (isMounted) {
@@ -605,6 +615,34 @@ export const DashboardPage: React.FC = () => {
     loadBackendData();
     return () => { isMounted = false; };
   }, []);
+
+  // Handle timeframe changes for the Feedback Volume chart
+  useEffect(() => {
+    let isMounted = true;
+    let days = 56;
+    if (volumeTimeframe === 'Last 12 Weeks') days = 84;
+    else if (volumeTimeframe === 'Last 30 Days') days = 30;
+
+    async function updateTrends() {
+      try {
+        const trends = await analyticsService.getThemeTrends(days);
+        if (isMounted && Array.isArray(trends) && trends.length > 0) {
+          setBackendTrends(trends);
+        }
+      } catch (err) {
+        console.error('Failed to update trends:', err);
+      }
+    }
+    
+    // Only fetch if it's not the initial mount
+    // since the initial mount fetches 56 days by default.
+    // However, if the user changes the timeframe, this will trigger.
+    if (volumeTimeframe !== 'Last 8 Weeks' || backendTrends.length > 0) {
+      updateTrends();
+    }
+
+    return () => { isMounted = false; };
+  }, [volumeTimeframe]);
 
   // Compute Pain Points from Backend or Fallback
   const painPoints = backendClusters.length > 0
@@ -808,7 +846,7 @@ export const DashboardPage: React.FC = () => {
                     </div>
                     <div>
                       <h2 className="text-lg font-bold font-display" style={{ color: 'var(--text-primary)' }}>
-                        Feedback Volume (8 Weeks)
+                        Feedback Volume ({volumeTimeframe.replace('Last ', '')})
                       </h2>
                       <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
                         Total feedback records ingested over time
@@ -831,7 +869,7 @@ export const DashboardPage: React.FC = () => {
 
                 {/* SVG Area Chart */}
                 <div className="my-2">
-                  <FeedbackVolumeChart trends={backendTrends} />
+                  <FeedbackVolumeChart trends={backendTrends} timeframe={volumeTimeframe} />
                 </div>
               </div>
 

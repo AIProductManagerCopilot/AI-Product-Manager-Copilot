@@ -75,7 +75,9 @@ export const analyticsService = {
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const json = await res.json();
-      return Array.isArray(json) ? json : (json?.data || []);
+      if (Array.isArray(json)) return json;
+      if (json?.data?.trends && Array.isArray(json.data.trends)) return json.data.trends;
+      return json?.data || [];
     } catch (error) {
       console.warn('Backend /analytics/trends fetch failed, returning default telemetry:', error);
       return [];

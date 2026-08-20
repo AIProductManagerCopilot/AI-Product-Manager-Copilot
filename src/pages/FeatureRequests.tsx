@@ -136,7 +136,7 @@ export const FeatureRequestsPage: React.FC = () => {
 
   const handleGeneratePRD = (featureTitle: string) => {
     navigate(`/prd-generator?feature=${encodeURIComponent(featureTitle)}`, {
-      state: { feature_name: featureTitle },
+      state: { feature_name: featureTitle, autoGenerate: true },
     });
   };
 

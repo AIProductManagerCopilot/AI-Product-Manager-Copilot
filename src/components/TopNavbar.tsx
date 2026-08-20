@@ -370,18 +370,26 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
                   </span>
                 </div>
                 <div className="p-1.5">
-                  {['Profile Settings', 'Billing', 'API Keys'].map((item) => (
-                    <button
-                      key={item}
-                      onClick={() => {
-                        setShowProfileMenu(false);
-                        navigate('/settings');
-                      }}
-                      className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${menuItemClass}`}
-                    >
-                      {item}
-                    </button>
-                  ))}
+                  {['Profile Settings', 'Billing', 'API Keys'].map((item) => {
+                    const tabMap: Record<string, string> = {
+                      'Profile Settings': 'profile',
+                      'Billing': 'billing',
+                      'API Keys': 'apikeys',
+                    };
+                    const tabId = tabMap[item];
+                    return (
+                      <button
+                        key={item}
+                        onClick={() => {
+                          setShowProfileMenu(false);
+                          navigate(`/settings#${tabId}`);
+                        }}
+                        className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors ${menuItemClass}`}
+                      >
+                        {item}
+                      </button>
+                    );
+                  })}
                 </div>
               </motion.div>
             </>

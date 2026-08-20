@@ -299,9 +299,16 @@ export const RoadmapPage: React.FC = () => {
                                     </div>
                                   </div>
                                 ) : (
-                                  <div className="h-10 rounded-lg border border-dashed border-[#2D3748] flex items-center justify-center text-[11px] text-[#64748B]">
-                                    Unscheduled
-                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      setNewTrack(trackName as RoadmapItem['track']);
+                                      setNewQuarter(q as RoadmapItem['quarter']);
+                                      setIsAddModalOpen(true);
+                                    }}
+                                    className="w-full h-10 rounded-lg border border-dashed border-[#2D3748] hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 flex items-center justify-center text-[11px] text-[#64748B] hover:text-[#3B82F6] transition-colors cursor-pointer"
+                                  >
+                                    + Add Feature
+                                  </button>
                                 )}
                               </td>
                             );

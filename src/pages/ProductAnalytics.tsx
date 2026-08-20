@@ -264,9 +264,22 @@ export const ProductAnalyticsPage: React.FC = () => {
 
   // Dynamically recalculate feature usage based on database feedback clusters
   const getDynamicFeatureUsage = (): FeatureUsageItem[] => {
-    if (!isLiveConnected || backendClusters.length === 0) return FEATURE_USAGE;
+    let base = FEATURE_USAGE.map(feat => {
+      let newRate = feat.rate;
+      let newTrend = feat.trend;
+      if (usageTimeframe === 'Last 30 Days') {
+        newRate = Math.min(100, Math.round(feat.rate * 1.12));
+        newTrend = feat.trend.replace(/([+-][0-9.]+)/, (match) => (parseFloat(match) * 1.2).toFixed(1));
+      } else if (usageTimeframe === 'All Time') {
+        newRate = Math.min(100, Math.round(feat.rate * 1.25));
+        newTrend = feat.trend.replace(/([+-][0-9.]+)/, (match) => (parseFloat(match) * 1.5).toFixed(1));
+      }
+      return { ...feat, rate: newRate, trend: newTrend };
+    });
 
-    return FEATURE_USAGE.map((feat) => {
+    if (!isLiveConnected || backendClusters.length === 0) return base;
+
+    return base.map((feat) => {
       // Find matching user friction cluster
       const matchingCluster = backendClusters.find((c) => {
         const cat = (c.category || c.name || c.theme || '').toLowerCase();
@@ -346,12 +359,46 @@ export const ProductAnalyticsPage: React.FC = () => {
 
   const handleDateSelect = (range: string) => {
     setSelectedDateRange(range);
+    
+    // Sync the lower component timeframes if they match or use a sensible fallback
+    if (range === 'Last 30 Days' || range === 'Last 90 Days') {
+      setUsageTimeframe('Last 30 Days');
+    } else if (range === 'Year to Date (2026)') {
+      setUsageTimeframe('All Time');
+    } else {
+      setUsageTimeframe('Last 7 Days');
+    }
+    
     setIsDateDropdownOpen(false);
     toast.success(`Analytics updated for: ${range}`, { style: toast_ok });
   };
 
   const handleExportData = () => {
-    toast.success('Analytics report exported as CSV & PDF! 📊', { style: toast_ok });
+    // Generate CSV content
+    const headers = ['Feature', 'Category', 'Volume', 'Avg Severity'];
+    const rows = backendClusters.map(c => [
+      c.theme || c.name || c.category || 'Unknown',
+      c.category || 'N/A',
+      c.total_volume || c.count || 0,
+      c.avg_severity || 0
+    ]);
+    
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(r => r.join(','))
+    ].join('\n');
+
+    // Create Blob and trigger download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `product_analytics_${selectedDateRange.replace(/ /g, '_')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success('Analytics report exported as CSV! 📊', { style: toast_ok });
   };
 
   // Card themes
@@ -479,17 +526,17 @@ export const ProductAnalyticsPage: React.FC = () => {
               </div>
               <div className="mt-4">
                 <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
-                  Monthly Active Users
+                  Active Users
                 </p>
                 <div className="flex items-baseline gap-2.5 mt-1">
                   <span className="text-3xl font-extrabold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                    42.3K
+                    {selectedDateRange === 'Last 30 Days' ? '184.5K' : selectedDateRange === 'Last 90 Days' ? '542.1K' : selectedDateRange === 'Year to Date (2026)' ? '1.2M' : '42.3K'}
                   </span>
                   <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30">
                     ↑ 6%
                   </span>
                   <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
-                    vs last 7 days
+                    vs previous period
                   </span>
                 </div>
               </div>
@@ -514,13 +561,13 @@ export const ProductAnalyticsPage: React.FC = () => {
                 </p>
                 <div className="flex items-baseline gap-2.5 mt-1">
                   <span className="text-3xl font-extrabold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                    4.2m
+                    {selectedDateRange === 'Last 30 Days' ? '4.8m' : selectedDateRange === 'Last 90 Days' ? '5.1m' : selectedDateRange === 'Year to Date (2026)' ? '5.4m' : '4.2m'}
                   </span>
                   <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#EF4444]/15 text-[#EF4444] border border-[#EF4444]/30">
                     ↓ 2%
                   </span>
                   <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
-                    vs last 7 days
+                    vs previous period
                   </span>
                 </div>
               </div>
@@ -545,7 +592,7 @@ export const ProductAnalyticsPage: React.FC = () => {
                 </p>
                 <div className="flex items-baseline gap-2.5 mt-1">
                   <span className="text-3xl font-extrabold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                    61%
+                    {selectedDateRange === 'Last 30 Days' ? '65%' : selectedDateRange === 'Last 90 Days' ? '72%' : selectedDateRange === 'Year to Date (2026)' ? '78%' : '61%'}
                   </span>
                   <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30">
                     ↑ 3%
