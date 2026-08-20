@@ -111,22 +111,6 @@ async def generate_gemini_stream(
 
     err_payload = json.dumps({"error": "All candidate AI models are currently exhausted or unavailable."})
     yield f"data: {err_payload}\n\n"
-=======
-    Asynchronous generator yielding streamed chunks from Groq or Gemini using SSE format.
-    """
-    try:
-        import json
-        service = GeminiService()
-        combined_prompt = f"System Instruction: {system_instruction}\n\n{prompt}"
-        async for token in service.stream_generation(combined_prompt):
-            payload = {"content": token}
-            yield f"data: {json.dumps(payload)}\n\n"
-
-    except Exception as e:
-        logger.error(f"Error during LLM streaming: {str(e)}")
-        error_payload = {"error": str(e)}
-        yield f"data: [ERROR]: {json.dumps(error_payload)}\n\n"
->>>>>>> origin/testing
 
 
 @router.post(
@@ -274,7 +258,7 @@ async def theme_insights_endpoint(request: ThemeIntelligenceRequest):
             "status": "success",
             "cluster_topic": request.cluster_topic,
             "evidence_count": context_data["evidence_count"],
-            "insights": "".join(chunks),
+            "insights": getattr(response, "text", ""),
         }
 
     except Exception as e:
