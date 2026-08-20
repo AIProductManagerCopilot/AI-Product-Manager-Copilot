@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import {
   Sparkles,
   Settings,
@@ -44,13 +46,17 @@ export const AskCopilotPage: React.FC = () => {
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Auto scroll to bottom
-  const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
+    chatEndRef.current?.scrollIntoView({ behavior, block: 'end' });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (isGenerating) {
+      scrollToBottom('auto');
+    } else {
+      scrollToBottom('smooth');
+    }
+  }, [messages, isGenerating]);
 
   const handleSend = async (queryText?: string) => {
     const query = (queryText || inputText).trim();
@@ -81,6 +87,21 @@ export const AskCopilotPage: React.FC = () => {
     try {
       let fullText = '';
       let buffer = '';
+      let updateScheduled = false;
+
+      const scheduleStateUpdate = () => {
+        if (updateScheduled) return;
+        updateScheduled = true;
+        requestAnimationFrame(() => {
+          setMessages(prev => prev.map(msg => {
+            if (msg.id === copilotMsgId) {
+              return { ...msg, text: fullText, statusText: undefined };
+            }
+            return msg;
+          }));
+          updateScheduled = false;
+        });
+      };
 
       await analyticsService.streamCopilotAI(query, (chunk) => {
         buffer += chunk;
@@ -89,50 +110,54 @@ export const AskCopilotPage: React.FC = () => {
         const lines = buffer.split('\n\n');
         buffer = lines.pop() || ''; // keep the last incomplete chunk in buffer
 
+        let textAdded = false;
         for (const line of lines) {
           if (!line.trim()) continue;
 
-          let eventType = '';
           let dataStr = '';
+          let hasData = false;
 
           const partLines = line.split('\n');
           for (const pl of partLines) {
-            if (pl.startsWith('event:')) {
-              eventType = pl.replace('event:', '').trim();
-            } else if (pl.startsWith('data:')) {
-              dataStr = pl.replace('data:', '').trim();
+            if (pl.startsWith('data:')) {
+              hasData = true;
+              // Preserve leading/trailing spaces in streaming tokens
+              dataStr = pl.startsWith('data: ') ? pl.substring(6) : pl.substring(5);
             }
           }
 
-          if (dataStr) {
+          if (hasData) {
             if (dataStr.startsWith('[ERROR]:')) {
               fullText += `\n\n*Error: ${dataStr.replace('[ERROR]:', '').trim()}*`;
-            } else if (dataStr.startsWith('{')) {
+              textAdded = true;
+            } else if (dataStr.trim().startsWith('{')) {
               try {
-                const parsed = JSON.parse(dataStr);
-                const delta = parsed.delta || parsed.text || parsed.message || parsed.detail || '';
-                fullText += delta;
+                const parsed = JSON.parse(dataStr.trim());
+                const delta = parsed.content ?? parsed.delta ?? parsed.text ?? parsed.message ?? parsed.detail ?? '';
+                if (delta) {
+                  fullText += delta;
+                  textAdded = true;
+                }
               } catch {
                 fullText += dataStr;
+                textAdded = true;
               }
             } else {
               fullText += dataStr;
+              textAdded = true;
             }
-
-            setMessages(prev => prev.map(msg => {
-              if (msg.id === copilotMsgId) {
-                return { ...msg, text: fullText, statusText: undefined };
-              }
-              return msg;
-            }));
           }
+        }
+
+        if (textAdded) {
+          scheduleStateUpdate();
         }
       });
 
-      // Cleanup streaming flag when complete
+      // Final force sync update and cleanup streaming flag when complete
       setMessages(prev => prev.map(msg => {
         if (msg.id === copilotMsgId) {
-          return { ...msg, isStreaming: false, statusText: undefined };
+          return { ...msg, text: fullText, isStreaming: false, statusText: undefined };
         }
         return msg;
       }));
@@ -262,9 +287,81 @@ export const AskCopilotPage: React.FC = () => {
                             <p className="text-xs text-[#8B5CF6] italic animate-pulse mb-2">{msg.statusText}</p>
                           )}
 
-                          <p className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} leading-relaxed whitespace-pre-wrap`}>
-                            {msg.text || (msg.isStreaming && !msg.statusText ? 'Thinking...' : '')}
-                          </p>
+                          {msg.text ? (
+                            <div className="text-sm leading-relaxed text-[#CBD5E1] w-full">
+                              <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                  h1: ({ children }) => (
+                                    <h1 className="text-xl font-bold text-white mt-6 mb-3 border-b border-[#2D3748] pb-2">
+                                      {children}
+                                    </h1>
+                                  ),
+                                  h2: ({ children }) => (
+                                    <h2 className="text-lg font-bold text-white mt-5 mb-2.5">
+                                      {children}
+                                    </h2>
+                                  ),
+                                  h3: ({ children }) => (
+                                    <h3 className="text-base font-bold text-[#38BDF8] mt-4 mb-2">
+                                      {children}
+                                    </h3>
+                                  ),
+                                  p: ({ children }) => (
+                                    <p className="mb-4 leading-relaxed text-[#CBD5E1] text-sm font-normal last:mb-0">
+                                      {children}
+                                    </p>
+                                  ),
+                                  strong: ({ children }) => (
+                                    <strong className="font-bold text-white">
+                                      {children}
+                                    </strong>
+                                  ),
+                                  ul: ({ children }) => (
+                                    <ul className="list-disc pl-6 mb-4 space-y-1.5 text-[#CBD5E1] text-sm">{children}</ul>
+                                  ),
+                                  ol: ({ children }) => (
+                                    <ol className="list-decimal pl-6 mb-4 space-y-1.5 text-[#CBD5E1] text-sm">{children}</ol>
+                                  ),
+                                  li: ({ children }) => (
+                                    <li className="leading-relaxed text-[#CBD5E1]">{children}</li>
+                                  ),
+                                  code: ({ children }) => (
+                                    <code className="bg-[#1E293B] text-[#38BDF8] px-1.5 py-0.5 rounded text-xs font-mono border border-[#38BDF8]/20">{children}</code>
+                                  ),
+                                  pre: ({ children }) => (
+                                    <pre className="bg-[#0D1117] border border-[#2D3748] p-4 rounded-xl overflow-x-auto my-4 text-xs text-[#E2E8F0] font-mono shadow-inner">{children}</pre>
+                                  ),
+                                  table: ({ children }) => (
+                                    <div className="overflow-x-auto my-4 border border-[#2D3748] rounded-xl shadow-md">
+                                      <table className="min-w-full text-left border-collapse text-xs">{children}</table>
+                                    </div>
+                                  ),
+                                  thead: ({ children }) => (
+                                    <thead className="bg-[#1E293B] text-white font-bold border-b border-[#2D3748]">{children}</thead>
+                                  ),
+                                  tbody: ({ children }) => (
+                                    <tbody className="divide-y divide-[#2D3748]/60 bg-[#161B22]/60">{children}</tbody>
+                                  ),
+                                  th: ({ children }) => (
+                                    <th className="px-4 py-2.5 font-bold text-[#F8FAFC] tracking-wider border-b border-[#2D3748]">{children}</th>
+                                  ),
+                                  td: ({ children }) => (
+                                    <td className="px-4 py-2.5 text-[#CBD5E1] leading-relaxed border-b border-[#2D3748]/50">{children}</td>
+                                  ),
+                                  blockquote: ({ children }) => (
+                                    <div className="my-4 p-4 rounded-xl bg-[#1E293B]/60 border-l-4 border-[#8B5CF6] text-sm text-[#F1F5F9] font-medium shadow-sm">
+                                      {children}
+                                    </div>
+                                  ),
+                                }}
+                              >
+                                {msg.text}
+                              </ReactMarkdown>
+                            </div>
+                          ) : (
+                            msg.isStreaming && !msg.statusText && <p className="text-sm text-[#94A3B8] italic">Thinking...</p>
+                          )}
 
                           <div className={`flex items-center justify-between pt-4 border-t border-[#2D3748] mt-4`}>
                             <div className={`flex items-center gap-2 text-xs text-[#94A3B8]`}>
