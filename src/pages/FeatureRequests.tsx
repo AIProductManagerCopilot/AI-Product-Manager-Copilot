@@ -259,7 +259,7 @@ export const FeatureRequestsPage: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-xs font-semibold text-[#94A3B8]">Segment:</span>
+                <span className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>Segment:</span>
                 {['All', 'Finance', 'Enterprise', 'Consumer', 'Retail'].map(seg => (
                   <button
                     key={seg}
@@ -280,7 +280,7 @@ export const FeatureRequestsPage: React.FC = () => {
             <div className={`border rounded-2xl overflow-hidden ${cardBg}`}>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                  <thead className={`text-xs ${tableHeaderBg}`}>
+                  <thead className={`text-xs ${isDark ? 'bg-[#0D1117]/60 text-[#94A3B8]' : 'bg-[#F8FAFC] text-[#475569]'}`}>
                     <tr>
                       <th className="px-6 py-4 font-semibold w-24">Rank</th>
                       <th className="px-6 py-4 font-semibold">Feature Title</th>
@@ -290,11 +290,11 @@ export const FeatureRequestsPage: React.FC = () => {
                       <th className="px-6 py-4 font-semibold text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#2D3748]">
+                  <tbody className={`divide-y ${isDark ? 'divide-[#2D3748]' : 'divide-slate-200'}`}>
                     {filteredFeatures.map((row) => {
                       const Icon = row.icon;
                       return (
-                        <tr key={row.id} className="hover:bg-[#161B22]/50 transition-colors">
+                        <tr key={row.id} className={`transition-colors ${isDark ? 'hover:bg-[#161B22]/50' : 'hover:bg-slate-50'}`}>
                           <td className="px-6 py-4 font-extrabold text-base" style={{ color: row.rankColor }}>
                             #{row.rank}
                           </td>
@@ -303,10 +303,10 @@ export const FeatureRequestsPage: React.FC = () => {
                               <div className="p-2 rounded-lg bg-[#3B82F6]/10 text-[#3B82F6]">
                                 <Icon className="w-4 h-4" />
                               </div>
-                              <span className="font-bold text-white">{row.title}</span>
+                              <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{row.title}</span>
                             </div>
                           </td>
-                          <td className="px-6 py-4 text-xs text-[#94A3B8] italic max-w-md">
+                          <td className="px-6 py-4 text-xs italic max-w-md" style={{ color: 'var(--text-secondary)' }}>
                             "{row.quote}"
                           </td>
                           <td className="px-6 py-4 text-center font-mono font-bold text-sm text-[#10B981]">
@@ -320,7 +320,7 @@ export const FeatureRequestsPage: React.FC = () => {
                           <td className="px-6 py-4 text-right">
                             <button
                               onClick={() => handleGeneratePRD(row.title)}
-                              className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#8B5CF6] hover:bg-[#7C3AED] text-white transition-all shadow-md inline-flex items-center gap-1.5"
+                              className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#8B5CF6] hover:bg-[#7C3AED] text-white transition-all shadow-md inline-flex items-center gap-1.5 cursor-pointer"
                             >
                               <File className="w-3.5 h-3.5" /> Generate PRD
                             </button>

@@ -350,13 +350,13 @@ export const PrioritizationPage: React.FC = () => {
                       <th className="px-6 py-4 font-semibold text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#2D3748]">
+                  <tbody className={`divide-y ${isDark ? 'divide-[#2D3748]' : 'divide-slate-200'}`}>
                     {sortedItems.map((row, idx) => {
                       const rankStr = `#${idx + 1}`;
                       const scoreColor = idx === 0 ? '#F59E0B' : idx === 1 ? '#94A3B8' : idx === 2 ? '#F97316' : '#3B82F6';
 
                       return (
-                        <tr key={row.id} className="hover:bg-[#161B22]/50 transition-colors group">
+                        <tr key={row.id} className={`transition-colors group ${isDark ? 'hover:bg-[#161B22]/50' : 'hover:bg-slate-50'}`}>
                           {/* Rank & Ring Score */}
                           <td className="px-6 py-6">
                             <div className="flex items-center gap-4">
@@ -364,7 +364,7 @@ export const PrioritizationPage: React.FC = () => {
                               <div className="relative w-14 h-14 rounded-full flex items-center justify-center" style={{ border: `3px solid ${scoreColor}40`, borderTopColor: scoreColor, transform: 'rotate(-45deg)' }}>
                                 <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ transform: 'rotate(45deg)' }}>
                                   <span className={`text-base font-extrabold leading-none ${isDark ? 'text-white' : 'text-gray-900'}`}>{row.calculatedScore}</span>
-                                  <span className="text-[9px] text-[#64748B]">/100</span>
+                                  <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>/100</span>
                                 </div>
                               </div>
                             </div>
@@ -377,11 +377,13 @@ export const PrioritizationPage: React.FC = () => {
                                 <row.icon className="w-5 h-5" />
                               </div>
                               <div>
-                                <h3 className={`font-bold text-base ${isDark ? 'text-white' : 'text-gray-900'}`}>{row.title}</h3>
-                                <p className="text-xs text-[#94A3B8] mt-0.5 line-clamp-2">{row.description}</p>
+                                <h3 className="font-bold text-base" style={{ color: 'var(--text-primary)' }}>{row.title}</h3>
+                                <p className="text-xs mt-0.5 line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{row.description}</p>
                                 <div className="flex flex-wrap items-center gap-1.5 mt-2">
                                   {row.tags.map((tag, tIdx) => (
-                                    <span key={tIdx} className="px-2 py-0.5 rounded-md text-[10px] font-medium bg-[#1e2530] text-[#94A3B8] border border-[#2D3748]">
+                                    <span key={tIdx} className={`px-2 py-0.5 rounded-md text-[10px] font-semibold border ${
+                                      isDark ? 'bg-[#1e2530] text-[#94A3B8] border-[#2D3748]' : 'bg-slate-100 text-slate-700 border-slate-200'
+                                    }`}>
                                       {tag}
                                     </span>
                                   ))}
@@ -394,7 +396,7 @@ export const PrioritizationPage: React.FC = () => {
                           {/* Reach */}
                           <td className="px-3 py-4 align-top pt-6">
                             <div className="flex flex-col items-center text-center space-y-1">
-                              <span className="flex items-center gap-1 text-[11px] text-[#94A3B8]">
+                              <span className="flex items-center gap-1 text-[11px] font-semibold" style={{ color: 'var(--text-secondary)' }}>
                                 <Users className="w-3 h-3 text-[#3B82F6]" /> Reach
                               </span>
                               <input
@@ -404,17 +406,17 @@ export const PrioritizationPage: React.FC = () => {
                                 value={row.reach}
                                 onChange={(e) => handleItemChange(row.id, 'reach', Number(e.target.value))}
                                 className={`w-20 px-2 py-1 text-xs text-center rounded-lg border font-bold ${
-                                  isDark ? 'bg-[#0D1117] border-[#2D3748] text-white' : 'bg-white border-[#E2E8F0] text-gray-900'
+                                  isDark ? 'bg-[#0D1117] border-[#2D3748] text-white' : 'bg-white border-[#CBD5E1] text-gray-900 shadow-sm'
                                 }`}
                               />
-                              <span className="text-[10px] text-[#64748B]">users/mo</span>
+                              <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>users/mo</span>
                             </div>
                           </td>
 
                           {/* Impact */}
                           <td className="px-3 py-4 align-top pt-6">
                             <div className="flex flex-col items-center text-center space-y-1">
-                              <span className="flex items-center gap-1 text-[11px] text-[#94A3B8]">
+                              <span className="flex items-center gap-1 text-[11px] font-semibold" style={{ color: 'var(--text-secondary)' }}>
                                 <Target className="w-3 h-3 text-[#8B5CF6]" /> Impact
                               </span>
                               <select
@@ -444,7 +446,7 @@ export const PrioritizationPage: React.FC = () => {
                                 value={row.confidence}
                                 onChange={(e) => handleItemChange(row.id, 'confidence', Number(e.target.value))}
                                 className={`w-20 px-1 py-1 text-xs text-center rounded-lg border font-bold ${
-                                  isDark ? 'bg-[#0D1117] border-[#2D3748] text-white' : 'bg-white border-[#E2E8F0] text-gray-900'
+                                  isDark ? 'bg-[#0D1117] border-[#2D3748] text-white' : 'bg-white border-[#CBD5E1] text-gray-900 shadow-sm'
                                 }`}
                               >
                                 <option value={1.0}>100% High</option>
@@ -453,14 +455,14 @@ export const PrioritizationPage: React.FC = () => {
                                 <option value={0.7}>70% Medium</option>
                                 <option value={0.5}>50% Low</option>
                               </select>
-                              <span className="text-[10px] text-[#64748B]">{Math.round(row.confidence * 100)}%</span>
+                              <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{Math.round(row.confidence * 100)}%</span>
                             </div>
                           </td>
 
                           {/* Effort */}
                           <td className="px-3 py-4 align-top pt-6">
                             <div className="flex flex-col items-center text-center space-y-1">
-                              <span className="flex items-center gap-1 text-[11px] text-[#94A3B8]">
+                              <span className="flex items-center gap-1 text-[11px] font-semibold" style={{ color: 'var(--text-secondary)' }}>
                                 <Clock className="w-3 h-3 text-[#F43F5E]" /> Effort
                               </span>
                               <input
@@ -470,10 +472,10 @@ export const PrioritizationPage: React.FC = () => {
                                 value={row.effort}
                                 onChange={(e) => handleItemChange(row.id, 'effort', Number(e.target.value))}
                                 className={`w-16 px-2 py-1 text-xs text-center rounded-lg border font-bold ${
-                                  isDark ? 'bg-[#0D1117] border-[#2D3748] text-white' : 'bg-white border-[#E2E8F0] text-gray-900'
+                                  isDark ? 'bg-[#0D1117] border-[#2D3748] text-white' : 'bg-white border-[#CBD5E1] text-gray-900 shadow-sm'
                                 }`}
                               />
-                              <span className="text-[10px] text-[#64748B]">person-wks</span>
+                              <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>person-wks</span>
                             </div>
                           </td>
 

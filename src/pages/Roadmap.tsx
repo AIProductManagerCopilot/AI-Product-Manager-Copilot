@@ -244,7 +244,7 @@ export const RoadmapPage: React.FC = () => {
                 <table className="w-full text-left border-collapse min-w-[900px]">
                   <thead>
                     <tr className={`border-b ${tableBorder}`}>
-                      <th className={`p-4 font-semibold text-xs tracking-wider text-[#94A3B8] uppercase w-[200px] border-r ${tableBorder}`}>
+                      <th className={`p-4 font-semibold text-xs tracking-wider uppercase w-[200px] border-r ${tableBorder}`} style={{ color: 'var(--text-secondary)' }}>
                         Tracks
                       </th>
                       {['Q1 (Jan-Mar)', 'Q2 (Apr-Jun)', 'Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'].map((q, idx) => (
@@ -254,7 +254,7 @@ export const RoadmapPage: React.FC = () => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#2D3748]">
+                  <tbody className={`divide-y ${isDark ? 'divide-[#2D3748]' : 'divide-slate-200'}`}>
                     {['Performance', 'Auth', 'Ingestion', 'UI/UX', 'Analytics', 'Enterprise'].map(trackName => {
                       const trackItems = items.filter(i => i.track === trackName);
                       const TrackIcon =
@@ -280,19 +280,21 @@ export const RoadmapPage: React.FC = () => {
                             return (
                               <td key={q} className={`p-3 border-r ${tableBorder} relative`}>
                                 {qItem ? (
-                                  <div className="p-2.5 rounded-xl border border-[#3B82F6]/30 bg-[#3B82F6]/10 flex flex-col space-y-1 shadow-sm">
+                                  <div className={`p-2.5 rounded-xl border flex flex-col space-y-1 shadow-sm ${
+                                    isDark ? 'border-[#3B82F6]/30 bg-[#3B82F6]/10' : 'border-blue-200 bg-blue-50/90'
+                                  }`}>
                                     <div className="flex items-center justify-between">
-                                      <span className="text-xs font-bold text-white truncate">{qItem.title}</span>
-                                      <span className="text-[10px] font-mono text-[#93C5FD]">{qItem.progress}%</span>
+                                      <span className={`text-xs font-bold truncate ${isDark ? 'text-white' : 'text-slate-900'}`}>{qItem.title}</span>
+                                      <span className={`text-[10px] font-mono font-bold ${isDark ? 'text-[#93C5FD]' : 'text-blue-700'}`}>{qItem.progress}%</span>
                                     </div>
-                                    <div className="w-full bg-[#1E293B] rounded-full h-1.5">
+                                    <div className={`w-full rounded-full h-1.5 ${isDark ? 'bg-[#1E293B]' : 'bg-slate-200'}`}>
                                       <div className="bg-[#3B82F6] h-1.5 rounded-full" style={{ width: `${qItem.progress}%` }}></div>
                                     </div>
-                                    <div className="flex items-center justify-between pt-1 text-[10px] text-[#94A3B8]">
+                                    <div className={`flex items-center justify-between pt-1 text-[10px] ${isDark ? 'text-[#94A3B8]' : 'text-slate-600'}`}>
                                       <span>{qItem.assignee}</span>
                                       <button
                                         onClick={() => handleGeneratePRD(qItem.title)}
-                                        className="text-[#C084FC] hover:underline font-semibold"
+                                        className="text-[#C084FC] hover:underline font-semibold cursor-pointer"
                                       >
                                         PRD →
                                       </button>
@@ -305,7 +307,11 @@ export const RoadmapPage: React.FC = () => {
                                       setNewQuarter(q as RoadmapItem['quarter']);
                                       setIsAddModalOpen(true);
                                     }}
-                                    className="w-full h-10 rounded-lg border border-dashed border-[#2D3748] hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 flex items-center justify-center text-[11px] text-[#64748B] hover:text-[#3B82F6] transition-colors cursor-pointer"
+                                    className={`w-full h-10 rounded-lg border border-dashed flex items-center justify-center text-[11px] font-semibold transition-colors cursor-pointer ${
+                                      isDark 
+                                        ? 'border-[#2D3748] hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 text-[#64748B] hover:text-[#3B82F6]' 
+                                        : 'border-slate-300 hover:border-blue-500 hover:bg-blue-50 text-slate-500 hover:text-blue-600'
+                                    }`}
                                   >
                                     + Add Feature
                                   </button>
@@ -343,14 +349,18 @@ export const RoadmapPage: React.FC = () => {
 
                     <div className="space-y-3">
                       {stageItems.map(item => (
-                        <div key={item.id} className="p-3.5 rounded-xl border border-[#2D3748] bg-[#0D1117] space-y-2 shadow-sm">
+                        <div key={item.id} className={`p-3.5 rounded-xl border space-y-2 shadow-sm ${
+                          isDark ? 'border-[#2D3748] bg-[#0D1117]' : 'border-slate-200 bg-white'
+                        }`}>
                           <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#1E293B] text-[#94A3B8]">
+                            <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                              isDark ? 'bg-[#1E293B] text-[#94A3B8]' : 'bg-slate-100 text-slate-700'
+                            }`}>
                               {item.track}
                             </span>
                             <span className="text-[10px] text-[#64748B] font-mono">{item.quarter}</span>
                           </div>
-                          <h4 className="text-sm font-bold text-white">{item.title}</h4>
+                          <h4 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{item.title}</h4>
 
                           <div className="space-y-1 pt-1">
                             <div className="flex justify-between text-[11px] text-[#94A3B8]">

@@ -305,7 +305,7 @@ export const PRDGeneratorPage: React.FC = () => {
                             ? selectedCluster.category || selectedCluster.name || selectedCluster.theme
                             : 'PDF Statement Export'}
                         </h1>
-                        <p className="text-sm text-[#94A3B8]">
+                        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                           {selectedCluster ? 'FastAPI RAG active' : 'Template Mock Spec'} • Based on {feedbackCount} feedback items
                         </p>
                       </div>
@@ -364,20 +364,20 @@ export const PRDGeneratorPage: React.FC = () => {
                           <h2 className="flex items-center gap-2 text-lg font-bold text-[#8B5CF6] mb-4">
                             <Target className="w-5 h-5" /> 2. Goals
                           </h2>
-                          <div className="rounded-xl border border-[#2D3748] overflow-hidden">
-                            <div className="grid grid-cols-2 divide-x divide-[#2D3748] border-b border-[#2D3748]">
-                              <div className="p-3 text-sm flex items-center gap-2">
+                          <div className={`rounded-xl border ${isDark ? 'border-[#2D3748]' : 'border-slate-300'} overflow-hidden`}>
+                            <div className={`grid grid-cols-2 divide-x border-b ${isDark ? 'divide-[#2D3748] border-[#2D3748]' : 'divide-slate-200 border-slate-200'}`}>
+                              <div className="p-3 text-sm flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
                                 <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]"></div>
                                 Enable users to export transaction history as PDF
                               </div>
-                              <div className="p-3 text-sm text-[#94A3B8]">Improve user convenience</div>
+                              <div className="p-3 text-sm" style={{ color: 'var(--text-secondary)' }}>Improve user convenience</div>
                             </div>
-                            <div className="grid grid-cols-2 divide-x divide-[#2D3748]">
-                              <div className="p-3 text-sm flex items-center gap-2">
+                            <div className={`grid grid-cols-2 divide-x ${isDark ? 'divide-[#2D3748]' : 'divide-slate-200'}`}>
+                              <div className="p-3 text-sm flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
                                 <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]"></div>
                                 Reduce support tickets related to statement requests
                               </div>
-                              <div className="p-3 text-sm text-[#94A3B8]">Decrease by 40%</div>
+                              <div className="p-3 text-sm" style={{ color: 'var(--text-secondary)' }}>Decrease by 40%</div>
                             </div>
                           </div>
                         </section>
@@ -411,7 +411,7 @@ export const PRDGeneratorPage: React.FC = () => {
                       <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} leading-none`}>
                         {feedbackCount}
                       </p>
-                      <p className="text-[11px] text-[#94A3B8] mt-1">Feedback Items Analyzed</p>
+                      <p className="text-[11px] mt-1" style={{ color: 'var(--text-secondary)' }}>Feedback Items Analyzed</p>
                     </div>
                   </div>
 
@@ -423,7 +423,7 @@ export const PRDGeneratorPage: React.FC = () => {
                       <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} leading-none`}>
                         {usersImpacted.toLocaleString()}
                       </p>
-                      <p className="text-[11px] text-[#94A3B8] mt-1">Users Impacted</p>
+                      <p className="text-[11px] mt-1" style={{ color: 'var(--text-secondary)' }}>Users Impacted</p>
                     </div>
                   </div>
 
@@ -435,7 +435,7 @@ export const PRDGeneratorPage: React.FC = () => {
                       <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} leading-none`}>
                         {enterpriseAccounts}
                       </p>
-                      <p className="text-[11px] text-[#94A3B8] mt-1">Enterprise Accounts Risked</p>
+                      <p className="text-[11px] mt-1" style={{ color: 'var(--text-secondary)' }}>Enterprise Accounts Risked</p>
                     </div>
                   </div>
 
@@ -447,7 +447,7 @@ export const PRDGeneratorPage: React.FC = () => {
                       <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} leading-none`}>
                         Saves ~18h
                       </p>
-                      <p className="text-[11px] text-[#94A3B8] mt-1">Productivity Time Saved</p>
+                      <p className="text-[11px] mt-1" style={{ color: 'var(--text-secondary)' }}>Productivity Time Saved</p>
                     </div>
                   </div>
                 </div>
@@ -464,14 +464,14 @@ export const PRDGeneratorPage: React.FC = () => {
                   <Sparkles className="w-5 h-5 text-[#8B5CF6]" />
                   <h3 className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Generate New PRD</h3>
                 </div>
-                <p className="text-[11px] text-[#94A3B8] mb-6">
+                <p className="text-[11px] mb-6" style={{ color: 'var(--text-secondary)' }}>
                   Select a theme cluster populated from live database logs.
                 </p>
 
                 <div className="space-y-4">
                   {/* Select Theme Dropdown */}
                   <div className="relative">
-                    <label className="block text-[11px] font-medium text-[#94A3B8] mb-1.5">
+                    <label className="block text-[11px] font-semibold mb-1.5" style={{ color: 'var(--text-secondary)' }}>
                       Select Feature / Theme
                     </label>
                     <button
