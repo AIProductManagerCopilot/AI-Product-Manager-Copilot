@@ -98,19 +98,60 @@ export const analyticsService = {
         body: JSON.stringify({ query }),
       });
 
+      if (!res.ok) {
+        throw new Error(`Streaming failed with status ${res.status}`);
+      }
+
       if (!res.body) throw new Error('Response body missing');
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
 
+      let buffer = '';
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        const text = decoder.decode(value, { stream: true });
-        onChunk(text);
+
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split('\n\n');
+        buffer = events.pop() || '';
+
+        for (const event of events) {
+          const trimmedEvent = event.trim();
+          if (!trimmedEvent) continue;
+
+          const lines = trimmedEvent.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data:')) {
+              const dataStr = line.slice(5).trim();
+              if (!dataStr) continue;
+
+              if (dataStr.startsWith('{')) {
+                try {
+                  const parsed = JSON.parse(dataStr);
+                  if (parsed.delta) {
+                    onChunk(parsed.delta);
+                  } else if (parsed.text) {
+                    onChunk(parsed.text);
+                  } else if (parsed.message) {
+                    onChunk(parsed.message);
+                  } else if (parsed.error) {
+                    onChunk(`\n\n*Error: ${parsed.error}*`);
+                  }
+                } catch {
+                  onChunk(dataStr);
+                }
+              } else if (dataStr.startsWith('[ERROR]:')) {
+                onChunk(`\n\n*Error: ${dataStr.replace('[ERROR]:', '').trim()}*`);
+              } else {
+                onChunk(dataStr);
+              }
+            }
+          }
+        }
       }
     } catch (error) {
       console.error('Copilot AI streaming failed:', error);
-      onChunk('AI assistant connection currently unavailable.');
+      onChunk('\n\n*Error: AI assistant connection currently unavailable.*');
     }
   },
 
@@ -138,6 +179,10 @@ export const analyticsService = {
         body: JSON.stringify(payload),
       });
 
+      if (!res.ok) {
+        throw new Error(`PRD generation failed with status ${res.status}`);
+      }
+
       if (!res.body) throw new Error('Response body missing');
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
@@ -146,39 +191,48 @@ export const analyticsService = {
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
+
         buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split('\n\n');
+        buffer = events.pop() || '';
 
-        const lines = buffer.split('\n\n');
-        buffer = lines.pop() || '';
+        for (const event of events) {
+          const trimmedEvent = event.trim();
+          if (!trimmedEvent) continue;
 
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          const partLines = line.split('\n');
-          for (const pl of partLines) {
-            if (pl.startsWith('data:')) {
-              const dataStr = pl.substring(5);
-              if (dataStr) {
-                if (dataStr.trim().startsWith('{')) {
-                  try {
-                    const parsed = JSON.parse(dataStr.trim());
-                    onChunk(parsed.delta || parsed.text || parsed.message || '');
-                  } catch {
-                    onChunk(dataStr + '\n');
+          const lines = trimmedEvent.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data:')) {
+              const dataStr = line.slice(5).trim();
+              if (!dataStr) continue;
+
+              if (dataStr.startsWith('{')) {
+                try {
+                  const parsed = JSON.parse(dataStr);
+                  if (parsed.delta) {
+                    onChunk(parsed.delta);
+                  } else if (parsed.text) {
+                    onChunk(parsed.text);
+                  } else if (parsed.message) {
+                    onChunk(parsed.message);
+                  } else if (parsed.error) {
+                    onChunk(`\n\n*Error: ${parsed.error}*`);
                   }
-                } else {
+                } catch {
                   onChunk(dataStr + '\n');
                 }
+              } else if (dataStr.startsWith('[ERROR]:')) {
+                onChunk(`\n\n*Error: ${dataStr.replace('[ERROR]:', '').trim()}*`);
+              } else {
+                onChunk(dataStr + '\n');
               }
             }
           }
         }
       }
-      if (buffer.trim().startsWith('data:')) {
-        onChunk(buffer.substring(5) + '\n');
-      }
     } catch (error) {
       console.error('PRD generation streaming failed:', error);
-      onChunk('[ERROR]: Connection to the PRD generation service is currently unavailable.');
+      onChunk('\n\n*Error: Connection to the PRD generation service is currently unavailable.*');
     }
   },
 };

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import {
   Sparkles,
   Settings,
@@ -79,57 +81,24 @@ export const AskCopilotPage: React.FC = () => {
     setIsGenerating(true);
 
     try {
-      let fullText = '';
-      let buffer = '';
+      let accumulatedText = '';
 
-      await analyticsService.streamCopilotAI(query, (chunk) => {
-        buffer += chunk;
-        
-        // Split by double newline to separate SSE events
-        const lines = buffer.split('\n\n');
-        buffer = lines.pop() || ''; // keep the last incomplete chunk in buffer
-
-        for (const line of lines) {
-          if (!line.trim()) continue;
-
-          let eventType = '';
-          let dataStr = '';
-
-          const partLines = line.split('\n');
-          for (const pl of partLines) {
-            if (pl.startsWith('event:')) {
-              eventType = pl.replace('event:', '').trim();
-            } else if (pl.startsWith('data:')) {
-              dataStr = pl.replace('data:', '').trim();
-            }
+      // Direct chunk handler from parsed service stream
+      await analyticsService.streamCopilotAI(query, (chunkText: string) => {
+        accumulatedText += chunkText;
+        setMessages(prev => prev.map(msg => {
+          if (msg.id === copilotMsgId) {
+            return {
+              ...msg,
+              text: accumulatedText,
+              statusText: undefined,
+            };
           }
-
-          if (dataStr) {
-            if (dataStr.startsWith('[ERROR]:')) {
-              fullText += `\n\n*Error: ${dataStr.replace('[ERROR]:', '').trim()}*`;
-            } else if (dataStr.startsWith('{')) {
-              try {
-                const parsed = JSON.parse(dataStr);
-                const delta = parsed.delta || parsed.text || parsed.message || parsed.detail || '';
-                fullText += delta;
-              } catch {
-                fullText += dataStr;
-              }
-            } else {
-              fullText += dataStr;
-            }
-
-            setMessages(prev => prev.map(msg => {
-              if (msg.id === copilotMsgId) {
-                return { ...msg, text: fullText, statusText: undefined };
-              }
-              return msg;
-            }));
-          }
-        }
+          return msg;
+        }));
       });
 
-      // Cleanup streaming flag when complete
+      // Streaming finished successfully
       setMessages(prev => prev.map(msg => {
         if (msg.id === copilotMsgId) {
           return { ...msg, isStreaming: false, statusText: undefined };
@@ -262,9 +231,43 @@ export const AskCopilotPage: React.FC = () => {
                             <p className="text-xs text-[#8B5CF6] italic animate-pulse mb-2">{msg.statusText}</p>
                           )}
 
-                          <p className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} leading-relaxed whitespace-pre-wrap`}>
-                            {msg.text || (msg.isStreaming && !msg.statusText ? 'Thinking...' : '')}
-                          </p>
+                          {msg.text ? (
+                            <div className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} space-y-3 leading-relaxed`}>
+                              <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                  h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-5 mb-3 border-b border-[#2D3748] pb-1" {...props} />,
+                                  h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-5 mb-3 border-b border-[#2D3748] pb-1" {...props} />,
+                                  h3: ({ node, ...props }) => <h3 className="text-sm font-semibold text-[#A78BFA] mt-4 mb-2" {...props} />,
+                                  p: ({ node, ...props }) => <p className="leading-relaxed my-2.5" {...props} />,
+                                  ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1.5 my-3 pl-2" {...props} />,
+                                  ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1.5 my-3 pl-2" {...props} />,
+                                  li: ({ node, ...props }) => <li className="leading-relaxed" {...props} />,
+                                  blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-[#8B5CF6] pl-3 my-3 italic text-[#94A3B8]" {...props} />,
+                                  table: ({ node, ...props }) => (
+                                    <div className="overflow-x-auto my-4 rounded-xl border border-[#2D3748]">
+                                      <table className="w-full text-left text-xs border-collapse" {...props} />
+                                    </div>
+                                  ),
+                                  th: ({ node, ...props }) => (
+                                    <th className="border-b border-[#2D3748] bg-[#0D1117] p-3 font-semibold text-white" {...props} />
+                                  ),
+                                  td: ({ node, ...props }) => (
+                                    <td className="border-b border-[#2D3748]/50 p-3 text-[#CBD5E1]" {...props} />
+                                  ),
+                                  code: ({ node, ...props }) => (
+                                    <code className="bg-[#0D1117] text-[#A78BFA] px-1.5 py-0.5 rounded text-xs border border-[#2D3748]" {...props} />
+                                  )
+                                }}
+                              >
+                                {msg.text}
+                              </ReactMarkdown>
+                            </div>
+                          ) : (
+                            <p className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} leading-relaxed`}>
+                              {msg.isStreaming && !msg.statusText ? 'Thinking...' : ''}
+                            </p>
+                          )}
 
                           <div className={`flex items-center justify-between pt-4 border-t border-[#2D3748] mt-4`}>
                             <div className={`flex items-center gap-2 text-xs text-[#94A3B8]`}>

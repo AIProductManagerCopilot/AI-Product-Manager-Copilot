@@ -3,8 +3,10 @@ AI Subsystem Router.
 Provides endpoints for Copilot streaming, PRD generation, Theme Intelligence, and RAG-grounded responses.
 """
 
+import json
 import logging
-from typing import Any, AsyncGenerator, Dict, Optional
+import os
+from typing import Any, AsyncGenerator, Dict, Optional, List
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
 from google import genai
@@ -18,8 +20,21 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["AI Subsystem"])
 
-# Instantiate GenAI Client for the Router
-ai_client = genai.Client(api_key=settings.gemini_api_key)
+FALLBACK_MODELS: List[str] = [
+    "gemini-3.7-flash",
+    "gemini-3.6-flash",
+    "gemini-3.1-flash-lite",
+]
+
+
+def get_ai_client() -> genai.Client:
+    """Instantiates and returns the Google GenAI client using configured credentials."""
+    api_key = (
+        getattr(settings, "gemini_api_key", None)
+        or getattr(settings, "GEMINI_API_KEY", None)
+        or os.getenv("GEMINI_API_KEY", "")
+    )
+    return genai.Client(api_key=api_key)
 
 
 # Request Schemas
@@ -44,7 +59,7 @@ class PRDGenerationRequest(BaseModel):
     feature_name: str = Field(..., example="Automated User Onboarding Flow")
     user_query: str = Field(..., example="Focus on reducing drop-off during step 2")
     category_filter: Optional[str] = Field(None, example="Onboarding")
-    limit: int = Field(default=5, ge=1, le=20)
+    limit: int = Field(default=8, ge=1, le=20)
 
 
 class ThemeIntelligenceRequest(BaseModel):
@@ -56,32 +71,48 @@ async def generate_gemini_stream(
     system_instruction: str, prompt: str
 ) -> AsyncGenerator[str, None]:
     """
-    Asynchronous generator yielding streamed chunks from Google Gemini using SSE format.
+    Asynchronous generator yielding streamed chunks from Google Gemini with model fallback handling.
+    Encodes tokens as JSON strings inside SSE data payloads to preserve newlines and whitespace.
     """
-    try:
-        # Strip models/ prefix if present to prevent 404 NOT_FOUND on v1beta endpoints; default to gemini-3.6-flash
-        model_name = (
-            getattr(settings, "gemini_model", "").replace("models/", "")
-            if getattr(settings, "gemini_model", None)
-            else "gemini-3.6-flash"
-        )
+    client = get_ai_client()
+    primary_model = (
+        getattr(settings, "gemini_model", None)
+        or getattr(settings, "gemini_api_model", None)
+        or os.getenv("GEMINI_API_MODEL", "gemini-3.7-flash")
+    ).replace("models/", "")
 
-        response = ai_client.models.generate_content_stream(
-            model=model_name,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                system_instruction=system_instruction,
-                temperature=0.2,
-            ),
-        )
+    candidate_models = [primary_model] + [m for m in FALLBACK_MODELS if m != primary_model]
 
-        for chunk in response:
-            if chunk.text:
-                yield f"data: {chunk.text}\n\n"
+    for model_name in candidate_models:
+        try:
+            logger.info(f"Router streaming with model: {model_name}")
+            response_stream = await client.aio.models.generate_content_stream(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=0.2,
+                ),
+            )
 
-    except Exception as e:
-        logger.error(f"Error during Gemini streaming: {str(e)}")
-        yield f"data: [ERROR]: {str(e)}\n\n"
+            async for chunk in response_stream:
+                if chunk.text:
+                    payload = json.dumps({"delta": chunk.text})
+                    yield f"data: {payload}\n\n"
+            return  # Stream completed successfully
+
+        except Exception as exc:
+            err_msg = str(exc)
+            logger.warning(f"Model '{model_name}' encountered error ({err_msg}). Falling back...")
+            if any(code in err_msg for code in ["503", "429", "RESOURCE_EXHAUSTED", "404", "UNAVAILABLE"]):
+                continue
+            else:
+                err_payload = json.dumps({"error": err_msg})
+                yield f"data: {err_payload}\n\n"
+                return
+
+    err_payload = json.dumps({"error": "All candidate AI models are currently exhausted or unavailable."})
+    yield f"data: {err_payload}\n\n"
 
 
 @router.post(
@@ -90,17 +121,53 @@ async def generate_gemini_stream(
     response_class=StreamingResponse,
 )
 async def stream_copilot_response(request: CopilotQueryRequest):
-    """Endpoint for streaming general AI Copilot responses over Server-Sent Events (SSE)."""
+    """Endpoint for streaming general AI Copilot responses with vector RAG retrieval."""
     try:
+        # Retrieve vector feedback evidence matching user query
+        retrieved_docs = await context_builder._fetch_vector_chunks(
+            query=request.query, limit=8
+        )
+        evidence_text = context_builder.format_retrieved_evidence(retrieved_docs)
+
         system_instruction = (
-            "You are an expert AI Product Manager Copilot. "
-            "Analyze the provided analytics context and entity context to answer the user request."
+            "You are the AI Product Manager Copilot — an executive-level product management assistant. "
+            "Your answers must be deeply analytical, rigorous, and directly grounded in the provided customer feedback "
+            "evidence and product analytics data.\n\n"
+            "CRITICAL FORMATTING RULES:\n"
+            "1. Always include blank lines before and after every markdown heading (##, ###).\n"
+            "2. Always include blank lines before and after every Markdown Table.\n"
+            "3. Format all tables with clean spacing:\n"
+            "   | Metric / Feature | Baseline | Target Impact | Primary Evidence |\n"
+            "   | :--- | :--- | :--- | :--- |\n"
+            "4. Structure your response into these distinct sections:\n"
+            "   - **Executive Summary**\n"
+            "   - **Customer Evidence & Friction Breakdown** (Include Table)\n"
+            "   - **Product Metrics & Churn Impact**\n"
+            "   - **Prioritized Strategic Recommendations (P0 / P1 / P2)**\n"
+            "5. Quote user feedback explicitly using italicized quotes."
+        )
+
+        analytics_info = (
+            str(request.analytics_context)
+            if request.analytics_context
+            else "MAU: 42.3K | Avg Session: 4.2m | Feature Adoption: 61% | Churn Rate: 2.4%"
+        )
+        entity_info = (
+            str(request.entity_context)
+            if request.entity_context
+            else "Workspace: SaaS Core | Feedback Records: 15,000 | Active Clusters: 6"
         )
 
         prompt = (
-            f"User Query: {request.query}\n\n"
-            f"Analytics Context: {request.analytics_context}\n"
-            f"Entity Context: {request.entity_context}"
+            f"## User Question\n"
+            f"{request.query}\n\n"
+            f"## Customer Feedback Evidence (Qdrant Vector DB):\n"
+            f"{evidence_text}\n\n"
+            f"## Analytics Context:\n"
+            f"{analytics_info}\n\n"
+            f"## Workspace Context:\n"
+            f"{entity_info}\n\n"
+            f"Please generate a complete, well-spaced report addressing the question."
         )
 
         return StreamingResponse(
@@ -174,14 +241,15 @@ async def theme_insights_endpoint(request: ThemeIntelligenceRequest):
             category_filter=request.category_filter,
         )
 
-        model_name = (
-            getattr(settings, "gemini_model", "").replace("models/", "")
-            if getattr(settings, "gemini_model", None)
-            else "gemini-3.6-flash"
-        )
+        client = get_ai_client()
+        primary_model = (
+            getattr(settings, "gemini_model", None)
+            or getattr(settings, "gemini_api_model", None)
+            or os.getenv("GEMINI_API_MODEL", "gemini-3.7-flash")
+        ).replace("models/", "")
 
-        response = ai_client.models.generate_content(
-            model=model_name,
+        response = await client.aio.models.generate_content(
+            model=primary_model,
             contents=context_data["prompt"],
             config=types.GenerateContentConfig(
                 system_instruction=context_data["system_instruction"],

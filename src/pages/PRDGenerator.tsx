@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import {
   FileText,
   Download,
   ClipboardList,
   Target,
   Users,
-  CheckCircle2,
-  MinusCircle,
   BarChart2,
   Building2,
   Clock,
-  Calendar,
   Sparkles,
   ChevronDown,
-  User,
-  Check,
-  X,
   Copy,
   CheckSquare,
 } from 'lucide-react';
@@ -27,112 +23,118 @@ import { TopNavbar } from '../components/TopNavbar';
 import { useTheme } from '../context/ThemeContext';
 import { analyticsService, type BackendCluster } from '../services/analyticsService';
 
-// ─── Inline Markdown Formatter Component ───────────────────────────────────────
+// ─── Professional GFM Markdown Renderer Component ──────────────────────────────
 
 const MarkdownRenderer: React.FC<{ text: string }> = ({ text }) => {
   const { isDark } = useTheme();
-  const lines = text.split('\n');
-
-  const renderBoldText = (rawText: string) => {
-    const parts = rawText.split(/\*\*([^*]+)\*\*/g);
-    return parts.map((part, index) => {
-      if (index % 2 === 1) {
-        return (
-          <strong key={index} className="font-extrabold" style={{ color: 'var(--text-primary)' }}>
-            {part}
-          </strong>
-        );
-      }
-      return part;
-    });
-  };
 
   return (
-    <div className="space-y-4 font-sans text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-      {lines.map((line, idx) => {
-        const trimmed = line.trim();
-
-        // Headers
-        if (trimmed.startsWith('# ')) {
-          return (
+    <div className={`prose max-w-none text-sm leading-relaxed ${isDark ? 'prose-invert text-[#CBD5E1]' : 'text-slate-700'}`}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          h1: ({ node, ...props }) => (
             <h1
-              key={idx}
-              className={`text-2xl font-extrabold font-display border-b pb-2 ${
+              className={`text-2xl font-black font-display tracking-tight border-b pb-3 mt-6 mb-4 ${
                 isDark ? 'text-white border-[#2D3748]' : 'text-gray-900 border-[#E2E8F0]'
-              } mt-6 mb-3`}
-            >
-              {trimmed.replace('# ', '')}
-            </h1>
-          );
-        }
-        if (trimmed.startsWith('## ')) {
-          return (
+              }`}
+              {...props}
+            />
+          ),
+          h2: ({ node, ...props }) => (
             <h2
-              key={idx}
-              className={`text-xl font-bold font-display ${
-                isDark ? 'text-[#8B5CF6]' : 'text-[#6366F1]'
-              } mt-5 mb-2`}
-            >
-              {trimmed.replace('## ', '')}
-            </h2>
-          );
-        }
-        if (trimmed.startsWith('### ')) {
-          return (
+              className={`text-lg font-bold font-display border-b pb-2 mt-8 mb-4 flex items-center gap-2 ${
+                isDark ? 'text-[#A78BFA] border-[#2D3748]' : 'text-[#6366F1] border-[#E2E8F0]'
+              }`}
+              {...props}
+            />
+          ),
+          h3: ({ node, ...props }) => (
             <h3
-              key={idx}
-              className={`text-lg font-bold font-display ${
+              className={`text-base font-bold font-display mt-6 mb-2 ${
                 isDark ? 'text-white' : 'text-gray-900'
-              } mt-4 mb-2`}
-            >
-              {trimmed.replace('### ', '')}
-            </h3>
-          );
-        }
-        if (trimmed.startsWith('#### ')) {
-          return (
+              }`}
+              {...props}
+            />
+          ),
+          h4: ({ node, ...props }) => (
             <h4
-              key={idx}
-              className="text-base font-bold mt-3 mb-1"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              {trimmed.replace('#### ', '')}
-            </h4>
-          );
-        }
-
-        // Bullet lists
-        if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-          const content = trimmed.substring(2);
-          return (
-            <li key={idx} className="ml-5 list-disc pl-1 mb-1">
-              {renderBoldText(content)}
-            </li>
-          );
-        }
-
-        // Ordered lists
-        if (/^\d+\.\s/.test(trimmed)) {
-          const content = trimmed.replace(/^\d+\.\s/, '');
-          return (
-            <li key={idx} className="ml-5 list-decimal pl-1 mb-1">
-              {renderBoldText(content)}
-            </li>
-          );
-        }
-
-        // Empty line
-        if (!trimmed) {
-          return <div key={idx} className="h-2" />;
-        }
-
-        // Standard Paragraph
-        return (
-          <p key={idx} className="mb-2">
-            {renderBoldText(trimmed)}
-          </p>
-        );
-      })}
+              className={`text-sm font-semibold mt-4 mb-1 ${
+                isDark ? 'text-[#CBD5E1]' : 'text-gray-800'
+              }`}
+              {...props}
+            />
+          ),
+          p: ({ node, ...props }) => (
+            <p className="my-3 leading-relaxed" {...props} />
+          ),
+          ul: ({ node, ...props }) => (
+            <ul className="list-disc list-inside space-y-1.5 my-3 pl-2" {...props} />
+          ),
+          ol: ({ node, ...props }) => (
+            <ol className="list-decimal list-inside space-y-1.5 my-3 pl-2" {...props} />
+          ),
+          li: ({ node, ...props }) => (
+            <li className="leading-relaxed" {...props} />
+          ),
+          blockquote: ({ node, ...props }) => (
+            <blockquote
+              className="border-l-4 border-[#8B5CF6] pl-4 py-1 my-4 italic rounded-r-lg bg-[#8B5CF6]/5 text-[#94A3B8]"
+              {...props}
+            />
+          ),
+          hr: ({ node, ...props }) => (
+            <hr className={`my-6 border-t ${isDark ? 'border-[#2D3748]' : 'border-[#E2E8F0]'}`} {...props} />
+          ),
+          table: ({ node, ...props }) => (
+            <div className="overflow-x-auto my-5 rounded-xl border border-[#2D3748] shadow-sm">
+              <table className="w-full text-left text-xs border-collapse divide-y divide-[#2D3748]" {...props} />
+            </div>
+          ),
+          thead: ({ node, ...props }) => (
+            <thead className={isDark ? 'bg-[#0D1117]' : 'bg-slate-100'} {...props} />
+          ),
+          th: ({ node, ...props }) => (
+            <th
+              className={`p-3 font-bold border-b border-[#2D3748] ${
+                isDark ? 'text-white' : 'text-slate-900'
+              }`}
+              {...props}
+            />
+          ),
+          td: ({ node, ...props }) => (
+            <td
+              className={`p-3 border-b border-[#2D3748]/50 ${
+                isDark ? 'text-[#CBD5E1]' : 'text-slate-700'
+              }`}
+              {...props}
+            />
+          ),
+          code: ({ node, className, children, ...props }: any) => {
+            const match = /language-(\w+)/.exec(className || '');
+            const isInline = !match && !String(children).includes('\n');
+            if (isInline) {
+              return (
+                <code
+                  className="bg-[#0D1117] text-[#A78BFA] px-1.5 py-0.5 rounded text-xs border border-[#2D3748] font-mono"
+                  {...props}
+                >
+                  {children}
+                </code>
+              );
+            }
+            return (
+              <div className="my-4 rounded-xl border border-[#2D3748] bg-[#0D1117] p-4 overflow-x-auto">
+                <code className="text-xs text-slate-200 font-mono leading-relaxed" {...props}>
+                  {children}
+                </code>
+              </div>
+            );
+          },
+        }}
+      >
+        {text}
+      </ReactMarkdown>
     </div>
   );
 };
@@ -149,7 +151,6 @@ export const PRDGeneratorPage: React.FC = () => {
   const [notes, setNotes] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPRD, setGeneratedPRD] = useState('');
-  const [isLiveConnected, setIsLiveConnected] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -178,7 +179,6 @@ export const PRDGeneratorPage: React.FC = () => {
           } else {
             setSelectedCluster(clusters[0]);
           }
-          setIsLiveConnected(true);
           return;
         }
       } catch (err) {
@@ -213,7 +213,7 @@ export const PRDGeneratorPage: React.FC = () => {
           feature_name: themeName,
           user_query: notes || `Focus on resolving primary pain points using ${framework} framework.`,
           category_filter: category || undefined,
-          limit: 5,
+          limit: 8,
         },
         (chunk) => {
           setGeneratedPRD((prev) => prev + chunk);
@@ -260,7 +260,6 @@ export const PRDGeneratorPage: React.FC = () => {
 
   const sectionBg = isDark ? 'bg-[#0D1117]/50 border-[#2D3748]' : 'bg-[#F8FAFC] border-[#E2E8F0]';
 
-  // Dynamic values based on selected cluster
   const feedbackCount = selectedCluster
     ? (selectedCluster.total_volume ?? selectedCluster.mentions ?? selectedCluster.count ?? 12)
     : 612;
