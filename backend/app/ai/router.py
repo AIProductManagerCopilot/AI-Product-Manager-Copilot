@@ -11,6 +11,9 @@ from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
+from google import genai
+from google.genai import types
+
 from app.ai.context_builder import context_builder
 from app.core.config import settings
 from app.services.gemini import GeminiService
