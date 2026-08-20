@@ -46,13 +46,17 @@ export const AskCopilotPage: React.FC = () => {
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Auto scroll to bottom
-  const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
+    chatEndRef.current?.scrollIntoView({ behavior, block: 'end' });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (isGenerating) {
+      scrollToBottom('auto');
+    } else {
+      scrollToBottom('smooth');
+    }
+  }, [messages, isGenerating]);
 
   const handleSend = async (queryText?: string) => {
     const query = (queryText || inputText).trim();
@@ -98,10 +102,10 @@ export const AskCopilotPage: React.FC = () => {
         }));
       });
 
-      // Streaming finished successfully
+      // Final force sync update and cleanup streaming flag when complete
       setMessages(prev => prev.map(msg => {
         if (msg.id === copilotMsgId) {
-          return { ...msg, isStreaming: false, statusText: undefined };
+          return { ...msg, text: accumulatedText, isStreaming: false, statusText: undefined };
         }
         return msg;
       }));
@@ -233,28 +237,36 @@ export const AskCopilotPage: React.FC = () => {
                               <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={{
-                                  h1: ({ node, ...props }) => <h1 className="text-lg font-bold text-white mt-5 mb-3 border-b border-[#2D3748] pb-1" {...props} />,
-                                  h2: ({ node, ...props }) => <h2 className="text-base font-bold text-white mt-5 mb-3 border-b border-[#2D3748] pb-1" {...props} />,
-                                  h3: ({ node, ...props }) => <h3 className="text-sm font-semibold text-[#A78BFA] mt-4 mb-2" {...props} />,
-                                  p: ({ node, ...props }) => <p className="leading-relaxed my-2.5" {...props} />,
-                                  ul: ({ node, ...props }) => <ul className="list-disc list-inside space-y-1.5 my-3 pl-2" {...props} />,
-                                  ol: ({ node, ...props }) => <ol className="list-decimal list-inside space-y-1.5 my-3 pl-2" {...props} />,
-                                  li: ({ node, ...props }) => <li className="leading-relaxed" {...props} />,
-                                  blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-[#8B5CF6] pl-3 my-3 italic text-[#94A3B8]" {...props} />,
+                                  h1: ({ node, ...props }) => <h1 className="text-xl font-bold text-white mt-6 mb-3 border-b border-[#2D3748] pb-2" {...props} />,
+                                  h2: ({ node, ...props }) => <h2 className="text-lg font-bold text-white mt-5 mb-2.5" {...props} />,
+                                  h3: ({ node, ...props }) => <h3 className="text-base font-bold text-[#38BDF8] mt-4 mb-2" {...props} />,
+                                  p: ({ node, ...props }) => <p className="mb-4 leading-relaxed text-[#CBD5E1] text-sm font-normal last:mb-0" {...props} />,
+                                  strong: ({ node, ...props }) => <strong className="font-bold text-white" {...props} />,
+                                  ul: ({ node, ...props }) => <ul className="list-disc pl-6 mb-4 space-y-1.5 text-[#CBD5E1] text-sm" {...props} />,
+                                  ol: ({ node, ...props }) => <ol className="list-decimal pl-6 mb-4 space-y-1.5 text-[#CBD5E1] text-sm" {...props} />,
+                                  li: ({ node, ...props }) => <li className="leading-relaxed text-[#CBD5E1]" {...props} />,
+                                  code: ({ node, ...props }) => <code className="bg-[#1E293B] text-[#38BDF8] px-1.5 py-0.5 rounded text-xs font-mono border border-[#38BDF8]/20" {...props} />,
+                                  pre: ({ node, ...props }) => <pre className="bg-[#0D1117] border border-[#2D3748] p-4 rounded-xl overflow-x-auto my-4 text-xs text-[#E2E8F0] font-mono shadow-inner" {...props} />,
                                   table: ({ node, ...props }) => (
-                                    <div className="overflow-x-auto my-4 rounded-xl border border-[#2D3748]">
-                                      <table className="w-full text-left text-xs border-collapse" {...props} />
+                                    <div className="overflow-x-auto my-4 border border-[#2D3748] rounded-xl shadow-md">
+                                      <table className="min-w-full text-left border-collapse text-xs" {...props} />
                                     </div>
                                   ),
+                                  thead: ({ node, ...props }) => (
+                                    <thead className="bg-[#1E293B] text-white font-bold border-b border-[#2D3748]" {...props} />
+                                  ),
+                                  tbody: ({ node, ...props }) => (
+                                    <tbody className="divide-y divide-[#2D3748]/60 bg-[#161B22]/60" {...props} />
+                                  ),
                                   th: ({ node, ...props }) => (
-                                    <th className="border-b border-[#2D3748] bg-[#0D1117] p-3 font-semibold text-white" {...props} />
+                                    <th className="px-4 py-2.5 font-bold text-[#F8FAFC] tracking-wider border-b border-[#2D3748]" {...props} />
                                   ),
                                   td: ({ node, ...props }) => (
-                                    <td className="border-b border-[#2D3748]/50 p-3 text-[#CBD5E1]" {...props} />
+                                    <td className="px-4 py-2.5 text-[#CBD5E1] leading-relaxed border-b border-[#2D3748]/50" {...props} />
                                   ),
-                                  code: ({ node, ...props }) => (
-                                    <code className="bg-[#0D1117] text-[#A78BFA] px-1.5 py-0.5 rounded text-xs border border-[#2D3748]" {...props} />
-                                  )
+                                  blockquote: ({ node, ...props }) => (
+                                    <blockquote className="my-4 p-4 rounded-xl bg-[#1E293B]/60 border-l-4 border-[#8B5CF6] text-sm text-[#F1F5F9] font-medium shadow-sm" {...props} />
+                                  ),
                                 }}
                               >
                                 {msg.text}
