@@ -24,6 +24,7 @@ import { AskCopilotPage } from './pages/AskCopilot';
 import { FeedbackIngestionPage } from './pages/FeedbackIngestion';
 import { ProductAnalyticsPage } from './pages/ProductAnalytics';
 import { ThemeExtractionPage } from './pages/ThemeExtraction';
+import { ExecutiveSummaryPage } from './pages/ExecutiveSummary';
 import { SettingsPage } from './pages/Settings';
 
 export const App: React.FC = () => {
@@ -47,6 +48,14 @@ export const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <DashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/executive-summary"
+                element={
+                  <ProtectedRoute>
+                    <ExecutiveSummaryPage />
                   </ProtectedRoute>
                 }
               />

@@ -40,7 +40,54 @@ export interface BackendTrend {
   trend_pct?: number;
 }
 
+export interface ExecutiveKPIs {
+  total_feedback: number;
+  open_tickets: number;
+  completed_features: number;
+  total_projects: number;
+}
+
+export interface FeatureDemandObject {
+  total_feature_requests?: number;
+  high_priority_requests?: number;
+  avg_sentiment?: number;
+  top_requested_themes?: string[] | any[];
+}
+
+export interface FeatureDemandItem {
+  category: string;
+  request_count: number;
+  total_upvotes: number;
+}
+
+export interface ExecutiveSummaryData {
+  kpis: ExecutiveKPIs;
+  top_pain_points: BackendCluster[];
+  feature_request_demand: FeatureDemandObject | FeatureDemandItem[] | any;
+}
+
 export const analyticsService = {
+  /**
+   * Fetch system-wide KPIs, top pain points, and feature demand for executive reporting.
+   * Endpoint: GET /api/v1/analytics/executive-summary
+   */
+  async getExecutiveSummary(projectId?: string): Promise<ExecutiveSummaryData | null> {
+    try {
+      const headers = await getAuthHeaders();
+      const params = new URLSearchParams();
+      if (projectId) params.append('project_id', projectId);
+
+      const url = `${BASE_URL}/analytics/executive-summary${params.toString() ? `?${params.toString()}` : ''}`;
+      const res = await fetch(url, { headers });
+
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      const json = await res.json();
+      return json?.data || null;
+    } catch (error) {
+      console.warn('Backend /analytics/executive-summary fetch failed:', error);
+      return null;
+    }
+  },
   /**
    * Fetch prioritized theme clusters and customer pain points directly from FastAPI backend.
    * Endpoint: GET /api/v1/analytics/clusters

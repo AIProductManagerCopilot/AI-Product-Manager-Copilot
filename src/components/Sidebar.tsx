@@ -17,6 +17,7 @@ import {
   ChevronRight,
   PanelLeftClose,
   PanelLeftOpen,
+  TrendingUp,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -30,6 +31,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard',          icon: LayoutDashboard, href: '/dashboard' },
+  { label: 'Executive Summary',  icon: TrendingUp,      href: '/executive-summary' },
   { label: 'Feedback Ingestion', icon: Inbox,           href: '/feedback-ingestion' },
   { label: 'Product Analytics',  icon: BarChart2,       href: '/product-analytics' },
   { label: 'Theme Extraction',   icon: Layers,          href: '/theme-extraction' },
