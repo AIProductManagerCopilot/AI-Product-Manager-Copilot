@@ -16,121 +16,147 @@ import {
   ChevronDown,
   Copy,
   CheckSquare,
+  Edit3,
+  Save,
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Sidebar } from '../components/Sidebar';
 import { TopNavbar } from '../components/TopNavbar';
 import { useTheme } from '../context/ThemeContext';
 import { analyticsService, type BackendCluster } from '../services/analyticsService';
+import { prdStorage } from '../utils/prdStorage';
 
-// ─── Professional GFM Markdown Renderer Component ──────────────────────────────
+// ─── Professional Markdown Renderer Component (Matched to Copilot UI) ────────
 
 const MarkdownRenderer: React.FC<{ text: string }> = ({ text }) => {
   const { isDark } = useTheme();
 
   return (
-    <div className={`prose max-w-none text-sm leading-relaxed ${isDark ? 'prose-invert text-[#CBD5E1]' : 'text-slate-700'}`}>
+    <div className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} space-y-3 leading-relaxed`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ node, ...props }) => (
             <h1
-              className={`text-2xl font-black font-display tracking-tight border-b pb-3 mt-6 mb-4 ${
-                isDark ? 'text-white border-[#2D3748]' : 'text-gray-900 border-[#E2E8F0]'
+              className={`text-xl font-bold mt-6 mb-3 border-b pb-2 ${
+                isDark ? 'text-white border-[#2D3748]' : 'text-gray-900 border-slate-200'
               }`}
               {...props}
             />
           ),
           h2: ({ node, ...props }) => (
             <h2
-              className={`text-lg font-bold font-display border-b pb-2 mt-8 mb-4 flex items-center gap-2 ${
-                isDark ? 'text-[#A78BFA] border-[#2D3748]' : 'text-[#6366F1] border-[#E2E8F0]'
-              }`}
-              {...props}
-            />
-          ),
-          h3: ({ node, ...props }) => (
-            <h3
-              className={`text-base font-bold font-display mt-6 mb-2 ${
+              className={`text-lg font-bold mt-5 mb-2.5 ${
                 isDark ? 'text-white' : 'text-gray-900'
               }`}
               {...props}
             />
           ),
-          h4: ({ node, ...props }) => (
-            <h4
-              className={`text-sm font-semibold mt-4 mb-1 ${
-                isDark ? 'text-[#CBD5E1]' : 'text-gray-800'
+          h3: ({ node, ...props }) => (
+            <h3 className="text-base font-bold text-[#38BDF8] mt-4 mb-2" {...props} />
+          ),
+          p: ({ node, ...props }) => (
+            <p
+              className={`mb-4 leading-relaxed text-sm font-normal last:mb-0 ${
+                isDark ? 'text-[#CBD5E1]' : 'text-slate-800'
               }`}
               {...props}
             />
           ),
-          p: ({ node, ...props }) => (
-            <p className="my-3 leading-relaxed" {...props} />
+          strong: ({ node, ...props }) => (
+            <strong className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`} {...props} />
           ),
           ul: ({ node, ...props }) => (
-            <ul className="list-disc list-inside space-y-1.5 my-3 pl-2" {...props} />
-          ),
-          ol: ({ node, ...props }) => (
-            <ol className="list-decimal list-inside space-y-1.5 my-3 pl-2" {...props} />
-          ),
-          li: ({ node, ...props }) => (
-            <li className="leading-relaxed" {...props} />
-          ),
-          blockquote: ({ node, ...props }) => (
-            <blockquote
-              className="border-l-4 border-[#8B5CF6] pl-4 py-1 my-4 italic rounded-r-lg bg-[#8B5CF6]/5 text-[#94A3B8]"
+            <ul
+              className={`list-disc pl-6 mb-4 space-y-1.5 text-sm ${
+                isDark ? 'text-[#CBD5E1]' : 'text-slate-800'
+              }`}
               {...props}
             />
           ),
-          hr: ({ node, ...props }) => (
-            <hr className={`my-6 border-t ${isDark ? 'border-[#2D3748]' : 'border-[#E2E8F0]'}`} {...props} />
+          ol: ({ node, ...props }) => (
+            <ol
+              className={`list-decimal pl-6 mb-4 space-y-1.5 text-sm ${
+                isDark ? 'text-[#CBD5E1]' : 'text-slate-800'
+              }`}
+              {...props}
+            />
+          ),
+          li: ({ node, ...props }) => (
+            <li className={`leading-relaxed ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />
+          ),
+          code: ({ node, ...props }) => (
+            <code
+              className={`px-1.5 py-0.5 rounded text-xs font-mono border ${
+                isDark
+                  ? 'bg-[#1E293B] text-[#38BDF8] border-[#38BDF8]/20'
+                  : 'bg-slate-100 text-blue-700 border-blue-200'
+              }`}
+              {...props}
+            />
+          ),
+          pre: ({ node, ...props }) => (
+            <pre
+              className={`p-4 rounded-xl overflow-x-auto my-4 text-xs font-mono shadow-inner border ${
+                isDark
+                  ? 'bg-[#0D1117] border-[#2D3748] text-[#E2E8F0]'
+                  : 'bg-slate-900 border-slate-800 text-slate-100'
+              }`}
+              {...props}
+            />
           ),
           table: ({ node, ...props }) => (
-            <div className="overflow-x-auto my-5 rounded-xl border border-[#2D3748] shadow-sm">
-              <table className="w-full text-left text-xs border-collapse divide-y divide-[#2D3748]" {...props} />
+            <div
+              className={`overflow-x-auto my-4 border rounded-xl shadow-md ${
+                isDark ? 'border-[#2D3748]' : 'border-slate-200'
+              }`}
+            >
+              <table className="min-w-full text-left border-collapse text-xs" {...props} />
             </div>
           ),
           thead: ({ node, ...props }) => (
-            <thead className={isDark ? 'bg-[#0D1117]' : 'bg-slate-100'} {...props} />
+            <thead
+              className={`font-bold border-b ${
+                isDark ? 'bg-[#1E293B] text-white border-[#2D3748]' : 'bg-slate-100 text-slate-900 border-slate-200'
+              }`}
+              {...props}
+            />
+          ),
+          tbody: ({ node, ...props }) => (
+            <tbody
+              className={`divide-y ${
+                isDark ? 'divide-[#2D3748]/60 bg-[#161B22]/60' : 'divide-slate-200 bg-white'
+              }`}
+              {...props}
+            />
           ),
           th: ({ node, ...props }) => (
             <th
-              className={`p-3 font-bold border-b border-[#2D3748] ${
-                isDark ? 'text-white' : 'text-slate-900'
+              className={`px-4 py-2.5 font-bold tracking-wider border-b ${
+                isDark ? 'text-[#F8FAFC] border-[#2D3748]' : 'text-slate-900 border-slate-200'
               }`}
               {...props}
             />
           ),
           td: ({ node, ...props }) => (
             <td
-              className={`p-3 border-b border-[#2D3748]/50 ${
-                isDark ? 'text-[#CBD5E1]' : 'text-slate-700'
+              className={`px-4 py-2.5 leading-relaxed border-b ${
+                isDark ? 'text-[#CBD5E1] border-[#2D3748]/50' : 'text-slate-800 border-slate-200'
               }`}
               {...props}
             />
           ),
-          code: ({ node, className, children, ...props }: any) => {
-            const match = /language-(\w+)/.exec(className || '');
-            const isInline = !match && !String(children).includes('\n');
-            if (isInline) {
-              return (
-                <code
-                  className="bg-[#0D1117] text-[#A78BFA] px-1.5 py-0.5 rounded text-xs border border-[#2D3748] font-mono"
-                  {...props}
-                >
-                  {children}
-                </code>
-              );
-            }
-            return (
-              <div className="my-4 rounded-xl border border-[#2D3748] bg-[#0D1117] p-4 overflow-x-auto">
-                <code className="text-xs text-slate-200 font-mono leading-relaxed" {...props}>
-                  {children}
-                </code>
-              </div>
-            );
-          },
+          blockquote: ({ node, ...props }) => (
+            <blockquote
+              className={`my-4 p-4 rounded-xl border-l-4 border-[#8B5CF6] text-sm font-medium shadow-sm ${
+                isDark ? 'bg-[#1E293B]/60 text-[#F1F5F9]' : 'bg-purple-50 text-purple-900'
+              }`}
+              {...props}
+            />
+          ),
+          hr: ({ node, ...props }) => (
+            <hr className={`my-6 border-t ${isDark ? 'border-[#2D3748]' : 'border-slate-200'}`} {...props} />
+          ),
         }}
       >
         {text}
@@ -151,6 +177,7 @@ export const PRDGeneratorPage: React.FC = () => {
   const [notes, setNotes] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPRD, setGeneratedPRD] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -203,9 +230,11 @@ export const PRDGeneratorPage: React.FC = () => {
 
     setIsGenerating(true);
     setGeneratedPRD('');
-    
+    setIsEditing(false);
+
     const themeName = selectedCluster.category || selectedCluster.name || selectedCluster.theme || 'Selected Feature';
     const category = selectedCluster.category || '';
+    let accumulatedText = '';
 
     try {
       await analyticsService.streamPRDGeneration(
@@ -216,9 +245,15 @@ export const PRDGeneratorPage: React.FC = () => {
           limit: 8,
         },
         (chunk) => {
+          accumulatedText += chunk;
           setGeneratedPRD((prev) => prev + chunk);
         }
       );
+
+      // Save to shared localStorage so Dashboard Recent PRDs updates automatically
+      if (accumulatedText.trim()) {
+        prdStorage.savePRD(themeName, accumulatedText);
+      }
     } catch (err) {
       console.error('Failed to stream generated PRD spec:', err);
       toast.error('Failed to communicate with AI Copilot pipeline.');
@@ -235,6 +270,22 @@ export const PRDGeneratorPage: React.FC = () => {
       handleGenerate();
     }
   }, [selectedCluster, location.state]);
+
+  // Save manual edit changes to storage
+  const handleSaveEdits = () => {
+    const themeName = selectedCluster?.category || selectedCluster?.name || selectedCluster?.theme || 'Feature PRD';
+    if (generatedPRD.trim()) {
+      prdStorage.savePRD(themeName, generatedPRD);
+      toast.success('PRD changes saved successfully! 💾', {
+        style: {
+          background: isDark ? '#161B22' : '#ffffff',
+          color: isDark ? '#F8FAFC' : '#0F172A',
+          border: `1px solid ${isDark ? '#2D3748' : '#E2E8F0'}`,
+        },
+      });
+    }
+    setIsEditing(false);
+  };
 
   // Copy to Clipboard
   const handleCopy = () => {
@@ -281,10 +332,10 @@ export const PRDGeneratorPage: React.FC = () => {
       <Sidebar />
       <div className="ml-60 min-h-screen flex flex-col">
         <TopNavbar />
-        
+
         <main className="flex-1 pt-20 px-8 pb-12 w-full max-w-screen-2xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
+
             {/* Left Column - PRD Document */}
             <div className="lg:col-span-2 space-y-6">
               <motion.div
@@ -313,11 +364,40 @@ export const PRDGeneratorPage: React.FC = () => {
 
                     {generatedPRD && (
                       <div className="flex items-center gap-2">
+                        {/* Edit / Save Button */}
+                        <button
+                          onClick={() => {
+                            if (isEditing) {
+                              handleSaveEdits();
+                            } else {
+                              setIsEditing(true);
+                            }
+                          }}
+                          className={`px-3 py-2 rounded-xl border border-[#2D3748] flex items-center gap-1.5 text-xs font-semibold ${
+                            isEditing
+                              ? 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/40'
+                              : isDark ? 'text-white hover:bg-[#1e2530]' : 'text-gray-900 hover:bg-slate-100'
+                          } transition-colors cursor-pointer`}
+                          title={isEditing ? 'Save & Preview PRD' : 'Edit PRD Content'}
+                        >
+                          {isEditing ? (
+                            <>
+                              <Save className="w-3.5 h-3.5" />
+                              <span>Save</span>
+                            </>
+                          ) : (
+                            <>
+                              <Edit3 className="w-3.5 h-3.5" />
+                              <span>Edit</span>
+                            </>
+                          )}
+                        </button>
+
                         <button
                           onClick={handleCopy}
                           className={`p-2.5 rounded-xl border border-[#2D3748] ${
                             isDark ? 'text-white hover:bg-[#1e2530]' : 'text-gray-900 hover:bg-slate-100'
-                          } transition-colors`}
+                          } transition-colors cursor-pointer`}
                           title="Copy Markdown"
                         >
                           {isCopied ? <CheckSquare className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
@@ -326,7 +406,7 @@ export const PRDGeneratorPage: React.FC = () => {
                           onClick={handleDownload}
                           className={`px-4 py-2 rounded-xl border border-[#2D3748] ${
                             isDark ? 'text-white hover:bg-[#1e2530]' : 'text-gray-900 hover:bg-slate-100'
-                          } flex items-center gap-2 transition-colors`}
+                          } flex items-center gap-2 text-xs font-semibold transition-colors cursor-pointer`}
                         >
                           <Download className="w-4 h-4" />
                           <span>Export Markdown</span>
@@ -339,12 +419,38 @@ export const PRDGeneratorPage: React.FC = () => {
                   <div className="py-6 min-h-[450px]">
                     {generatedPRD ? (
                       <div className="relative">
-                        <MarkdownRenderer text={generatedPRD} />
-                        {isGenerating && (
-                          <div className="flex items-center gap-2 mt-4 text-[#8B5CF6] text-xs font-semibold animate-pulse">
-                            <Sparkles className="w-4 h-4 animate-spin" />
-                            Streaming specification document...
+                        {isEditing ? (
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between text-xs text-[#8B5CF6]">
+                              <span className="font-semibold flex items-center gap-1.5">
+                                <Edit3 className="w-3.5 h-3.5" /> Direct Markdown Editor Active
+                              </span>
+                              <span className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>
+                                Click 'Save' above when finished
+                              </span>
+                            </div>
+                            <textarea
+                              value={generatedPRD}
+                              onChange={(e) => setGeneratedPRD(e.target.value)}
+                              rows={20}
+                              className={`w-full p-4 rounded-xl border font-mono text-xs leading-relaxed outline-none resize-y ${
+                                isDark
+                                  ? 'bg-[#0D1117] border-[#2D3748] text-[#CBD5E1] focus:border-[#8B5CF6]'
+                                  : 'bg-slate-50 border-slate-300 text-slate-900 focus:border-purple-500'
+                              }`}
+                              placeholder="Edit your markdown PRD specification here..."
+                            />
                           </div>
+                        ) : (
+                          <>
+                            <MarkdownRenderer text={generatedPRD} />
+                            {isGenerating && (
+                              <div className="flex items-center gap-2 mt-4 text-[#8B5CF6] text-xs font-semibold animate-pulse">
+                                <Sparkles className="w-4 h-4 animate-spin" />
+                                Streaming specification document...
+                              </div>
+                            )}
+                          </>
                         )}
                       </div>
                     ) : (
@@ -390,7 +496,7 @@ export const PRDGeneratorPage: React.FC = () => {
 
             {/* Right Column - Sidebars */}
             <div className="space-y-6">
-              
+
               {/* PRD Summary Panel */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
@@ -401,7 +507,7 @@ export const PRDGeneratorPage: React.FC = () => {
                 <h3 className={`flex items-center gap-2 font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-6`}>
                   <BarChart2 className="w-5 h-5 text-[#8B5CF6]" /> PRD Summary
                 </h3>
-                
+
                 <div className="space-y-4">
                   <div className={`p-4 rounded-xl border flex items-center gap-4 ${sectionBg}`}>
                     <div className="p-2.5 rounded-lg bg-[#8B5CF6]/15 text-[#8B5CF6]">
@@ -476,7 +582,7 @@ export const PRDGeneratorPage: React.FC = () => {
                     </label>
                     <button
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg border text-sm text-left ${
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg border text-sm text-left cursor-pointer ${
                         isDark ? 'text-white border-[#2D3748]' : 'text-gray-900 border-[#E2E8F0]'
                       } ${sectionBg}`}
                     >
@@ -507,7 +613,7 @@ export const PRDGeneratorPage: React.FC = () => {
                                   setSelectedCluster(c);
                                   setIsDropdownOpen(false);
                                 }}
-                                className={`w-full text-left px-3.5 py-2.5 text-xs transition-colors border-b last:border-b-0 ${
+                                className={`w-full text-left px-3.5 py-2.5 text-xs transition-colors border-b last:border-b-0 cursor-pointer ${
                                   isDark
                                     ? 'hover:bg-[#1e2530] text-[#CBD5E1] border-[#2D3748]'
                                     : 'hover:bg-slate-50 text-slate-700 border-[#E2E8F0]'
@@ -530,7 +636,7 @@ export const PRDGeneratorPage: React.FC = () => {
                     <select
                       value={framework}
                       onChange={(e) => setFramework(e.target.value)}
-                      className={`w-full px-3 py-2 rounded-lg border text-sm outline-none ${
+                      className={`w-full px-3 py-2 rounded-lg border text-sm outline-none cursor-pointer ${
                         isDark
                           ? 'text-white border-[#2D3748] bg-[#0D1117]'
                           : 'text-gray-900 border-[#E2E8F0] bg-white'
@@ -561,7 +667,7 @@ export const PRDGeneratorPage: React.FC = () => {
                   <button
                     onClick={handleGenerate}
                     disabled={isGenerating || !selectedCluster}
-                    className={`w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-[#8B5CF6]/20 cursor-pointer disabled:opacity-50`}
+                    className="w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-[#8B5CF6]/20 cursor-pointer disabled:opacity-50"
                   >
                     <Sparkles className="w-4 h-4" />
                     <span>{isGenerating ? 'Generating...' : 'Generate with AI'}</span>

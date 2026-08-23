@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import {
   Database,
   Layers,
@@ -23,6 +25,7 @@ import {
   CheckCircle2,
   Wifi,
   WifiOff,
+  Copy,
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -33,6 +36,7 @@ import { useTheme } from '../context/ThemeContext';
 import { CreateWorkspaceModal } from '../components/CreateWorkspaceModal';
 import { analyticsService, type BackendCluster, type BackendTrend } from '../services/analyticsService';
 import { workspaceService } from '../services/workspaceService';
+import { prdStorage, type StoredPRD } from '../utils/prdStorage';
 
 // ─── Feedback Volume Chart SVG Component ───────────────────────────────────────
 
@@ -218,20 +222,8 @@ const DEFAULT_PAIN_POINTS = [
   { title: 'Limited integration options', mentions: 387, pct: '10.4%', severity: 'Medium', color: 'amber' },
 ];
 
-interface PRDDocument {
-  id: string;
-  title: string;
-  version: string;
-  time: string;
-  status: string;
-  summary: string;
-  userStories: string[];
-  requirements: string[];
-  techStack: string;
-  metrics: string[];
-}
-
-const PRD_DATA: PRDDocument[] = [
+// Baseline default PRDs
+const DEFAULT_PRD_DATA: StoredPRD[] = [
   {
     id: 'prd-1',
     title: 'Smart Analytics Dashboard',
@@ -555,8 +547,11 @@ export const DashboardPage: React.FC = () => {
   const [selectedPainPointModal, setSelectedPainPointModal] = useState(false);
   const [selectedPRDModal, setSelectedPRDModal] = useState(false);
   const [selectedAlertsModal, setSelectedAlertsModal] = useState(false);
-  const [activePRD, setActivePRD] = useState<PRDDocument | null>(null);
+  const [activePRD, setActivePRD] = useState<StoredPRD | null>(null);
   const [alertFilter, setAlertFilter] = useState<'all' | 'high_priority' | 'trend' | 'prd_ready'>('all');
+
+  // Dynamic PRD List (Combining Stored + Default)
+  const [allPRDs, setAllPRDs] = useState<StoredPRD[]>(DEFAULT_PRD_DATA);
 
   // Backend Integration State
   const [isBackendConnected, setIsBackendConnected] = useState<boolean | null>(null);
@@ -572,9 +567,25 @@ export const DashboardPage: React.FC = () => {
     border: `1px solid ${isDark ? '#2D3748' : '#E2E8F0'}`,
   };
 
-  // Connect to Backend APIs on Mount
+  // Sync PRDs from localStorage
+  const refreshPRDs = () => {
+    const stored = prdStorage.getStoredPRDs();
+    if (stored.length > 0) {
+      // Merge stored PRDs at the top, avoiding duplicate titles with default ones
+      const storedTitles = new Set(stored.map(p => p.title.toLowerCase()));
+      const filteredDefaults = DEFAULT_PRD_DATA.filter(p => !storedTitles.has(p.title.toLowerCase()));
+      setAllPRDs([...stored, ...filteredDefaults]);
+    } else {
+      setAllPRDs(DEFAULT_PRD_DATA);
+    }
+  };
+
+  // Connect to Backend APIs & Sync PRDs on Mount & Window Focus
   useEffect(() => {
     let isMounted = true;
+
+    refreshPRDs();
+    window.addEventListener('focus', refreshPRDs);
 
     async function loadBackendData() {
       try {
@@ -613,7 +624,10 @@ export const DashboardPage: React.FC = () => {
     }
 
     loadBackendData();
-    return () => { isMounted = false; };
+    return () => { 
+      isMounted = false;
+      window.removeEventListener('focus', refreshPRDs);
+    };
   }, []);
 
   // Handle timeframe changes for the Feedback Volume chart
@@ -634,9 +648,6 @@ export const DashboardPage: React.FC = () => {
       }
     }
     
-    // Only fetch if it's not the initial mount
-    // since the initial mount fetches 56 days by default.
-    // However, if the user changes the timeframe, this will trigger.
     if (volumeTimeframe !== 'Last 8 Weeks' || backendTrends.length > 0) {
       updateTrends();
     }
@@ -803,7 +814,7 @@ export const DashboardPage: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Card 4: PRDs Generated */}
+            {/* Card 4: PRDs Generated (Dynamic) */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -817,12 +828,12 @@ export const DashboardPage: React.FC = () => {
                 <div>
                   <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>PRDs Generated</p>
                   <span className="text-2xl font-extrabold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                    9
+                    {allPRDs.length}
                   </span>
                 </div>
               </div>
               <div className="mt-3 pt-2 border-t text-[11px] font-bold text-[#38BDF8] flex items-center gap-1" style={{ borderColor: 'var(--border-subtle)' }}>
-                <span>+3 this week</span>
+                <span>Live synced</span>
                 <TrendingUp className="w-3.5 h-3.5" />
               </div>
             </motion.div>
@@ -911,7 +922,7 @@ export const DashboardPage: React.FC = () => {
 
                   <button
                     onClick={() => setSelectedPainPointModal(true)}
-                    className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+                    className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                       isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#94A3B8] hover:text-white' : 'bg-white border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A]'
                     }`}
                   >
@@ -968,7 +979,7 @@ export const DashboardPage: React.FC = () => {
           {/* ── Bottom Row: Recent PRDs & Copilot Alerts ────────────────────── */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-7">
             
-            {/* Recent PRDs - Left (6 Cols) */}
+            {/* Recent PRDs (Dynamic List) */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -993,7 +1004,7 @@ export const DashboardPage: React.FC = () => {
 
                   <button
                     onClick={() => setSelectedPRDModal(true)}
-                    className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+                    className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                       isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#94A3B8] hover:text-white' : 'bg-white border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A]'
                     }`}
                   >
@@ -1001,14 +1012,14 @@ export const DashboardPage: React.FC = () => {
                   </button>
                 </div>
 
-                {/* PRD List */}
+                {/* Dynamic PRD List (Top 3) */}
                 <div className="space-y-3.5">
-                  {PRD_DATA.map((prd, idx) => {
+                  {allPRDs.slice(0, 3).map((prd, idx) => {
                     const Icon = idx === 0 ? Code : (idx === 1 ? Smartphone : Shield);
                     const color = idx === 0 ? 'bg-purple-500/15 text-purple-400 border-purple-500/30' : (idx === 1 ? 'bg-blue-500/15 text-blue-400 border-blue-500/30' : 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30');
                     return (
                       <div
-                        key={idx}
+                        key={prd.id || idx}
                         onClick={() => setActivePRD(prd)}
                         className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 transition-all cursor-pointer group ${
                           isDark ? 'bg-[#0D1117] border-[#2D3748] hover:border-[#3B82F6]/50' : 'bg-[#F8FAFC] border-[#E2E8F0] hover:border-[#3B82F6]/50'
@@ -1059,7 +1070,7 @@ export const DashboardPage: React.FC = () => {
                   onClick={() => setSelectedPRDModal(true)}
                   className="text-xs font-bold text-[#8B5CF6] hover:text-[#A78BFA] flex items-center gap-1.5 group transition-colors cursor-pointer"
                 >
-                  <span>View all PRDs</span>
+                  <span>View all PRDs ({allPRDs.length})</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
@@ -1090,7 +1101,7 @@ export const DashboardPage: React.FC = () => {
 
                   <button
                     onClick={() => setSelectedAlertsModal(true)}
-                    className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+                    className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                       isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#94A3B8] hover:text-white' : 'bg-white border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A]'
                     }`}
                   >
@@ -1174,7 +1185,7 @@ export const DashboardPage: React.FC = () => {
             >
               <button
                 onClick={() => setSelectedPainPointModal(false)}
-                className="absolute top-4 right-4 p-2 rounded-xl text-[#94A3B8] hover:bg-[#1e2530] hover:text-white transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-xl text-[#94A3B8] hover:bg-[#1e2530] hover:text-white transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1203,7 +1214,7 @@ export const DashboardPage: React.FC = () => {
               <div className="flex justify-end pt-2">
                 <button
                   onClick={() => setSelectedPainPointModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold bg-[#1e2530] hover:bg-[#252a32] text-white"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-[#1e2530] hover:bg-[#252a32] text-white cursor-pointer"
                 >
                   Close
                 </button>
@@ -1213,7 +1224,7 @@ export const DashboardPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* ── PRD List Modal ────────────────────────────────────────────────── */}
+      {/* ── Generated PRD Documents List Modal ────────────────────────────── */}
       <AnimatePresence>
         {selectedPRDModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
@@ -1240,7 +1251,7 @@ export const DashboardPage: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <h3 className="text-xl font-bold font-display">Generated PRD Documents</h3>
                     <span className="px-2 py-0.5 rounded-full text-xs font-extrabold bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/30">
-                      {PRD_DATA.length} PRDs
+                      {allPRDs.length} PRDs
                     </span>
                   </div>
                   <p className="text-xs text-[#94A3B8]">AI-Generated Product Requirement Specifications</p>
@@ -1248,7 +1259,7 @@ export const DashboardPage: React.FC = () => {
               </div>
 
               <div className="space-y-2.5 text-xs overflow-y-auto max-h-[55vh] pr-1 scrollbar-thin">
-                {PRD_DATA.map((prd) => (
+                {allPRDs.map((prd) => (
                   <div
                     key={prd.id}
                     onClick={() => {
@@ -1260,10 +1271,14 @@ export const DashboardPage: React.FC = () => {
                     }`}
                   >
                     <div>
-                      <span className="font-bold text-sm block" style={{ color: 'var(--text-primary)' }}>{prd.title} <span className="text-xs text-[#8B5CF6]">{prd.version}</span></span>
+                      <span className="font-bold text-sm block" style={{ color: 'var(--text-primary)' }}>
+                        {prd.title} <span className="text-xs text-[#8B5CF6]">{prd.version}</span>
+                      </span>
                       <span className="text-[11px] text-[#94A3B8]">{prd.time}</span>
                     </div>
-                    <span className="text-[10px] text-[#10B981] font-bold px-2 py-1 rounded-full bg-[#10B981]/15 border border-[#10B981]/30">{prd.status}</span>
+                    <span className="text-[10px] text-[#10B981] font-bold px-2 py-1 rounded-full bg-[#10B981]/15 border border-[#10B981]/30">
+                      {prd.status}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -1289,7 +1304,7 @@ export const DashboardPage: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className={`w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-2xl border p-7 shadow-2xl relative space-y-6 ${
+              className={`w-full max-w-4xl max-h-[88vh] overflow-y-auto rounded-2xl border p-7 shadow-2xl relative space-y-6 ${
                 isDark ? 'bg-[#161B22] border-[#2D3748] text-white' : 'bg-white border-[#E2E8F0] text-[#0F172A]'
               }`}
             >
@@ -1323,64 +1338,130 @@ export const DashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Executive Summary */}
-              <div className="space-y-2">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#8B5CF6]">Executive Summary</h3>
-                <p className="text-xs leading-relaxed p-4 rounded-xl border" style={{ backgroundColor: isDark ? '#0D1117' : '#F8FAFC', borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
-                  {activePRD.summary}
-                </p>
-              </div>
+              {/* Body: Full Markdown if available, or Structured Card View */}
+              {activePRD.content ? (
+                <div className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} space-y-3 leading-relaxed`}>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      h1: ({ node, ...props }) => (
+                        <h1 className={`text-xl font-bold mt-6 mb-3 border-b pb-2 ${isDark ? 'text-white border-[#2D3748]' : 'text-gray-900 border-slate-200'}`} {...props} />
+                      ),
+                      h2: ({ node, ...props }) => (
+                        <h2 className={`text-lg font-bold mt-5 mb-2.5 ${isDark ? 'text-white' : 'text-gray-900'}`} {...props} />
+                      ),
+                      h3: ({ node, ...props }) => (
+                        <h3 className="text-base font-bold text-[#38BDF8] mt-4 mb-2" {...props} />
+                      ),
+                      p: ({ node, ...props }) => (
+                        <p className={`mb-4 leading-relaxed text-sm font-normal last:mb-0 ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />
+                      ),
+                      strong: ({ node, ...props }) => (
+                        <strong className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`} {...props} />
+                      ),
+                      ul: ({ node, ...props }) => (
+                        <ul className={`list-disc pl-6 mb-4 space-y-1.5 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />
+                      ),
+                      ol: ({ node, ...props }) => (
+                        <ol className={`list-decimal pl-6 mb-4 space-y-1.5 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />
+                      ),
+                      li: ({ node, ...props }) => (
+                        <li className={`leading-relaxed ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />
+                      ),
+                      code: ({ node, ...props }) => (
+                        <code className={`px-1.5 py-0.5 rounded text-xs font-mono border ${isDark ? 'bg-[#1E293B] text-[#38BDF8] border-[#38BDF8]/20' : 'bg-slate-100 text-blue-700 border-blue-200'}`} {...props} />
+                      ),
+                      pre: ({ node, ...props }) => (
+                        <pre className={`p-4 rounded-xl overflow-x-auto my-4 text-xs font-mono shadow-inner border ${isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#E2E8F0]' : 'bg-slate-900 border-slate-800 text-slate-100'}`} {...props} />
+                      ),
+                      table: ({ node, ...props }) => (
+                        <div className={`overflow-x-auto my-4 border rounded-xl shadow-md ${isDark ? 'border-[#2D3748]' : 'border-slate-200'}`}>
+                          <table className="min-w-full text-left border-collapse text-xs" {...props} />
+                        </div>
+                      ),
+                      thead: ({ node, ...props }) => (
+                        <thead className={`font-bold border-b ${isDark ? 'bg-[#1E293B] text-white border-[#2D3748]' : 'bg-slate-100 text-slate-900 border-slate-200'}`} {...props} />
+                      ),
+                      tbody: ({ node, ...props }) => (
+                        <tbody className={`divide-y ${isDark ? 'divide-[#2D3748]/60 bg-[#161B22]/60' : 'divide-slate-200 bg-white'}`} {...props} />
+                      ),
+                      th: ({ node, ...props }) => (
+                        <th className={`px-4 py-2.5 font-bold tracking-wider border-b ${isDark ? 'text-[#F8FAFC] border-[#2D3748]' : 'text-slate-900 border-slate-200'}`} {...props} />
+                      ),
+                      td: ({ node, ...props }) => (
+                        <td className={`px-4 py-2.5 leading-relaxed border-b ${isDark ? 'text-[#CBD5E1] border-[#2D3748]/50' : 'text-slate-800 border-slate-200'}`} {...props} />
+                      ),
+                      blockquote: ({ node, ...props }) => (
+                        <blockquote className={`my-4 p-4 rounded-xl border-l-4 border-[#8B5CF6] text-sm font-medium shadow-sm ${isDark ? 'bg-[#1E293B]/60 text-[#F1F5F9]' : 'bg-purple-50 text-purple-900'}`} {...props} />
+                      ),
+                    }}
+                  >
+                    {activePRD.content}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Executive Summary */}
+                  <div className="space-y-2">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#8B5CF6]">Executive Summary</h3>
+                    <p className="text-xs leading-relaxed p-4 rounded-xl border" style={{ backgroundColor: isDark ? '#0D1117' : '#F8FAFC', borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
+                      {activePRD.summary}
+                    </p>
+                  </div>
 
-              {/* User Stories */}
-              <div className="space-y-2">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#3B82F6]">User Stories & Acceptance Criteria</h3>
-                <div className="space-y-2">
-                  {activePRD.userStories.map((story, i) => (
-                    <div key={i} className="p-3 rounded-xl border text-xs flex items-start gap-2.5" style={{ backgroundColor: isDark ? '#0D1117' : '#F8FAFC', borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
-                      <CheckCircle2 className="w-4 h-4 text-[#3B82F6] flex-shrink-0 mt-0.5" />
-                      <span>{story}</span>
+                  {/* User Stories */}
+                  <div className="space-y-2">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#3B82F6]">User Stories & Acceptance Criteria</h3>
+                    <div className="space-y-2">
+                      {activePRD.userStories?.map((story, i) => (
+                        <div key={i} className="p-3 rounded-xl border text-xs flex items-start gap-2.5" style={{ backgroundColor: isDark ? '#0D1117' : '#F8FAFC', borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
+                          <CheckCircle2 className="w-4 h-4 text-[#3B82F6] flex-shrink-0 mt-0.5" />
+                          <span>{story}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
 
-              {/* Functional Requirements */}
-              <div className="space-y-2">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#10B981]">Functional Requirements</h3>
-                <ul className="list-disc pl-5 space-y-1.5 text-xs" style={{ color: 'var(--text-secondary)' }}>
-                  {activePRD.requirements.map((req, i) => (
-                    <li key={i}>{req}</li>
-                  ))}
-                </ul>
-              </div>
+                  {/* Functional Requirements */}
+                  <div className="space-y-2">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#10B981]">Functional Requirements</h3>
+                    <ul className="list-disc pl-5 space-y-1.5 text-xs" style={{ color: 'var(--text-secondary)' }}>
+                      {activePRD.requirements?.map((req, i) => (
+                        <li key={i}>{req}</li>
+                      ))}
+                    </ul>
+                  </div>
 
-              {/* Tech Architecture & Success Metrics */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                <div className="p-4 rounded-xl border space-y-1.5" style={{ backgroundColor: isDark ? '#0D1117' : '#F8FAFC', borderColor: 'var(--border-subtle)' }}>
-                  <h4 className="text-xs font-bold text-[#F59E0B]">Technical Architecture</h4>
-                  <p className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>{activePRD.techStack}</p>
+                  {/* Tech Architecture & Success Metrics */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div className="p-4 rounded-xl border space-y-1.5" style={{ backgroundColor: isDark ? '#0D1117' : '#F8FAFC', borderColor: 'var(--border-subtle)' }}>
+                      <h4 className="text-xs font-bold text-[#F59E0B]">Technical Architecture</h4>
+                      <p className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>{activePRD.techStack}</p>
+                    </div>
+                    <div className="p-4 rounded-xl border space-y-1.5" style={{ backgroundColor: isDark ? '#0D1117' : '#F8FAFC', borderColor: 'var(--border-subtle)' }}>
+                      <h4 className="text-xs font-bold text-[#10B981]">Target Metrics & KPIs</h4>
+                      <ul className="list-disc pl-4 space-y-1 text-xs" style={{ color: 'var(--text-muted)' }}>
+                        {activePRD.metrics?.map((m, i) => (
+                          <li key={i}>{m}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-4 rounded-xl border space-y-1.5" style={{ backgroundColor: isDark ? '#0D1117' : '#F8FAFC', borderColor: 'var(--border-subtle)' }}>
-                  <h4 className="text-xs font-bold text-[#10B981]">Target Metrics & KPIs</h4>
-                  <ul className="list-disc pl-4 space-y-1 text-xs" style={{ color: 'var(--text-muted)' }}>
-                    {activePRD.metrics.map((m, i) => (
-                      <li key={i}>{m}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              )}
 
               {/* Footer Controls */}
               <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText(`# ${activePRD.title} ${activePRD.version}\n\n${activePRD.summary}`);
-                    toast.success('PRD summary copied to clipboard! 📋', { style: toast_ok });
+                    const textToCopy = activePRD.content || `# ${activePRD.title} ${activePRD.version}\n\n${activePRD.summary}`;
+                    navigator.clipboard.writeText(textToCopy);
+                    toast.success('PRD copied to clipboard! 📋', { style: toast_ok });
                   }}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-[#3B82F6] bg-[#3B82F6]/15 hover:bg-[#3B82F6]/25 border border-[#3B82F6]/30 transition-all cursor-pointer"
                 >
-                  <FileCode className="w-4 h-4" />
-                  <span>Copy PRD Summary</span>
+                  <Copy className="w-4 h-4" />
+                  <span>Copy PRD</span>
                 </button>
 
                 <button
@@ -1388,113 +1469,6 @@ export const DashboardPage: React.FC = () => {
                   className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] hover:opacity-90 transition-all shadow-lg shadow-blue-500/20 cursor-pointer"
                 >
                   Close Document
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Copilot Alerts Modal ──────────────────────────────────────────── */}
-      <AnimatePresence>
-        {selectedAlertsModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className={`w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl border p-6 shadow-2xl relative space-y-5 ${
-                isDark ? 'bg-[#161B22] border-[#2D3748] text-white' : 'bg-white border-[#E2E8F0] text-[#0F172A]'
-              }`}
-            >
-              <button
-                onClick={() => setSelectedAlertsModal(false)}
-                className="absolute top-4 right-4 p-2 rounded-xl text-[#94A3B8] hover:bg-[#1e2530] hover:text-white transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              {/* Modal Header */}
-              <div className="flex items-center gap-3 flex-shrink-0">
-                <div className="p-3 rounded-xl bg-[#F59E0B]/15 border border-[#F59E0B]/30 text-[#F59E0B]">
-                  <Sparkles className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-bold font-display">Copilot AI Insights & Alerts</h3>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/30">
-                      {copilotAlerts.length} Live Alerts
-                    </span>
-                  </div>
-                  <p className="text-xs text-[#94A3B8]">Real-time recommendations and priority flags generated from PostgreSQL data</p>
-                </div>
-              </div>
-
-              {/* Filter Tabs */}
-              <div className="flex items-center gap-2 flex-shrink-0 text-xs border-b pb-3" style={{ borderColor: 'var(--border-subtle)' }}>
-                {[
-                  { id: 'all', label: `All Alerts (${copilotAlerts.length})` },
-                  { id: 'high_priority', label: 'High Priority' },
-                  { id: 'trend', label: 'Trends' },
-                  { id: 'prd_ready', label: 'PRD Ready' },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setAlertFilter(tab.id as any)}
-                    className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
-                      alertFilter === tab.id
-                        ? 'bg-[#3B82F6] text-white shadow-md shadow-blue-500/20'
-                        : isDark
-                        ? 'bg-[#0D1117] text-[#94A3B8] border border-[#2D3748] hover:text-white'
-                        : 'bg-[#F1F5F9] text-[#64748B] border border-[#E2E8F0] hover:text-[#0F172A]'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Alert List Container */}
-              <div className="space-y-3 text-xs overflow-y-auto max-h-[50vh] pr-1 scrollbar-thin flex-grow">
-                {copilotAlerts
-                  .filter((a) => alertFilter === 'all' || a.type === alertFilter || (alertFilter === 'high_priority' && a.priority === 'High'))
-                  .map((alert) => {
-                    const isHigh = alert.type === 'high_priority' || alert.type === 'sentiment' || alert.priority === 'High';
-                    const isTrend = alert.type === 'trend';
-                    const bgBox = isHigh
-                      ? 'bg-[#EF4444]/10 border-[#EF4444]/30 text-[#EF4444]'
-                      : isTrend
-                      ? 'bg-[#F59E0B]/10 border-[#F59E0B]/30 text-[#F59E0B]'
-                      : 'bg-[#3B82F6]/10 border-[#3B82F6]/30 text-[#3B82F6]';
-
-                    return (
-                      <div key={alert.id} className={`p-4 rounded-xl border space-y-1.5 ${bgBox}`}>
-                        <div className="flex items-center justify-between gap-2">
-                          <p className="font-bold text-sm">{alert.title}</p>
-                          <span className="text-[10px] font-semibold opacity-75">{alert.time}</span>
-                        </div>
-                        <p className="text-[11px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                          {alert.description}
-                        </p>
-                        <div className="flex items-center gap-2 pt-1">
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/20 font-semibold">
-                            Category: {alert.category}
-                          </span>
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/20 font-semibold">
-                            Priority: {alert.priority}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-
-              <div className="flex justify-end pt-2 flex-shrink-0">
-                <button
-                  onClick={() => setSelectedAlertsModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold bg-[#1e2530] hover:bg-[#252a32] text-white cursor-pointer"
-                >
-                  Close
                 </button>
               </div>
             </motion.div>

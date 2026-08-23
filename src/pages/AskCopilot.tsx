@@ -17,8 +17,13 @@ import {
   CheckCircle2,
   ChevronRight,
   Database,
-  ArrowRight
+  ArrowRight,
+  Copy,
+  CheckSquare,
+  Edit3,
+  Save,
 } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 import { Sidebar } from '../components/Sidebar';
 import { TopNavbar } from '../components/TopNavbar';
 import { useTheme } from '../context/ThemeContext';
@@ -33,6 +38,7 @@ export const AskCopilotPage: React.FC = () => {
     timestamp: string;
     isStreaming?: boolean;
     statusText?: string;
+    isEditing?: boolean;
   }>>([
     {
       id: 'welcome',
@@ -43,6 +49,7 @@ export const AskCopilotPage: React.FC = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Auto scroll to bottom
@@ -139,6 +146,37 @@ export const AskCopilotPage: React.FC = () => {
     ]);
   };
 
+  const handleCopyMessage = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    toast.success('Copied to clipboard! 📋', {
+      style: {
+        background: isDark ? '#161B22' : '#ffffff',
+        color: isDark ? '#F8FAFC' : '#0F172A',
+        border: `1px solid ${isDark ? '#2D3748' : '#E2E8F0'}`,
+      },
+    });
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const toggleEditMessage = (id: string) => {
+    setMessages(prev => prev.map(m => {
+      if (m.id === id) {
+        return { ...m, isEditing: !m.isEditing };
+      }
+      return m;
+    }));
+  };
+
+  const updateMessageText = (id: string, newText: string) => {
+    setMessages(prev => prev.map(m => {
+      if (m.id === id) {
+        return { ...m, text: newText };
+      }
+      return m;
+    }));
+  };
+
   const cardBg = isDark
     ? 'bg-[#161B22]/90 border-[#2D3748] shadow-lg shadow-black/20'
     : 'bg-white border-[#E2E8F0] shadow-sm hover:shadow-md';
@@ -150,6 +188,7 @@ export const AskCopilotPage: React.FC = () => {
 
   return (
     <div className="min-h-screen transition-colors duration-200" style={{ backgroundColor: 'var(--bg-base)' }}>
+      <Toaster position="top-right" />
       <Sidebar />
       <div className="ml-60 min-h-screen flex flex-col">
         <TopNavbar />
@@ -171,10 +210,11 @@ export const AskCopilotPage: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-
               <button 
                 onClick={handleClearChat}
-                className={`px-4 py-2 rounded-xl border flex items-center gap-2 text-sm font-medium hover:opacity-80 transition-colors ${isDark ? 'border-[#2D3748] text-[#CBD5E1] bg-[#1E293B]' : 'border-[#E2E8F0] text-[#475569] bg-white'}`}
+                className={`px-4 py-2 rounded-xl border flex items-center gap-2 text-sm font-medium hover:opacity-80 transition-colors cursor-pointer ${
+                  isDark ? 'border-[#2D3748] text-[#CBD5E1] bg-[#1E293B]' : 'border-[#E2E8F0] text-[#475569] bg-white'
+                }`}
               >
                 <Trash2 className="w-4 h-4" />
                 Clear Chat
@@ -225,9 +265,39 @@ export const AskCopilotPage: React.FC = () => {
                           <Sparkles className="w-5 h-5 text-[#8B5CF6]" />
                         </div>
                         <div className={`p-6 rounded-2xl rounded-tl-sm border w-full max-w-[90%] ${aiBubbleBg}`}>
-                          <div className="flex items-center gap-2 mb-4">
-                            <span className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Copilot</span>
-                            <span className="text-xs text-[#64748B]">• {msg.timestamp}</span>
+                          
+                          {/* Message Header with Copy & Edit Buttons */}
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Copilot</span>
+                              <span className="text-xs text-[#64748B]">• {msg.timestamp}</span>
+                            </div>
+
+                            {msg.text && !msg.isStreaming && (
+                              <div className="flex items-center gap-1">
+                                <button
+                                  onClick={() => toggleEditMessage(msg.id)}
+                                  className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 transition-colors cursor-pointer ${
+                                    msg.isEditing
+                                      ? 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/40'
+                                      : isDark ? 'border-[#2D3748] text-[#94A3B8] hover:text-white hover:bg-[#1E293B]' : 'border-slate-200 text-slate-600 hover:bg-slate-100'
+                                  }`}
+                                  title={msg.isEditing ? 'Save & Preview' : 'Edit response manually'}
+                                >
+                                  {msg.isEditing ? <Save className="w-3.5 h-3.5" /> : <Edit3 className="w-3.5 h-3.5" />}
+                                </button>
+
+                                <button
+                                  onClick={() => handleCopyMessage(msg.id, msg.text)}
+                                  className={`p-1.5 rounded-lg border text-xs transition-colors cursor-pointer ${
+                                    isDark ? 'border-[#2D3748] text-[#94A3B8] hover:text-white hover:bg-[#1E293B]' : 'border-slate-200 text-slate-600 hover:bg-slate-100'
+                                  }`}
+                                  title="Copy message"
+                                >
+                                  {copiedId === msg.id ? <CheckSquare className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+                                </button>
+                              </div>
+                            )}
                           </div>
                           
                           {msg.statusText && (
@@ -235,45 +305,114 @@ export const AskCopilotPage: React.FC = () => {
                           )}
 
                           {msg.text ? (
-                            <div className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} space-y-3 leading-relaxed`}>
-                              <ReactMarkdown
-                                remarkPlugins={[remarkGfm]}
-                                components={{
-                                  h1: ({ node, ...props }) => <h1 className={`text-xl font-bold mt-6 mb-3 border-b pb-2 ${isDark ? 'text-white border-[#2D3748]' : 'text-gray-900 border-slate-200'}`} {...props} />,
-                                  h2: ({ node, ...props }) => <h2 className={`text-lg font-bold mt-5 mb-2.5 ${isDark ? 'text-white' : 'text-gray-900'}`} {...props} />,
-                                  h3: ({ node, ...props }) => <h3 className={`text-base font-bold text-[#38BDF8] mt-4 mb-2`} {...props} />,
-                                  p: ({ node, ...props }) => <p className={`mb-4 leading-relaxed text-sm font-normal last:mb-0 ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />,
-                                  strong: ({ node, ...props }) => <strong className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`} {...props} />,
-                                  ul: ({ node, ...props }) => <ul className={`list-disc pl-6 mb-4 space-y-1.5 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />,
-                                  ol: ({ node, ...props }) => <ol className={`list-decimal pl-6 mb-4 space-y-1.5 text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />,
-                                  li: ({ node, ...props }) => <li className={`leading-relaxed ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />,
-                                  code: ({ node, ...props }) => <code className={`px-1.5 py-0.5 rounded text-xs font-mono border ${isDark ? 'bg-[#1E293B] text-[#38BDF8] border-[#38BDF8]/20' : 'bg-slate-100 text-blue-700 border-blue-200'}`} {...props} />,
-                                  pre: ({ node, ...props }) => <pre className={`p-4 rounded-xl overflow-x-auto my-4 text-xs font-mono shadow-inner border ${isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#E2E8F0]' : 'bg-slate-900 border-slate-800 text-slate-100'}`} {...props} />,
-                                  table: ({ node, ...props }) => (
-                                    <div className={`overflow-x-auto my-4 border rounded-xl shadow-md ${isDark ? 'border-[#2D3748]' : 'border-slate-200'}`}>
-                                      <table className="min-w-full text-left border-collapse text-xs" {...props} />
-                                    </div>
-                                  ),
-                                  thead: ({ node, ...props }) => (
-                                    <thead className={`font-bold border-b ${isDark ? 'bg-[#1E293B] text-white border-[#2D3748]' : 'bg-slate-100 text-slate-900 border-slate-200'}`} {...props} />
-                                  ),
-                                  tbody: ({ node, ...props }) => (
-                                    <tbody className={`divide-y ${isDark ? 'divide-[#2D3748]/60 bg-[#161B22]/60' : 'divide-slate-200 bg-white'}`} {...props} />
-                                  ),
-                                  th: ({ node, ...props }) => (
-                                    <th className={`px-4 py-2.5 font-bold tracking-wider border-b ${isDark ? 'text-[#F8FAFC] border-[#2D3748]' : 'text-slate-900 border-slate-200'}`} {...props} />
-                                  ),
-                                  td: ({ node, ...props }) => (
-                                    <td className={`px-4 py-2.5 leading-relaxed border-b ${isDark ? 'text-[#CBD5E1] border-[#2D3748]/50' : 'text-slate-800 border-slate-200'}`} {...props} />
-                                  ),
-                                  blockquote: ({ node, ...props }) => (
-                                    <blockquote className={`my-4 p-4 rounded-xl border-l-4 border-[#8B5CF6] text-sm font-medium shadow-sm ${isDark ? 'bg-[#1E293B]/60 text-[#F1F5F9]' : 'bg-purple-50 text-purple-900'}`} {...props} />
-                                  ),
-                                }}
-                              >
-                                {msg.text}
-                              </ReactMarkdown>
-                            </div>
+                            msg.isEditing ? (
+                              <div className="space-y-2">
+                                <textarea
+                                  value={msg.text}
+                                  onChange={(e) => updateMessageText(msg.id, e.target.value)}
+                                  rows={8}
+                                  className={`w-full p-3 rounded-xl border font-mono text-xs leading-relaxed outline-none resize-y ${
+                                    isDark
+                                      ? 'bg-[#0D1117] border-[#2D3748] text-[#CBD5E1] focus:border-[#8B5CF6]'
+                                      : 'bg-slate-50 border-slate-300 text-slate-900 focus:border-purple-500'
+                                  }`}
+                                />
+                                <div className="flex justify-end">
+                                  <button
+                                    onClick={() => toggleEditMessage(msg.id)}
+                                    className="px-3 py-1 rounded-lg text-xs font-semibold bg-[#8B5CF6] text-white hover:opacity-90 transition-opacity cursor-pointer"
+                                  >
+                                    Save & View
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} space-y-3 leading-relaxed`}>
+                                <ReactMarkdown
+                                  remarkPlugins={[remarkGfm]}
+                                  components={{
+                                    h1: ({ node, ...props }) => (
+                                      <h1 className={`text-xl font-bold mt-6 mb-3 border-b pb-2 ${
+                                        isDark ? 'text-white border-[#2D3748]' : 'text-gray-900 border-slate-200'
+                                      }`} {...props} />
+                                    ),
+                                    h2: ({ node, ...props }) => (
+                                      <h2 className={`text-lg font-bold mt-5 mb-2.5 ${
+                                        isDark ? 'text-white' : 'text-gray-900'
+                                      }`} {...props} />
+                                    ),
+                                    h3: ({ node, ...props }) => (
+                                      <h3 className={`text-base font-bold text-[#38BDF8] mt-4 mb-2`} {...props} />
+                                    ),
+                                    p: ({ node, ...props }) => (
+                                      <p className={`mb-4 leading-relaxed text-sm font-normal last:mb-0 ${
+                                        isDark ? 'text-[#CBD5E1]' : 'text-slate-800'
+                                      }`} {...props} />
+                                    ),
+                                    strong: ({ node, ...props }) => (
+                                      <strong className={`font-bold ${isDark ? 'text-white' : 'text-gray-900'}`} {...props} />
+                                    ),
+                                    ul: ({ node, ...props }) => (
+                                      <ul className={`list-disc pl-6 mb-4 space-y-1.5 text-sm ${
+                                        isDark ? 'text-[#CBD5E1]' : 'text-slate-800'
+                                      }`} {...props} />
+                                    ),
+                                    ol: ({ node, ...props }) => (
+                                      <ol className={`list-decimal pl-6 mb-4 space-y-1.5 text-sm ${
+                                        isDark ? 'text-[#CBD5E1]' : 'text-slate-800'
+                                      }`} {...props} />
+                                    ),
+                                    li: ({ node, ...props }) => (
+                                      <li className={`leading-relaxed ${isDark ? 'text-[#CBD5E1]' : 'text-slate-800'}`} {...props} />
+                                    ),
+                                    code: ({ node, ...props }) => (
+                                      <code className={`px-1.5 py-0.5 rounded text-xs font-mono border ${
+                                        isDark ? 'bg-[#1E293B] text-[#38BDF8] border-[#38BDF8]/20' : 'bg-slate-100 text-blue-700 border-blue-200'
+                                      }`} {...props} />
+                                    ),
+                                    pre: ({ node, ...props }) => (
+                                      <pre className={`p-4 rounded-xl overflow-x-auto my-4 text-xs font-mono shadow-inner border ${
+                                        isDark ? 'bg-[#0D1117] border-[#2D3748] text-[#E2E8F0]' : 'bg-slate-900 border-slate-800 text-slate-100'
+                                      }`} {...props} />
+                                    ),
+                                    table: ({ node, ...props }) => (
+                                      <div className={`overflow-x-auto my-4 border rounded-xl shadow-md ${
+                                        isDark ? 'border-[#2D3748]' : 'border-slate-200'
+                                      }`}>
+                                        <table className="min-w-full text-left border-collapse text-xs" {...props} />
+                                      </div>
+                                    ),
+                                    thead: ({ node, ...props }) => (
+                                      <thead className={`font-bold border-b ${
+                                        isDark ? 'bg-[#1E293B] text-white border-[#2D3748]' : 'bg-slate-100 text-slate-900 border-slate-200'
+                                      }`} {...props} />
+                                    ),
+                                    tbody: ({ node, ...props }) => (
+                                      <tbody className={`divide-y ${
+                                        isDark ? 'divide-[#2D3748]/60 bg-[#161B22]/60' : 'divide-slate-200 bg-white'
+                                      }`} {...props} />
+                                    ),
+                                    th: ({ node, ...props }) => (
+                                      <th className={`px-4 py-2.5 font-bold tracking-wider border-b ${
+                                        isDark ? 'text-[#F8FAFC] border-[#2D3748]' : 'text-slate-900 border-slate-200'
+                                      }`} {...props} />
+                                    ),
+                                    td: ({ node, ...props }) => (
+                                      <td className={`px-4 py-2.5 leading-relaxed border-b ${
+                                        isDark ? 'text-[#CBD5E1] border-[#2D3748]/50' : 'text-slate-800 border-slate-200'
+                                      }`} {...props} />
+                                    ),
+                                    blockquote: ({ node, ...props }) => (
+                                      <blockquote className={`my-4 p-4 rounded-xl border-l-4 border-[#8B5CF6] text-sm font-medium shadow-sm ${
+                                        isDark ? 'bg-[#1E293B]/60 text-[#F1F5F9]' : 'bg-purple-50 text-purple-900'
+                                      }`} {...props} />
+                                    ),
+                                  }}
+                                >
+                                  {msg.text}
+                                </ReactMarkdown>
+                              </div>
+                            )
                           ) : (
                             <p className={`text-sm ${isDark ? 'text-[#CBD5E1]' : 'text-slate-700'} leading-relaxed`}>
                               {msg.isStreaming && !msg.statusText ? 'Thinking...' : ''}
@@ -318,7 +457,7 @@ export const AskCopilotPage: React.FC = () => {
                   <button 
                     type="submit"
                     disabled={isGenerating || !inputText.trim()}
-                    className={`px-5 py-2.5 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] disabled:opacity-50 disabled:cursor-not-allowed ${isDark ? 'text-white' : 'text-gray-900'} font-medium text-sm flex items-center gap-2 transition-colors`}
+                    className={`px-5 py-2.5 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium text-sm flex items-center gap-2 transition-colors cursor-pointer`}
                   >
                     Send <Sparkles className="w-3.5 h-3.5" />
                   </button>
