@@ -15,7 +15,7 @@ Supports local development bypass and token-based user lookup.
 
 import os
 import uuid
-from typing import Optional
+from typing import Any, Optional
 
 from fastapi import Depends
 from fastapi.security import (
@@ -238,3 +238,24 @@ def get_current_active_superuser(
         message="Superuser privileges are required to perform this action.",
         error_code="FORBIDDEN",
     )
+
+
+def verify_workspace_access(
+    workspace_id: str,
+    current_user: Any,
+) -> str:
+    """Validates that the current user has access to the given workspace."""
+    workspaces = []
+    if isinstance(current_user, dict):
+        workspaces = current_user.get("workspaces", [])
+    elif hasattr(current_user, "workspaces"):
+        workspaces = getattr(current_user, "workspaces", [])
+    elif hasattr(current_user, "workspace_id") and getattr(current_user, "workspace_id"):
+        workspaces = [str(getattr(current_user, "workspace_id"))]
+
+    if str(workspace_id) not in [str(w) for w in workspaces]:
+        raise PermissionDeniedException(
+            message=f"Access denied to workspace '{workspace_id}'",
+            error_code="FORBIDDEN",
+        )
+    return str(workspace_id)

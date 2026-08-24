@@ -4,13 +4,13 @@ Unit Tests for Security, Token Validation, and Workspace RBAC Dependencies.
 
 import jwt
 import pytest
-from app.core.security import decode_access_token, JWT_SECRET_KEY, JWT_ALGORITHM
+from app.core.security import decode_access_token, SECRET_KEY, ALGORITHM
 from app.core.exceptions import UnauthorizedAccessException, PermissionDeniedException
 from app.api.deps import verify_workspace_access
 
 def test_valid_jwt_decode():
     payload = {"sub": "usr_12345", "email": "test@domain.com"}
-    token = jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     
     decoded = decode_access_token(token)
     assert decoded["sub"] == "usr_12345"
