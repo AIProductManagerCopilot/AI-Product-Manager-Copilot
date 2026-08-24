@@ -147,6 +147,9 @@ class MemoryExtractorService:
                 }
             )
 
+        if stored_memories:
+            await db.commit()
+
         logger.info("Successfully extracted and stored %d new long-term memories for user '%s'", len(stored_memories), user_id)
         return stored_memories
 

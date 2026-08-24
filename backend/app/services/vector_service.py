@@ -104,10 +104,13 @@ class VectorService:
                 field_schema=field_type,
             )
 
-    def generate_embedding(self, text: str) -> List[float]:
+    async def generate_embedding(self, text: str) -> List[float]:
         """
-        Generates dense vector embeddings using Google GenAI SDK enforced to target dimensions.
+        Generates dense vector embeddings using Google GenAI SDK enforced to target dimensions asynchronously.
         """
+        return await asyncio.to_thread(self._generate_embedding_sync, text)
+
+    def _generate_embedding_sync(self, text: str) -> List[float]:
         try:
             # Clean model string format for google-genai SDK
             model_name = (
@@ -142,7 +145,7 @@ class VectorService:
             if not text_content:
                 continue
 
-            vector = self.generate_embedding(text_content)
+            vector = await self.generate_embedding(text_content)
             point_id = doc.get("id", idx)
             payload = doc.get("metadata", {})
             payload["text_content"] = text_content
@@ -175,7 +178,7 @@ class VectorService:
         Executes semantic vector similarity search with optional payload filters.
         """
         try:
-            query_vector = self.generate_embedding(query)
+            query_vector = await self.generate_embedding(query)
 
             must_conditions = []
             if category_filter:
@@ -289,7 +292,7 @@ class VectorService:
     ) -> bool:
         """Upserts a long-term user memory point into Qdrant 'user_memory' collection."""
         try:
-            vector = self.generate_embedding(fact_text)
+            vector = await self.generate_embedding(fact_text)
             payload = {
                 "memory_id": memory_id,
                 "fact_text": fact_text,
@@ -327,7 +330,7 @@ class VectorService:
         Searches 'user_memory' collection filtered strictly by user_id, workspace_id, and superseded='false'.
         """
         try:
-            query_vector = self.generate_embedding(query)
+            query_vector = await self.generate_embedding(query)
 
             must_conditions = [
                 qmodels.FieldCondition(

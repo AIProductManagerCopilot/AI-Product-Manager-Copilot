@@ -57,15 +57,15 @@ class CopilotQueryRequest(BaseModel):
 
 
 class PRDGenerationRequest(BaseModel):
-    feature_name: str = Field(..., example="Automated User Onboarding Flow")
-    user_query: str = Field(..., example="Focus on reducing drop-off during step 2")
-    category_filter: Optional[str] = Field(None, example="Onboarding")
+    feature_name: str = Field(..., json_schema_extra={"example": "Automated User Onboarding Flow"})
+    user_query: str = Field(..., json_schema_extra={"example": "Focus on reducing drop-off during step 2"})
+    category_filter: Optional[str] = Field(None, json_schema_extra={"example": "Onboarding"})
     limit: int = Field(default=8, ge=1, le=20)
 
 
 class ThemeIntelligenceRequest(BaseModel):
-    cluster_topic: str = Field(..., example="Checkout Payment Gateway Errors")
-    category_filter: Optional[str] = Field(None, example="Billing")
+    cluster_topic: str = Field(..., json_schema_extra={"example": "Checkout Payment Gateway Errors"})
+    category_filter: Optional[str] = Field(None, json_schema_extra={"example": "Billing"})
 
 
 async def generate_gemini_stream(

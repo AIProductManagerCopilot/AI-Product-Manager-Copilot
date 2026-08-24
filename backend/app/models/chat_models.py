@@ -108,8 +108,9 @@ class ChatSession(Base):
         "ChatMessage",
         back_populates="session",
         cascade="all, delete-orphan",
+        passive_deletes=True,
         order_by="ChatMessage.created_at",
-        lazy="dynamic",
+        lazy="selectin",
     )
 
     __table_args__ = (

@@ -115,7 +115,7 @@ export const ChatSessionSidebar: React.FC<ChatSessionSidebarProps> = ({
                         : 'border-transparent text-slate-700 hover:bg-slate-100'
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0 pr-6">
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
                       <MessageSquare className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#8B5CF6]' : 'text-slate-400'}`} />
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-xs">
@@ -129,11 +129,16 @@ export const ChatSessionSidebar: React.FC<ChatSessionSidebarProps> = ({
                     </div>
 
                     <button
-                      onClick={(e) => onDeleteSession(session.id, e)}
-                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all absolute right-2"
-                      title="Delete chat"
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        onDeleteSession(session.id, e);
+                      }}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all shrink-0 cursor-pointer relative z-20"
+                      title="Delete conversation"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 );

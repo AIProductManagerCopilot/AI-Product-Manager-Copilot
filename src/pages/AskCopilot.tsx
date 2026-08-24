@@ -29,6 +29,10 @@ import {
   Layers,
   FileCode,
   RotateCcw,
+  ThumbsUp,
+  ThumbsDown,
+  Paperclip,
+  X,
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Sidebar } from '../components/Sidebar';
@@ -68,6 +72,7 @@ export const AskCopilotPage: React.FC = () => {
     isStreaming?: boolean;
     statusText?: string;
     isEditing?: boolean;
+    feedback?: 'like' | 'dislike' | null;
     sources?: RAGSource[];
     memories?: MemoryCitation[];
     showSourcesAccordion?: boolean;
@@ -77,9 +82,62 @@ export const AskCopilotPage: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [attachment, setAttachment] = useState<{ name: string; content: string } | null>(null);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleRating = (msgId: string, rating: 'like' | 'dislike') => {
+    setMessages((prev) =>
+      prev.map((m) => {
+        if (m.id === msgId) {
+          const newFeedback = m.feedback === rating ? null : rating;
+          if (newFeedback === 'like') {
+            toast.success('Thank you for the positive feedback! 👍', {
+              style: {
+                background: isDark ? '#161B22' : '#ffffff',
+                color: isDark ? '#F8FAFC' : '#0F172A',
+                border: `1px solid ${isDark ? '#2D3748' : '#E2E8F0'}`,
+              },
+            });
+          } else if (newFeedback === 'dislike') {
+            toast.error('Feedback recorded. We will refine future responses.', {
+              style: {
+                background: isDark ? '#161B22' : '#ffffff',
+                color: isDark ? '#F8FAFC' : '#0F172A',
+                border: `1px solid ${isDark ? '#2D3748' : '#E2E8F0'}`,
+              },
+            });
+          }
+          return { ...m, feedback: newFeedback };
+        }
+        return m;
+      })
+    );
+  };
+
+  const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('File size exceeds 2MB limit');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      setAttachment({ name: file.name, content });
+      toast.success(`Attached ${file.name} 📎`);
+    };
+    reader.onerror = () => {
+      toast.error('Failed to read attached file');
+    };
+    reader.readAsText(file);
+    if (e.target) e.target.value = '';
+  };
 
   // Auto scroll to bottom
   const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
@@ -192,25 +250,35 @@ export const AskCopilotPage: React.FC = () => {
     }
   };
 
-  const handleDeleteSession = async (sessionId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleDeleteSession = async (sessionId: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    const previousSessions = [...sessions];
+    const remaining = sessions.filter((s) => s.id !== sessionId);
+
+    // Optimistically update sessions list
+    setSessions(remaining);
+
+    if (activeSessionId === sessionId) {
+      if (remaining.length > 0) {
+        setActiveSessionId(remaining[0].id);
+        loadMessagesForSession(remaining[0].id);
+      } else {
+        handleCreateNewSession();
+      }
+    }
+
     try {
       await chatService.deleteSession(sessionId);
-      const remaining = sessions.filter((s) => s.id !== sessionId);
-      setSessions(remaining);
       toast.success('Session deleted');
-
-      if (activeSessionId === sessionId) {
-        if (remaining.length > 0) {
-          setActiveSessionId(remaining[0].id);
-          await loadMessagesForSession(remaining[0].id);
-        } else {
-          await handleCreateNewSession();
-        }
-      }
     } catch (err) {
       console.error('Failed to delete session:', err);
-      toast.error('Failed to delete session');
+      // Revert if API call fails
+      setSessions(previousSessions);
+      toast.error('Failed to delete session on server');
     }
   };
 
@@ -235,8 +303,17 @@ export const AskCopilotPage: React.FC = () => {
   };
 
   const handleSend = async (queryText?: string) => {
-    const query = (queryText || inputText).trim();
-    if (!query || isGenerating) return;
+    const rawQuery = (queryText || inputText).trim();
+    if (!rawQuery || isGenerating) return;
+
+    let promptPayload = rawQuery;
+    let displayText = rawQuery;
+
+    if (attachment && !queryText) {
+      promptPayload = `${rawQuery}\n\n--- ATTACHED FILE CONTEXT (${attachment.name}) ---\n${attachment.content}\n--------------------------------------------------`;
+      displayText = `${rawQuery}\n\n📎 *[Attached: ${attachment.name}]*`;
+      setAttachment(null);
+    }
 
     if (!queryText) {
       setInputText('');
@@ -246,7 +323,7 @@ export const AskCopilotPage: React.FC = () => {
 
     if (!currentSessionId) {
       try {
-        const newSession = await chatService.createSession(query.slice(0, 50), selectedWorkspaceId);
+        const newSession = await chatService.createSession(rawQuery.slice(0, 50), selectedWorkspaceId);
         currentSessionId = newSession.id;
         setActiveSessionId(newSession.id);
         setSessions((prev) => [
@@ -265,7 +342,7 @@ export const AskCopilotPage: React.FC = () => {
     } else {
       const activeSession = sessions.find((s) => s.id === currentSessionId);
       if (activeSession && (!activeSession.title || activeSession.title === 'Untitled Conversation')) {
-        const autoTitle = query.length > 45 ? query.slice(0, 45) + '...' : query;
+        const autoTitle = rawQuery.length > 45 ? rawQuery.slice(0, 45) + '...' : rawQuery;
         chatService.updateSession(currentSessionId, { title: autoTitle }).catch(() => {});
         setSessions((prev) =>
           prev.map((s) => (s.id === currentSessionId ? { ...s, title: autoTitle } : s))
@@ -279,11 +356,11 @@ export const AskCopilotPage: React.FC = () => {
 
     setMessages((prev) => [
       ...prev,
-      { id: userMsgId, sender: 'user', text: query, timestamp },
+      { id: userMsgId, sender: 'user', text: displayText, timestamp },
     ]);
 
     if (currentSessionId) {
-      chatService.createMessage(currentSessionId, query, 'user').catch((e) => {
+      chatService.createMessage(currentSessionId, displayText, 'user').catch((e) => {
         console.warn('Failed to persist user message:', e);
       });
     }
@@ -308,7 +385,7 @@ export const AskCopilotPage: React.FC = () => {
       let accumulatedText = '';
 
       await chatService.streamCopilot({
-        prompt: query,
+        prompt: promptPayload,
         sessionId: currentSessionId || undefined,
         workspaceId: selectedWorkspaceId,
         onChunk: (chunkText: string) => {
@@ -389,12 +466,16 @@ export const AskCopilotPage: React.FC = () => {
   };
 
   const handleClearChat = async () => {
+    if (isGenerating) {
+      handleStopGeneration();
+    }
     if (activeSessionId) {
       try {
         await chatService.deleteSession(activeSessionId);
         setSessions((prev) => prev.filter((s) => s.id !== activeSessionId));
-      } catch {
-        // ignore
+        toast.success('Chat history cleared');
+      } catch (err) {
+        console.error('Failed to clear chat:', err);
       }
     }
     await handleCreateNewSession();
@@ -644,6 +725,30 @@ export const AskCopilotPage: React.FC = () => {
                                 >
                                   <RotateCcw className="w-3.5 h-3.5" />
                                 </button>
+
+                                <button
+                                  onClick={() => handleRating(msg.id, 'like')}
+                                  className={`p-1.5 rounded-lg border text-xs transition-colors cursor-pointer ${
+                                    msg.feedback === 'like'
+                                      ? 'bg-emerald-500/20 text-emerald-500 border-emerald-500/40'
+                                      : isDark ? 'border-[#2D3748] text-[#94A3B8] hover:text-white hover:bg-[#1E293B]' : 'border-slate-200 text-slate-600 hover:bg-slate-100'
+                                  }`}
+                                  title="Good response"
+                                >
+                                  <ThumbsUp className="w-3.5 h-3.5" />
+                                </button>
+
+                                <button
+                                  onClick={() => handleRating(msg.id, 'dislike')}
+                                  className={`p-1.5 rounded-lg border text-xs transition-colors cursor-pointer ${
+                                    msg.feedback === 'dislike'
+                                      ? 'bg-rose-500/20 text-rose-500 border-rose-500/40'
+                                      : isDark ? 'border-[#2D3748] text-[#94A3B8] hover:text-white hover:bg-[#1E293B]' : 'border-slate-200 text-slate-600 hover:bg-slate-100'
+                                  }`}
+                                  title="Poor response"
+                                >
+                                  <ThumbsDown className="w-3.5 h-3.5" />
+                                </button>
                               </div>
                             )}
                           </div>
@@ -877,6 +982,33 @@ export const AskCopilotPage: React.FC = () => {
 
               {/* Chat Input */}
               <div className="absolute bottom-0 left-0 right-0 pt-4 bg-gradient-to-t from-[var(--bg-base)] via-[var(--bg-base)] to-transparent">
+                {/* Hidden File Input */}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileSelected}
+                  accept=".txt,.csv,.md,.json"
+                  className="hidden"
+                />
+
+                {/* Attachment Pill Badge */}
+                {attachment && (
+                  <div className="mb-2 px-3 py-1.5 rounded-xl border bg-[#8B5CF6]/15 border-[#8B5CF6]/40 text-[#8B5CF6] text-xs font-semibold flex items-center justify-between w-fit gap-3 animate-fade-in shadow-sm">
+                    <div className="flex items-center gap-2">
+                      <Paperclip className="w-3.5 h-3.5" />
+                      <span className="truncate max-w-[200px]">{attachment.name}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAttachment(null)}
+                      className="p-0.5 hover:bg-[#8B5CF6]/20 rounded transition-colors cursor-pointer text-slate-400 hover:text-white"
+                      title="Remove attachment"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
+
                 <form 
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -888,15 +1020,22 @@ export const AskCopilotPage: React.FC = () => {
                   }}
                   className={`p-2 rounded-2xl border flex items-center gap-3 shadow-lg ${inputBg}`}
                 >
-                  <div className={`p-2 rounded-xl text-[#94A3B8]`}>
-                    <MessageSquare className="w-5 h-5" />
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isGenerating}
+                    className={`p-2 rounded-xl text-[#94A3B8] hover:text-white hover:bg-[#1E293B] transition-colors cursor-pointer disabled:opacity-50`}
+                    title="Attach text file (.txt, .csv, .md, .json)"
+                  >
+                    <Paperclip className="w-5 h-5" />
+                  </button>
+
                   <input
                     type="text"
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     disabled={isGenerating}
-                    placeholder="Ask about your users, features, or roadmap..."
+                    placeholder={attachment ? `Ask something about ${attachment.name}...` : "Ask about your users, features, or roadmap..."}
                     className={`flex-1 bg-transparent border-none outline-none text-sm ${isDark ? 'text-white' : 'text-gray-900'} placeholder-[#64748B]`}
                   />
 
