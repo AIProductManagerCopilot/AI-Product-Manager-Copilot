@@ -152,6 +152,7 @@ class AIEngine:
         workspace_id: Optional[str] = None,
         request: Optional[Request] = None,
         recent_messages: Optional[List[Any]] = None,
+        session_summary: Optional[str] = None,
         **kwargs
     ) -> AsyncGenerator[str, None]:
         """
@@ -168,6 +169,10 @@ class AIEngine:
             payload_obj = kwargs["payload"]
             recent_messages = getattr(payload_obj, "recent_messages", None)
 
+        if not session_summary and "payload" in kwargs:
+            payload_obj = kwargs["payload"]
+            session_summary = getattr(payload_obj, "session_summary", None)
+
         if not user_query.strip():
             user_query = "What are the common issues users are reporting with authentication?"
 
@@ -176,6 +181,7 @@ class AIEngine:
             correlation_id=correlation_id,
             request=request,
             recent_messages=recent_messages,
+            session_summary=session_summary,
         ):
             yield sse_chunk
 
@@ -189,12 +195,12 @@ class AIEngine:
             yield sse_chunk
 
     async def stream_rag_response(
-        self, user_query: str, top_k: int = 8, recent_messages: Optional[List[Any]] = None
+        self, user_query: str, top_k: int = 8, recent_messages: Optional[List[Any]] = None, session_summary: Optional[str] = None
     ) -> AsyncGenerator[str, None]:
         """Simplified stream generator for direct prompt/context streaming."""
         query_vector = await self.embedding_service.generate_embedding(user_query)
         context_chunks = await self.vector_service.search_similar_chunks(query_vector, top_k=top_k)
-        formatted_prompt = self.prompt_builder.build_rag_prompt(user_query, context_chunks, recent_messages=recent_messages)
+        formatted_prompt = self.prompt_builder.build_rag_prompt(user_query, context_chunks, recent_messages=recent_messages, session_summary=session_summary)
 
         async for chunk in self.gemini_service.stream_generation(formatted_prompt):
             yield chunk
@@ -207,6 +213,7 @@ class AIEngine:
         correlation_id: str,
         request: Optional[Request] = None,
         recent_messages: Optional[List[Any]] = None,
+        session_summary: Optional[str] = None,
     ) -> AsyncGenerator[str, None]:
         """
         Executes the 4-stage RAG inference pipeline and yields Server-Sent Event (SSE) chunks.
@@ -228,14 +235,16 @@ class AIEngine:
             )
             log.info("STAGE_2_COMPLETE: Context Retrieved", chunks_found=len(retrieved_chunks))
 
-            # Stage 3: Prompt Construction with Injected Chunks and Recent Messages
-            log.info("STAGE_3_START: Constructing RAG Prompt with Context")
+            # Stage 3: Prompt Construction with Injected Chunks, Summary, and Recent Messages
+            log.info("STAGE_3_START: Constructing RAG Prompt with Context and Summary")
             full_prompt = self.prompt_builder.build_rag_prompt(
                 user_query=user_query, 
                 retrieved_chunks=retrieved_chunks,
                 recent_messages=recent_messages,
+                session_summary=session_summary,
             )
             log.info("STAGE_3_COMPLETE: Prompt Assembly Finished")
+
 
 
             # Stage 4: Generative LLM SSE Streaming

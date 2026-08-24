@@ -51,17 +51,22 @@ async def stream_copilot_response(
         session_id_str = getattr(request_payload, "session_id", None)
 
         recent_messages = None
+        session_summary = None
         if session_id_str and db and current_user:
             try:
                 session_uuid = uuid.UUID(session_id_str)
                 repo = ChatRepository(db)
+                session_obj = await repo.get_session_by_id(session_uuid, current_user.id)
+                if session_obj and session_obj.summary:
+                    session_summary = session_obj.summary
+
                 recent_messages = await repo.get_recent_messages(
                     session_id=session_uuid,
                     user_id=current_user.id,
                     max_tokens=3000,
                 )
             except Exception as err:
-                logger.warning("failed_to_fetch_recent_messages_for_session", error=str(err))
+                logger.warning("failed_to_fetch_recent_context_for_session", error=str(err))
 
         async for chunk in ai_engine.generate_inference_stream(
             prompt=user_prompt,
@@ -71,8 +76,10 @@ async def stream_copilot_response(
             request=http_request,
             payload=request_payload,
             recent_messages=recent_messages,
+            session_summary=session_summary,
         ):
             yield chunk
+
 
     except Exception as e:
         logger.error("stream_generation_failed", error=str(e))

@@ -10,6 +10,7 @@ class PromptBuilder:
         user_query: str,
         retrieved_chunks: List[Dict[str, Any]],
         recent_messages: Optional[List[Any]] = None,
+        session_summary: Optional[str] = None,
     ) -> str:
         try:
             context_blocks = []
@@ -48,6 +49,15 @@ class PromptBuilder:
                 "Ground your answers directly on the retrieved evidence below whenever available."
             )
 
+            # Format session summary block if available
+            summary_block = ""
+            if session_summary and session_summary.strip():
+                summary_block = (
+                    f"--- SESSION SUMMARY ---\n"
+                    f"{session_summary.strip()}\n"
+                    f"-----------------------\n\n"
+                )
+
             # Format sliding window conversation history block if available
             history_block = ""
             if recent_messages:
@@ -68,6 +78,7 @@ class PromptBuilder:
 
             prompt = (
                 f"{system_instruction}\n\n"
+                f"{summary_block}"
                 f"{history_block}"
                 f"--- RETRIEVED CUSTOMER EVIDENCE & PRODUCT CONTEXT ---\n"
                 f"{formatted_context}\n"

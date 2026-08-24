@@ -115,3 +115,10 @@ class GeminiService:
                     yield chunk.text
         except Exception as exc:
             raise ModelGenerationError(f"Gemini streaming generation failed: {str(exc)}") from exc
+
+    async def generate_text(self, prompt: str) -> str:
+        """Generates a complete single text response (non-streaming)."""
+        chunks = []
+        async for token in self.stream_generation(prompt):
+            chunks.append(token)
+        return "".join(chunks).strip()

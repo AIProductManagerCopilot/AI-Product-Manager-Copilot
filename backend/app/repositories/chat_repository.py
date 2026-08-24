@@ -283,3 +283,97 @@ class ChatRepository:
 
         return message
 
+    # -----------------------------------------------------------------
+    # SESSION SUMMARIZATION HELPERS
+    # -----------------------------------------------------------------
+
+    async def get_unsummarized_token_count(
+        self,
+        session_id: uuid.UUID,
+        user_id: uuid.UUID,
+    ) -> int:
+        """Calculate the total token count of unsummarized messages in a session."""
+        session = await self.get_session_by_id(session_id, user_id)
+        if session is None:
+            return 0
+
+        stmt = select(ChatMessage).where(
+            ChatMessage.session_id == session_id,
+            ChatMessage.is_summarized == False,  # noqa: E712
+        )
+        result = await self.db.execute(stmt)
+        messages = result.scalars().all()
+
+        total = 0
+        for msg in messages:
+            total += msg.token_count if msg.token_count is not None else count_tokens(msg.content)
+        return total
+
+    async def get_messages_for_summarization(
+        self,
+        session_id: uuid.UUID,
+        user_id: uuid.UUID,
+        keep_last_n: int = 6,
+    ) -> List[ChatMessage]:
+        """
+        Retrieves unsummarized messages to be folded into summary,
+        leaving the most recent keep_last_n messages unsummarized.
+        """
+        session = await self.get_session_by_id(session_id, user_id)
+        if session is None:
+            return []
+
+        stmt = (
+            select(ChatMessage)
+            .where(
+                ChatMessage.session_id == session_id,
+                ChatMessage.is_summarized == False,  # noqa: E712
+            )
+            .order_by(ChatMessage.created_at.asc())
+        )
+        result = await self.db.execute(stmt)
+        messages_asc = list(result.scalars().all())
+
+        if len(messages_asc) <= keep_last_n:
+            return []
+
+        # Return all unsummarized messages except the last keep_last_n
+        return messages_asc[:-keep_last_n]
+
+    async def update_session_summary(
+        self,
+        session_id: uuid.UUID,
+        user_id: uuid.UUID,
+        summary: str,
+        summary_token_count: int,
+    ) -> Optional[ChatSession]:
+        """Updates the session summary text and token count."""
+        session = await self.get_session_by_id(session_id, user_id)
+        if session is None:
+            return None
+
+        session.summary = summary
+        session.summary_token_count = summary_token_count
+        session.updated_at = datetime.now(timezone.utc)
+
+        await self.db.flush()
+        await self.db.refresh(session)
+        return session
+
+    async def mark_messages_as_summarized(
+        self,
+        message_ids: List[uuid.UUID],
+    ) -> None:
+        """Marks the specified messages as summarized (is_summarized = True)."""
+        if not message_ids:
+            return
+
+        stmt = (
+            sa_update(ChatMessage)
+            .where(ChatMessage.id.in_(message_ids))
+            .values(is_summarized=True)
+        )
+        await self.db.execute(stmt)
+        await self.db.flush()
+
+
