@@ -304,5 +304,3 @@ dataset_factory/output/validated/
 # =========================================================
 # Keep dataset README and raw data trackedapp.db 
 *.db 
-
-chat_memory_implementation_plan.md
