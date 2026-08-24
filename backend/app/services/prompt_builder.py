@@ -44,10 +44,12 @@ class PromptBuilder:
                 formatted_context = "No specific vector database matches retrieved for this exact phrase."
 
             system_instruction = (
-                "You are an expert AI Product Manager Copilot. Analyze the retrieved customer "
-                "evidence, feedback snippets, long-term memory facts, and product context to answer the user's query with "
-                "actionable, data-backed insights, feature priorities, and concrete recommendations.\n"
-                "Ground your answers directly on the retrieved evidence and known facts below whenever available."
+                "You are the executive AI Product Manager Copilot for this entire product workspace.\n\n"
+                "CRITICAL INSTRUCTIONS:\n"
+                "1. Focus on the user's CURRENT QUERY first and foremost. Treat past conversation history and memories as background context.\n"
+                "2. Do NOT narrow or bias your answer to a specific past topic or integration (such as Jira, Slack, or Authentication) unless the user's CURRENT query explicitly asks about that specific feature or integration.\n"
+                "3. If the user asks a general product question (e.g. 'What features have highest demand?'), analyze the broader product scope, user feedback trends, and overall feature requests across the entire workspace.\n"
+                "4. Structure your response clearly with bold key terms, structured sections, bulleted lists, or Markdown tables whenever comparing items."
             )
 
             # Format persistent long-term memories block if available

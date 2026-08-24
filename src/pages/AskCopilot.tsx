@@ -28,6 +28,7 @@ import {
   Loader2,
   Layers,
   FileCode,
+  RotateCcw,
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Sidebar } from '../components/Sidebar';
@@ -399,6 +400,28 @@ export const AskCopilotPage: React.FC = () => {
     await handleCreateNewSession();
   };
 
+  const handleRegenerate = async (copilotMsgId: string) => {
+    if (isGenerating) return;
+    // Find index of copilot message to regenerate
+    const idx = messages.findIndex((m) => m.id === copilotMsgId);
+    if (idx === -1) return;
+
+    // Find preceding user query
+    let userQueryText = '';
+    for (let i = idx - 1; i >= 0; i--) {
+      if (messages[i].sender === 'user') {
+        userQueryText = messages[i].text;
+        break;
+      }
+    }
+
+    if (!userQueryText) return;
+
+    // Remove the old copilot message and re-run handleSend
+    setMessages((prev) => prev.filter((m) => m.id !== copilotMsgId));
+    handleSend(userQueryText);
+  };
+
   const handleCopyMessage = (id: string, text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
@@ -609,6 +632,17 @@ export const AskCopilotPage: React.FC = () => {
                                   title="Copy message"
                                 >
                                   {copiedId === msg.id ? <CheckSquare className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+                                </button>
+
+                                <button
+                                  onClick={() => handleRegenerate(msg.id)}
+                                  disabled={isGenerating}
+                                  className={`p-1.5 rounded-lg border text-xs transition-colors cursor-pointer disabled:opacity-40 ${
+                                    isDark ? 'border-[#2D3748] text-[#94A3B8] hover:text-white hover:bg-[#1E293B]' : 'border-slate-200 text-slate-600 hover:bg-slate-100'
+                                  }`}
+                                  title="Regenerate response"
+                                >
+                                  <RotateCcw className="w-3.5 h-3.5" />
                                 </button>
                               </div>
                             )}

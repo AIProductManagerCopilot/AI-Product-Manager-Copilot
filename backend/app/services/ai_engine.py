@@ -22,7 +22,7 @@ from app.core.exceptions import (
     ModelGenerationError,
 )
 from app.services.embedding import EmbeddingService
-from app.services.vector_db import VectorService
+from app.services.vector_service import VectorService
 from app.services.prompt_builder import PromptBuilder
 from app.services.gemini import GeminiService
 
@@ -233,6 +233,8 @@ class AIEngine:
         session_summary: Optional[str] = None,
         user_id: Optional[str] = None,
         workspace_id: Optional[str] = None,
+        top_k: int = 8,
+        min_score: Optional[float] = None,
     ) -> AsyncGenerator[str, None]:
         """
         Executes the 4-stage RAG inference pipeline and yields Server-Sent Event (SSE) chunks.
@@ -250,7 +252,8 @@ class AIEngine:
             log.info("STAGE_2_START: Querying Qdrant Vector Mesh & User Memory Collection")
             retrieved_chunks = await self.vector_service.search_similar_chunks(
                 query_vector=query_vector, 
-                top_k=8
+                top_k=top_k,
+                min_score=min_score,
             )
             
             retrieved_memories = []

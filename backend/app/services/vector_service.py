@@ -223,6 +223,57 @@ class VectorService:
             logger.error(f"Error executing vector similarity search: {str(e)}")
             return []
 
+    async def search_similar_chunks(
+        self,
+        query_vector: List[float],
+        top_k: int = 5,
+        min_score: Optional[float] = None,
+    ) -> List[Dict[str, Any]]:
+        """Searches main domain collection by vector with optional min_score threshold."""
+        try:
+            search_results = await self.client.search(
+                collection_name=self.collection_name,
+                query_vector=query_vector,
+                limit=top_k,
+            )
+
+            retrieved_docs = []
+            for hit in search_results:
+                if min_score is not None and hit.score < min_score:
+                    continue
+                payload = hit.payload or {}
+                chunk_text = (
+                    payload.get("chunk_text")
+                    or payload.get("text_content")
+                    or payload.get("text")
+                    or payload.get("content")
+                    or payload.get("feedback_text")
+                    or ""
+                )
+                chunk_id = (
+                    payload.get("chunk_id")
+                    or payload.get("feedback_id")
+                    or payload.get("ticket_id")
+                    or str(hit.id)
+                )
+
+                retrieved_docs.append(
+                    {
+                        "ticket_id": chunk_id,
+                        "chunk_id": chunk_id,
+                        "content": chunk_text,
+                        "text": chunk_text,
+                        "score": hit.score,
+                        "payload": payload,
+                        "metadata": payload,
+                    }
+                )
+
+            return retrieved_docs
+        except Exception as e:
+            logger.error(f"Error executing search_similar_chunks: {str(e)}")
+            return []
+
     # -------------------------------------------------------------------------
     # LONG-TERM USER MEMORY QDRANT OPERATIONS
     # -------------------------------------------------------------------------
