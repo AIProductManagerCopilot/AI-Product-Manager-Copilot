@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.core.config import settings
 from app.models.core_models import Base  # Imports your project's Base metadata
+from app.models.chat_models import ChatSession, ChatMessage  # noqa: F401  — Phase 0 chat tables
 
 # Alembic Config object
 config = context.config
