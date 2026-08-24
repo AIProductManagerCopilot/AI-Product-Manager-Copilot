@@ -12,6 +12,7 @@ from typing import List, Optional, Union
 from sqlalchemy import select, update as sa_update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.tokenizer import count_tokens
 from app.models.chat_models import ChatMessage, ChatSession
 
 
@@ -200,9 +201,12 @@ class ChatRepository:
         user_id: uuid.UUID,
         role: str,
         content: str,
+        token_count: Optional[int] = None,
+        retrieved_chunk_ids: Optional[List[str]] = None,
+        retrieved_memory_ids: Optional[List[str]] = None,
     ) -> Optional[ChatMessage]:
         """
-        Add a message to a session.
+        Add a message to a session with automatic token counting.
         Returns None if the session doesn't belong to the user.
         """
 
@@ -211,10 +215,17 @@ class ChatRepository:
         if session is None:
             return None
 
+        # Synchronously compute token count at write-time if not explicitly provided
+        if token_count is None:
+            token_count = count_tokens(content)
+
         message = ChatMessage(
             session_id=session_id,
             role=role,
             content=content,
+            token_count=token_count,
+            retrieved_chunk_ids=retrieved_chunk_ids,
+            retrieved_memory_ids=retrieved_memory_ids,
         )
 
         self.db.add(message)
@@ -226,3 +237,4 @@ class ChatRepository:
         await self.db.refresh(message)
 
         return message
+
