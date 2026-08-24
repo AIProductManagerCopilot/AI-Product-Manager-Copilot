@@ -192,6 +192,51 @@ class ChatRepository:
         return list(result.scalars().all())
 
     # -----------------------------------------------------------------
+    # MESSAGES — SLIDING WINDOW RECENT MESSAGES
+    # -----------------------------------------------------------------
+
+    async def get_recent_messages(
+        self,
+        session_id: uuid.UUID,
+        user_id: uuid.UUID,
+        max_tokens: int = 3000,
+    ) -> List[ChatMessage]:
+        """
+        Retrieves unsummarized messages for a session, up to max_tokens budget.
+
+        Reads messages backwards (most recent first), accumulates token_count,
+        and returns the selected window reversed back to chronological order (ASC).
+        """
+        session = await self.get_session_by_id(session_id, user_id)
+        if session is None:
+            return []
+
+        stmt = (
+            select(ChatMessage)
+            .where(
+                ChatMessage.session_id == session_id,
+                ChatMessage.is_summarized == False,  # noqa: E712
+            )
+            .order_by(ChatMessage.created_at.desc())
+        )
+
+        result = await self.db.execute(stmt)
+        messages_desc = result.scalars().all()
+
+        selected: List[ChatMessage] = []
+        total_tokens = 0
+
+        for msg in messages_desc:
+            msg_tokens = msg.token_count if msg.token_count is not None else count_tokens(msg.content)
+            if total_tokens + msg_tokens > max_tokens and selected:
+                break
+            selected.append(msg)
+            total_tokens += msg_tokens
+
+        return list(reversed(selected))
+
+
+    # -----------------------------------------------------------------
     # MESSAGES — CREATE
     # -----------------------------------------------------------------
 

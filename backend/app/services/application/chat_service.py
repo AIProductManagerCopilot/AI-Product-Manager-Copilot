@@ -212,6 +212,37 @@ class ChatService:
         ]
 
     # -----------------------------------------------------------------
+    # MESSAGES — SLIDING WINDOW RECENT MESSAGES
+    # -----------------------------------------------------------------
+
+    async def get_recent_messages(
+        self,
+        session_id: uuid.UUID,
+        user_id: uuid.UUID,
+        max_tokens: int = 3000,
+    ) -> List[MessageResponse]:
+        """Retrieve recent unsummarized messages for sliding window context."""
+
+        logger.info(
+            "Retrieving recent sliding window messages for session '%s', user '%s' (max_tokens=%s)",
+            session_id,
+            user_id,
+            max_tokens,
+        )
+
+        db_messages = await self.repo.get_recent_messages(
+            session_id=session_id,
+            user_id=user_id,
+            max_tokens=max_tokens,
+        )
+
+        return [
+            MessageResponse.model_validate(m)
+            for m in db_messages
+        ]
+
+
+    # -----------------------------------------------------------------
     # MESSAGES — CREATE
     # -----------------------------------------------------------------
 
