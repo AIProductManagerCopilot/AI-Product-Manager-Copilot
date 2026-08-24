@@ -50,8 +50,11 @@ async def stream_copilot_response(
         )
         session_id_str = getattr(request_payload, "session_id", None)
 
+        user_id_str = str(current_user.id) if current_user else None
+
         recent_messages = None
         session_summary = None
+        session_uuid = None
         if session_id_str and db and current_user:
             try:
                 session_uuid = uuid.UUID(session_id_str)
@@ -73,12 +76,34 @@ async def stream_copilot_response(
             query=user_prompt,
             correlation_id=correlation_id,
             workspace_id=workspace_id,
+            user_id=user_id_str,
             request=http_request,
             payload=request_payload,
             recent_messages=recent_messages,
             session_summary=session_summary,
         ):
             yield chunk
+
+        # Background long-term memory extraction trigger after response completion
+        if session_uuid and db and current_user and recent_messages:
+            try:
+                from app.services.memory_extractor import MemoryExtractorService
+                extractor = MemoryExtractorService()
+                workspace_uuid = None
+                if workspace_id and workspace_id != "default_workspace":
+                    try:
+                        workspace_uuid = uuid.UUID(workspace_id)
+                    except ValueError:
+                        pass
+                await extractor.extract_and_store_memories(
+                    db=db,
+                    user_id=current_user.id,
+                    session_id=session_uuid,
+                    recent_messages=recent_messages,
+                    workspace_id=workspace_uuid,
+                )
+            except Exception as extract_err:
+                logger.warning("background_memory_extraction_failed", error=str(extract_err))
 
 
     except Exception as e:

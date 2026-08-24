@@ -24,6 +24,7 @@ class VectorService:
             timeout=10.0,
         )
         self.collection_name = settings.qdrant_collection
+        self.memory_collection_name = getattr(settings, "qdrant_memory_collection", "user_memory")
         self.vector_size = settings.embedding_dimension
 
         # Initialize Google GenAI Client
@@ -31,7 +32,7 @@ class VectorService:
 
     async def init_collection(self) -> None:
         """
-        Initializes Qdrant collection if it does not exist and creates payload indices.
+        Initializes Qdrant domain & memory collections if they do not exist and creates payload indices.
         """
         try:
             collections_response = await self.client.get_collections()
@@ -50,19 +51,25 @@ class VectorService:
                         distance=qmodels.Distance.COSINE,
                     ),
                 )
-
-                # Create Payload Field Indices for Filtering
                 await self._create_payload_indices()
+
+            if self.memory_collection_name not in existing_collections:
                 logger.info(
-                    f"Collection '{self.collection_name}' initialized successfully."
+                    f"Creating Qdrant memory collection '{self.memory_collection_name}' with dimension {self.vector_size}"
                 )
-            else:
-                logger.info(
-                    f"Collection '{self.collection_name}' already exists. Skipping initialization."
+                await self.client.create_collection(
+                    collection_name=self.memory_collection_name,
+                    vectors_config=qmodels.VectorParams(
+                        size=self.vector_size,
+                        distance=qmodels.Distance.COSINE,
+                    ),
                 )
+                await self._create_memory_payload_indices()
+
+            logger.info("Qdrant collections initialized successfully.")
 
         except Exception as e:
-            logger.error(f"Failed to initialize Qdrant collection: {str(e)}")
+            logger.error(f"Failed to initialize Qdrant collections: {str(e)}")
             raise e
 
     async def _create_payload_indices(self) -> None:
@@ -77,6 +84,22 @@ class VectorService:
         for field_name, field_type in index_fields:
             await self.client.create_payload_index(
                 collection_name=self.collection_name,
+                field_name=field_name,
+                field_schema=field_type,
+            )
+
+    async def _create_memory_payload_indices(self) -> None:
+        """Creates payload indices for long-term memory collection."""
+        index_fields = [
+            ("user_id", qmodels.PayloadSchemaType.KEYWORD),
+            ("workspace_id", qmodels.PayloadSchemaType.KEYWORD),
+            ("fact_type", qmodels.PayloadSchemaType.KEYWORD),
+            ("superseded", qmodels.PayloadSchemaType.KEYWORD),
+        ]
+
+        for field_name, field_type in index_fields:
+            await self.client.create_payload_index(
+                collection_name=self.memory_collection_name,
                 field_name=field_name,
                 field_schema=field_type,
             )
@@ -112,20 +135,6 @@ class VectorService:
     ) -> bool:
         """
         Batch upserts structured documents and their embeddings into Qdrant.
-
-        Expected Document Format:
-        [
-            {
-                "id": "uuid-string-or-int",
-                "text": "User feedback context...",
-                "metadata": {
-                    "category": "Performance",
-                    "sentiment": "Negative",
-                    "priority_score": 0.85,
-                    "workspace_id": "default"
-                }
-            }
-        ]
         """
         points = []
         for idx, doc in enumerate(documents):
@@ -213,6 +222,120 @@ class VectorService:
         except Exception as e:
             logger.error(f"Error executing vector similarity search: {str(e)}")
             return []
+
+    # -------------------------------------------------------------------------
+    # LONG-TERM USER MEMORY QDRANT OPERATIONS
+    # -------------------------------------------------------------------------
+
+    async def upsert_memory_point(
+        self,
+        memory_id: str,
+        fact_text: str,
+        user_id: str,
+        workspace_id: Optional[str] = None,
+        fact_type: str = "project_fact",
+        superseded: bool = False,
+    ) -> bool:
+        """Upserts a long-term user memory point into Qdrant 'user_memory' collection."""
+        try:
+            vector = self.generate_embedding(fact_text)
+            payload = {
+                "memory_id": memory_id,
+                "fact_text": fact_text,
+                "user_id": user_id,
+                "workspace_id": workspace_id or "",
+                "fact_type": fact_type,
+                "superseded": str(superseded).lower(),
+            }
+
+            point = qmodels.PointStruct(
+                id=memory_id,
+                vector=vector,
+                payload=payload,
+            )
+
+            await self.client.upsert(
+                collection_name=self.memory_collection_name,
+                points=[point],
+            )
+            logger.info(f"Upserted user memory point '{memory_id}' into Qdrant collection '{self.memory_collection_name}'.")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to upsert memory point to Qdrant: {str(e)}")
+            return False
+
+    async def search_user_memories(
+        self,
+        user_id: str,
+        query: str,
+        workspace_id: Optional[str] = None,
+        limit: int = 5,
+        min_score: float = 0.0,
+    ) -> List[Dict[str, Any]]:
+        """
+        Searches 'user_memory' collection filtered strictly by user_id, workspace_id, and superseded='false'.
+        """
+        try:
+            query_vector = self.generate_embedding(query)
+
+            must_conditions = [
+                qmodels.FieldCondition(
+                    key="user_id",
+                    match=qmodels.MatchValue(value=str(user_id)),
+                ),
+                qmodels.FieldCondition(
+                    key="superseded",
+                    match=qmodels.MatchValue(value="false"),
+                ),
+            ]
+
+            if workspace_id:
+                must_conditions.append(
+                    qmodels.FieldCondition(
+                        key="workspace_id",
+                        match=qmodels.MatchValue(value=str(workspace_id)),
+                    )
+                )
+
+            query_filter = qmodels.Filter(must=must_conditions)
+
+            search_results = await self.client.search(
+                collection_name=self.memory_collection_name,
+                query_vector=query_vector,
+                query_filter=query_filter,
+                limit=limit,
+            )
+
+            retrieved_memories = []
+            for hit in search_results:
+                if hit.score >= min_score:
+                    retrieved_memories.append(
+                        {
+                            "score": hit.score,
+                            "memory_id": hit.payload.get("memory_id", str(hit.id)),
+                            "fact": hit.payload.get("fact_text", ""),
+                            "fact_type": hit.payload.get("fact_type", "project_fact"),
+                            "metadata": hit.payload,
+                        }
+                    )
+
+            return retrieved_memories
+        except Exception as e:
+            logger.error(f"Error searching user memory in Qdrant: {str(e)}")
+            return []
+
+    async def delete_memory_point(self, memory_id: str) -> bool:
+        """Deletes a memory point from Qdrant by ID."""
+        try:
+            await self.client.delete(
+                collection_name=self.memory_collection_name,
+                points_selector=qmodels.PointIdsList(points=[memory_id]),
+            )
+            logger.info(f"Deleted memory point '{memory_id}' from Qdrant.")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to delete memory point from Qdrant: {str(e)}")
+            return False
 
 
 # Global Singleton Service Instance

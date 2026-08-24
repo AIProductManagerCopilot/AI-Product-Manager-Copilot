@@ -150,6 +150,7 @@ class AIEngine:
         query: Optional[str] = None,
         correlation_id: str = "default-corr-id",
         workspace_id: Optional[str] = None,
+        user_id: Optional[str] = None,
         request: Optional[Request] = None,
         recent_messages: Optional[List[Any]] = None,
         session_summary: Optional[str] = None,
@@ -157,7 +158,7 @@ class AIEngine:
     ) -> AsyncGenerator[str, None]:
         """
         Main entry point for Copilot streaming routes.
-        Delegates directly to the 4-stage RAG SSE pipeline.
+        Delegates directly to the 4-stage RAG SSE pipeline with long-term memory retrieval.
         """
         user_query = prompt or query or kwargs.get("user_query") or ""
         
@@ -173,6 +174,10 @@ class AIEngine:
             payload_obj = kwargs["payload"]
             session_summary = getattr(payload_obj, "session_summary", None)
 
+        if not user_id and "payload" in kwargs:
+            payload_obj = kwargs["payload"]
+            user_id = getattr(payload_obj, "user_id", None)
+
         if not user_query.strip():
             user_query = "What are the common issues users are reporting with authentication?"
 
@@ -182,6 +187,8 @@ class AIEngine:
             request=request,
             recent_messages=recent_messages,
             session_summary=session_summary,
+            user_id=user_id,
+            workspace_id=workspace_id,
         ):
             yield sse_chunk
 
@@ -195,12 +202,22 @@ class AIEngine:
             yield sse_chunk
 
     async def stream_rag_response(
-        self, user_query: str, top_k: int = 8, recent_messages: Optional[List[Any]] = None, session_summary: Optional[str] = None
+        self, user_query: str, top_k: int = 8, recent_messages: Optional[List[Any]] = None, session_summary: Optional[str] = None, user_id: Optional[str] = None, workspace_id: Optional[str] = None
     ) -> AsyncGenerator[str, None]:
         """Simplified stream generator for direct prompt/context streaming."""
         query_vector = await self.embedding_service.generate_embedding(user_query)
         context_chunks = await self.vector_service.search_similar_chunks(query_vector, top_k=top_k)
-        formatted_prompt = self.prompt_builder.build_rag_prompt(user_query, context_chunks, recent_messages=recent_messages, session_summary=session_summary)
+        retrieved_memories = None
+        if user_id:
+            retrieved_memories = await self.vector_service.search_user_memories(user_id=user_id, query=user_query, workspace_id=workspace_id, limit=5)
+
+        formatted_prompt = self.prompt_builder.build_rag_prompt(
+            user_query=user_query,
+            retrieved_chunks=context_chunks,
+            recent_messages=recent_messages,
+            session_summary=session_summary,
+            retrieved_memories=retrieved_memories,
+        )
 
         async for chunk in self.gemini_service.stream_generation(formatted_prompt):
             yield chunk
@@ -214,6 +231,8 @@ class AIEngine:
         request: Optional[Request] = None,
         recent_messages: Optional[List[Any]] = None,
         session_summary: Optional[str] = None,
+        user_id: Optional[str] = None,
+        workspace_id: Optional[str] = None,
     ) -> AsyncGenerator[str, None]:
         """
         Executes the 4-stage RAG inference pipeline and yields Server-Sent Event (SSE) chunks.
@@ -227,23 +246,34 @@ class AIEngine:
             query_vector = await self.embedding_service.generate_embedding(user_query)
             log.info("STAGE_1_COMPLETE: Vector Generated", vector_dim=len(query_vector))
 
-            # Stage 2: Vector Search in Qdrant
-            log.info("STAGE_2_START: Querying Qdrant Vector Mesh")
+            # Stage 2: Vector Search in Qdrant (Domain Docs + Long-Term User Memory)
+            log.info("STAGE_2_START: Querying Qdrant Vector Mesh & User Memory Collection")
             retrieved_chunks = await self.vector_service.search_similar_chunks(
                 query_vector=query_vector, 
                 top_k=8
             )
-            log.info("STAGE_2_COMPLETE: Context Retrieved", chunks_found=len(retrieved_chunks))
+            
+            retrieved_memories = []
+            if user_id:
+                retrieved_memories = await self.vector_service.search_user_memories(
+                    user_id=str(user_id),
+                    query=user_query,
+                    workspace_id=str(workspace_id) if workspace_id else None,
+                    limit=5,
+                )
+            log.info("STAGE_2_COMPLETE: Context & Memory Retrieved", chunks_found=len(retrieved_chunks), memories_found=len(retrieved_memories))
 
-            # Stage 3: Prompt Construction with Injected Chunks, Summary, and Recent Messages
-            log.info("STAGE_3_START: Constructing RAG Prompt with Context and Summary")
+            # Stage 3: Prompt Construction with Injected Chunks, Memories, Summary, and Recent Messages
+            log.info("STAGE_3_START: Constructing RAG Prompt with Context, Memories, and Summary")
             full_prompt = self.prompt_builder.build_rag_prompt(
                 user_query=user_query, 
                 retrieved_chunks=retrieved_chunks,
                 recent_messages=recent_messages,
                 session_summary=session_summary,
+                retrieved_memories=retrieved_memories,
             )
             log.info("STAGE_3_COMPLETE: Prompt Assembly Finished")
+
 
 
 

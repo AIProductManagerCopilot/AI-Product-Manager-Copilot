@@ -1,9 +1,9 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from app.core.exceptions import ContextAssemblyError
 
 
 class PromptBuilder:
-    """Assembles system context, retrieved vector chunks, and user queries into prompts."""
+    """Assembles system context, long-term user memories, session summary, chat history, and retrieved vector chunks into prompts."""
 
     @staticmethod
     def build_rag_prompt(
@@ -11,6 +11,7 @@ class PromptBuilder:
         retrieved_chunks: List[Dict[str, Any]],
         recent_messages: Optional[List[Any]] = None,
         session_summary: Optional[str] = None,
+        retrieved_memories: Optional[List[Dict[str, Any]]] = None,
     ) -> str:
         try:
             context_blocks = []
@@ -44,10 +45,27 @@ class PromptBuilder:
 
             system_instruction = (
                 "You are an expert AI Product Manager Copilot. Analyze the retrieved customer "
-                "evidence, feedback snippets, and product context to answer the user's query with "
+                "evidence, feedback snippets, long-term memory facts, and product context to answer the user's query with "
                 "actionable, data-backed insights, feature priorities, and concrete recommendations.\n"
-                "Ground your answers directly on the retrieved evidence below whenever available."
+                "Ground your answers directly on the retrieved evidence and known facts below whenever available."
             )
+
+            # Format persistent long-term memories block if available
+            memory_block = ""
+            if retrieved_memories:
+                memory_lines = []
+                for idx, mem in enumerate(retrieved_memories, start=1):
+                    fact = mem.get("fact") or mem.get("text") or ""
+                    fact_type = mem.get("fact_type", "fact")
+                    if fact:
+                        memory_lines.append(f"• [{fact_type.upper()}] {fact.strip()}")
+                if memory_lines:
+                    formatted_memories = "\n".join(memory_lines)
+                    memory_block = (
+                        f"--- PERSISTENT RELEVANT MEMORIES (USER & PROJECT FACTS) ---\n"
+                        f"{formatted_memories}\n"
+                        f"-----------------------------------------------------------\n\n"
+                    )
 
             # Format session summary block if available
             summary_block = ""
@@ -78,6 +96,7 @@ class PromptBuilder:
 
             prompt = (
                 f"{system_instruction}\n\n"
+                f"{memory_block}"
                 f"{summary_block}"
                 f"{history_block}"
                 f"--- RETRIEVED CUSTOMER EVIDENCE & PRODUCT CONTEXT ---\n"
