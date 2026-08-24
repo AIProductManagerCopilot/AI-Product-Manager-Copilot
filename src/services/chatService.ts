@@ -44,12 +44,25 @@ export interface ChatMessage {
   created_at: string;
 }
 
+export interface RAGSource {
+  id: string;
+  score?: number | null;
+  snippet?: string;
+  source_type?: string;
+}
+
+export interface MemoryCitation {
+  fact: string;
+  fact_type: string;
+}
+
 export interface CopilotStreamOptions {
   prompt: string;
   sessionId?: string;
   workspaceId?: string;
   onChunk: (chunk: string) => void;
   onStatus?: (status: string) => void;
+  onMetadata?: (meta: { sources: RAGSource[]; memories: MemoryCitation[] }) => void;
   signal?: AbortSignal;
 }
 
@@ -206,6 +219,7 @@ export const chatService = {
     workspaceId = 'default_workspace',
     onChunk,
     onStatus,
+    onMetadata,
     signal,
   }: CopilotStreamOptions): Promise<void> {
     try {
@@ -259,6 +273,13 @@ export const chatService = {
                 const parsed = JSON.parse(dataStr);
                 if (parsed.type === 'content' && parsed.content) {
                   onChunk(parsed.content);
+                } else if (parsed.type === 'metadata') {
+                  if (onMetadata) {
+                    onMetadata({
+                      sources: parsed.sources || [],
+                      memories: parsed.memories || [],
+                    });
+                  }
                 } else if (parsed.type === 'status' && parsed.content) {
                   if (onStatus) onStatus(parsed.content);
                 } else if (parsed.type === 'error' && parsed.content) {

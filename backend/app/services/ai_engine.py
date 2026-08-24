@@ -274,8 +274,47 @@ class AIEngine:
             )
             log.info("STAGE_3_COMPLETE: Prompt Assembly Finished")
 
+            # Emit Metadata Frame for Frontend RAG Citations
+            metadata_sources = []
+            for idx, chunk in enumerate(retrieved_chunks, start=1):
+                payload = chunk.get("payload") or chunk.get("metadata") or {}
+                text_content = (
+                    chunk.get("content")
+                    or chunk.get("text")
+                    or payload.get("chunk_text")
+                    or payload.get("text")
+                    or payload.get("content")
+                    or payload.get("feedback_text")
+                    or ""
+                ).strip()
+                source_id = (
+                    chunk.get("chunk_id")
+                    or payload.get("chunk_id")
+                    or payload.get("source_type")
+                    or f"Evidence-{idx}"
+                )
+                score_val = round(float(chunk.get("score")), 3) if chunk.get("score") is not None else None
+                metadata_sources.append({
+                    "id": source_id,
+                    "score": score_val,
+                    "snippet": text_content[:180] + ("..." if len(text_content) > 180 else ""),
+                    "source_type": payload.get("source_type") or "feedback_record"
+                })
 
+            metadata_memories = [
+                {
+                    "fact": mem.get("fact") or mem.get("text") or "",
+                    "fact_type": mem.get("fact_type", "project_fact"),
+                }
+                for mem in (retrieved_memories or [])
+            ]
 
+            metadata_payload = {
+                "type": "metadata",
+                "sources": metadata_sources,
+                "memories": metadata_memories,
+            }
+            yield f"data: {json.dumps(metadata_payload)}\n\n"
 
             # Stage 4: Generative LLM SSE Streaming
             log.info("STAGE_4_START: Initiating LLM Token Stream")

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import {
@@ -15,6 +15,7 @@ import {
   Search,
   CheckCircle2,
   ChevronRight,
+  ChevronDown,
   Database,
   ArrowRight,
   Copy,
@@ -25,16 +26,32 @@ import {
   Plus,
   Square,
   Loader2,
+  Layers,
+  FileCode,
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Sidebar } from '../components/Sidebar';
 import { TopNavbar } from '../components/TopNavbar';
 import { ChatSessionSidebar } from '../components/ChatSessionSidebar';
 import { useTheme } from '../context/ThemeContext';
-import { chatService, ChatSessionListItem } from '../services/chatService';
+import { useAuth } from '../context/AuthContext';
+import { useWorkspaces } from '../hooks/useWorkspaces';
+import { chatService, ChatSessionListItem, RAGSource, MemoryCitation } from '../services/chatService';
 
 export const AskCopilotPage: React.FC = () => {
   const { isDark } = useTheme();
+  const { user } = useAuth();
+  const { workspaces } = useWorkspaces(user?.id);
+
+  // Active Workspace State
+  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string>('default_workspace');
+
+  // Set default workspace if available
+  useEffect(() => {
+    if (workspaces.length > 0 && selectedWorkspaceId === 'default_workspace') {
+      setSelectedWorkspaceId(workspaces[0].id);
+    }
+  }, [workspaces]);
 
   // Session & Message State
   const [sessions, setSessions] = useState<ChatSessionListItem[]>([]);
@@ -50,6 +67,10 @@ export const AskCopilotPage: React.FC = () => {
     isStreaming?: boolean;
     statusText?: string;
     isEditing?: boolean;
+    sources?: RAGSource[];
+    memories?: MemoryCitation[];
+    showSourcesAccordion?: boolean;
+    showMemoriesAccordion?: boolean;
   }>>([]);
 
   const [inputText, setInputText] = useState('');
@@ -88,12 +109,10 @@ export const AskCopilotPage: React.FC = () => {
         setActiveSessionId(initialSessionId);
         await loadMessagesForSession(initialSessionId);
       } else {
-        // Create new initial session if none exist
         await handleCreateNewSession();
       }
     } catch (err) {
       console.warn('Failed to fetch chat sessions:', err);
-      // Fallback welcome screen if session fetch fails
       setMessages([
         {
           id: 'welcome',
@@ -146,7 +165,7 @@ export const AskCopilotPage: React.FC = () => {
       handleStopGeneration();
     }
     try {
-      const newSession = await chatService.createSession();
+      const newSession = await chatService.createSession(undefined, selectedWorkspaceId);
       setSessions((prev) => [
         {
           id: newSession.id,
@@ -202,6 +221,18 @@ export const AskCopilotPage: React.FC = () => {
     setIsGenerating(false);
   };
 
+  const toggleSourcesAccordion = (msgId: string) => {
+    setMessages((prev) =>
+      prev.map((m) => (m.id === msgId ? { ...m, showSourcesAccordion: !m.showSourcesAccordion } : m))
+    );
+  };
+
+  const toggleMemoriesAccordion = (msgId: string) => {
+    setMessages((prev) =>
+      prev.map((m) => (m.id === msgId ? { ...m, showMemoriesAccordion: !m.showMemoriesAccordion } : m))
+    );
+  };
+
   const handleSend = async (queryText?: string) => {
     const query = (queryText || inputText).trim();
     if (!query || isGenerating) return;
@@ -212,10 +243,9 @@ export const AskCopilotPage: React.FC = () => {
 
     let currentSessionId = activeSessionId;
 
-    // Ensure an active session exists
     if (!currentSessionId) {
       try {
-        const newSession = await chatService.createSession(query.slice(0, 50));
+        const newSession = await chatService.createSession(query.slice(0, 50), selectedWorkspaceId);
         currentSessionId = newSession.id;
         setActiveSessionId(newSession.id);
         setSessions((prev) => [
@@ -232,7 +262,6 @@ export const AskCopilotPage: React.FC = () => {
         console.error('Failed to create session for query:', err);
       }
     } else {
-      // Auto-title untitled session on first message
       const activeSession = sessions.find((s) => s.id === currentSessionId);
       if (activeSession && (!activeSession.title || activeSession.title === 'Untitled Conversation')) {
         const autoTitle = query.length > 45 ? query.slice(0, 45) + '...' : query;
@@ -247,20 +276,17 @@ export const AskCopilotPage: React.FC = () => {
     const userMsgId = `user-${Date.now()}`;
     const copilotMsgId = `copilot-${Date.now()}`;
 
-    // 1. Add user message to UI
     setMessages((prev) => [
       ...prev,
       { id: userMsgId, sender: 'user', text: query, timestamp },
     ]);
 
-    // Persist user message to PostgreSQL DB backend asynchronously
     if (currentSessionId) {
       chatService.createMessage(currentSessionId, query, 'user').catch((e) => {
         console.warn('Failed to persist user message:', e);
       });
     }
 
-    // 2. Add empty/loading copilot message to UI
     setMessages((prev) => [
       ...prev,
       {
@@ -280,10 +306,10 @@ export const AskCopilotPage: React.FC = () => {
     try {
       let accumulatedText = '';
 
-      // Stream copilot AI via full backend pipeline /api/v1/copilot/stream
       await chatService.streamCopilot({
         prompt: query,
         sessionId: currentSessionId || undefined,
+        workspaceId: selectedWorkspaceId,
         onChunk: (chunkText: string) => {
           accumulatedText += chunkText;
           setMessages((prev) =>
@@ -293,6 +319,20 @@ export const AskCopilotPage: React.FC = () => {
                   ...msg,
                   text: accumulatedText,
                   statusText: undefined,
+                };
+              }
+              return msg;
+            })
+          );
+        },
+        onMetadata: ({ sources, memories }) => {
+          setMessages((prev) =>
+            prev.map((msg) => {
+              if (msg.id === copilotMsgId) {
+                return {
+                  ...msg,
+                  sources,
+                  memories,
                 };
               }
               return msg;
@@ -312,7 +352,6 @@ export const AskCopilotPage: React.FC = () => {
         signal: abortController.signal,
       });
 
-      // Final sync update and cleanup streaming flag
       setMessages((prev) =>
         prev.map((msg) => {
           if (msg.id === copilotMsgId) {
@@ -322,7 +361,6 @@ export const AskCopilotPage: React.FC = () => {
         })
       );
 
-      // Persist generated copilot response to PostgreSQL DB backend
       if (currentSessionId && accumulatedText.trim()) {
         await chatService.createMessage(currentSessionId, accumulatedText, 'assistant').catch((e) => {
           console.warn('Failed to persist copilot message:', e);
@@ -440,6 +478,29 @@ export const AskCopilotPage: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3">
+              {/* Workspace Scoping Selector */}
+              {workspaces.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#94A3B8] font-medium hidden sm:inline">Workspace:</span>
+                  <select
+                    value={selectedWorkspaceId}
+                    onChange={(e) => setSelectedWorkspaceId(e.target.value)}
+                    className={`px-3 py-2 rounded-xl border text-xs font-semibold outline-none transition-colors ${
+                      isDark
+                        ? 'bg-[#1E293B] border-[#2D3748] text-white focus:border-[#8B5CF6]'
+                        : 'bg-white border-slate-200 text-slate-800 focus:border-purple-500'
+                    }`}
+                  >
+                    <option value="default_workspace">Default Workspace</option>
+                    {workspaces.map((w) => (
+                      <option key={w.id} value={w.id}>
+                        {w.workspaceName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
               <button
                 onClick={handleCreateNewSession}
                 className="px-4 py-2 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white flex items-center gap-2 text-sm font-medium transition-colors cursor-pointer shadow-sm"
@@ -504,6 +565,9 @@ export const AskCopilotPage: React.FC = () => {
                       </motion.div>
                     );
                   } else {
+                    const hasSources = msg.sources && msg.sources.length > 0;
+                    const hasMemories = msg.memories && msg.memories.length > 0;
+
                     return (
                       <motion.div
                         key={msg.id}
@@ -672,6 +736,96 @@ export const AskCopilotPage: React.FC = () => {
                             </p>
                           )}
 
+                          {/* P1 RAG Citations Accordions & Metadata Display */}
+                          {(hasSources || hasMemories) && (
+                            <div className="mt-4 pt-4 border-t border-[#2D3748]/60 space-y-2">
+                              {/* RAG Evidence Accordion */}
+                              {hasSources && (
+                                <div className={`rounded-xl border overflow-hidden transition-all ${
+                                  isDark ? 'border-[#2D3748] bg-[#0D1117]/60' : 'border-slate-200 bg-slate-50'
+                                }`}>
+                                  <button
+                                    onClick={() => toggleSourcesAccordion(msg.id)}
+                                    className="w-full px-3 py-2 flex items-center justify-between text-xs font-semibold text-left hover:opacity-90 transition-opacity cursor-pointer"
+                                  >
+                                    <div className="flex items-center gap-2 text-[#38BDF8]">
+                                      <Search className="w-3.5 h-3.5" />
+                                      <span>Retrieved Vector Evidence ({msg.sources!.length} sources)</span>
+                                    </div>
+                                    <ChevronDown className={`w-3.5 h-3.5 transition-transform ${msg.showSourcesAccordion ? 'rotate-180' : ''}`} />
+                                  </button>
+
+                                  <AnimatePresence>
+                                    {msg.showSourcesAccordion && (
+                                      <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        className="px-3 pb-3 space-y-2 text-xs border-t border-[#2D3748]/40 pt-2"
+                                      >
+                                        {msg.sources!.map((src, sIdx) => (
+                                          <div key={sIdx} className={`p-2.5 rounded-lg border font-mono text-[11px] ${
+                                            isDark ? 'bg-[#161B22] border-[#2D3748] text-slate-300' : 'bg-white border-slate-200 text-slate-700'
+                                          }`}>
+                                            <div className="flex items-center justify-between mb-1">
+                                              <span className="font-semibold text-[#38BDF8] truncate max-w-[70%]">
+                                                #{sIdx + 1} • {src.id}
+                                              </span>
+                                              {src.score != null && (
+                                                <span className="px-1.5 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] font-bold text-[10px]">
+                                                  {(src.score * 100).toFixed(1)}% Match
+                                                </span>
+                                              )}
+                                            </div>
+                                            <p className="line-clamp-2 text-[#94A3B8] font-sans text-xs">{src.snippet}</p>
+                                          </div>
+                                        ))}
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              )}
+
+                              {/* Long-Term Memory Accordion */}
+                              {hasMemories && (
+                                <div className={`rounded-xl border overflow-hidden transition-all ${
+                                  isDark ? 'border-[#2D3748] bg-[#0D1117]/60' : 'border-slate-200 bg-slate-50'
+                                }`}>
+                                  <button
+                                    onClick={() => toggleMemoriesAccordion(msg.id)}
+                                    className="w-full px-3 py-2 flex items-center justify-between text-xs font-semibold text-left hover:opacity-90 transition-opacity cursor-pointer"
+                                  >
+                                    <div className="flex items-center gap-2 text-[#8B5CF6]">
+                                      <BrainCircuit className="w-3.5 h-3.5" />
+                                      <span>User Memories Injected ({msg.memories!.length} facts)</span>
+                                    </div>
+                                    <ChevronDown className={`w-3.5 h-3.5 transition-transform ${msg.showMemoriesAccordion ? 'rotate-180' : ''}`} />
+                                  </button>
+
+                                  <AnimatePresence>
+                                    {msg.showMemoriesAccordion && (
+                                      <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        className="px-3 pb-3 space-y-1.5 text-xs border-t border-[#2D3748]/40 pt-2"
+                                      >
+                                        {msg.memories!.map((mem, mIdx) => (
+                                          <div key={mIdx} className="flex items-center gap-2 text-slate-300">
+                                            <span className="px-1.5 py-0.5 rounded bg-[#8B5CF6]/20 text-[#8B5CF6] font-bold text-[9px] uppercase tracking-wider shrink-0">
+                                              {mem.fact_type}
+                                            </span>
+                                            <span className="text-xs text-slate-300">{mem.fact}</span>
+                                          </div>
+                                        ))}
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
                           <div className={`flex items-center justify-between pt-4 border-t border-[#2D3748] mt-4`}>
                             <div className={`flex items-center gap-2 text-xs text-[#94A3B8]`}>
                               <Database className="w-3.5 h-3.5 text-[#10B981]" />
@@ -835,8 +989,8 @@ export const AskCopilotPage: React.FC = () => {
                   }`}>
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#10B981]" />
                     <div>
-                      <div className={`text-[11px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>RAG Pipeline</div>
-                      <div className="text-[10px] font-bold text-[#10B981]">Active</div>
+                      <div className={`text-[11px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>RAG Citations</div>
+                      <div className="text-[10px] font-bold text-[#10B981]">Surfaced</div>
                     </div>
                   </div>
 
@@ -845,8 +999,8 @@ export const AskCopilotPage: React.FC = () => {
                   }`}>
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#10B981]" />
                     <div>
-                      <div className={`text-[11px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Session History</div>
-                      <div className="text-[10px] font-bold text-[#10B981]">Persisted</div>
+                      <div className={`text-[11px] font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Workspace Scope</div>
+                      <div className="text-[10px] font-bold text-[#10B981]">Active</div>
                     </div>
                   </div>
 
