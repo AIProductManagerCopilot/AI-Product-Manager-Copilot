@@ -66,7 +66,8 @@ class VectorService:
     async def search_similar_chunks(
         self, 
         query_vector: List[float], 
-        top_k: int = 5
+        top_k: int = 5,
+        min_score: Optional[float] = None,
     ) -> List[Dict[str, Any]]:
         """Validates dimension alignment before querying Qdrant vector mesh."""
         if len(query_vector) != settings.embedding_dimension:
@@ -85,6 +86,9 @@ class VectorService:
 
             retrieved = []
             for point in results:
+                if min_score is not None and point.score < min_score:
+                    continue
+
                 payload = point.payload or {}
                 # Extract text across all dataset key variations
                 chunk_text = (

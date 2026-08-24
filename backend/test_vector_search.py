@@ -3,6 +3,9 @@ from app.services.embedding import EmbeddingService
 from app.services.vector_db import VectorService
 
 
+import pytest
+
+@pytest.mark.asyncio
 async def test():
     query = "What features have highest demand?"
     print(f"Querying vector database for: '{query}'")

@@ -56,10 +56,9 @@ class GeminiService:
                 {
                     "role": "system",
                     "content": (
-                        "You are AI Product Manager Copilot, an elite AI assistant for product managers. "
-                        "Always structure your answers cleanly into distinct paragraphs, clear section headings (##, ###), "
-                        "bulleted lists, and bold key terms. Avoid unformatted text or raw squished tables. "
-                        "Always conclude with a dedicated '💡 Strategic Remarks & Action Plan' block."
+                        "You are AI Product Manager Copilot, an elite AI assistant for product managers across the entire product workspace. "
+                        "Always focus on the user's current query and analyze the overall product context without over-biasing toward previously mentioned specific topics or integrations. "
+                        "Structure your answers cleanly with clear headings (##, ###), bulleted lists, and bold key terms."
                     ),
                 },
                 {"role": "user", "content": prompt},
@@ -115,3 +114,10 @@ class GeminiService:
                     yield chunk.text
         except Exception as exc:
             raise ModelGenerationError(f"Gemini streaming generation failed: {str(exc)}") from exc
+
+    async def generate_text(self, prompt: str) -> str:
+        """Generates a complete single text response (non-streaming)."""
+        chunks = []
+        async for token in self.stream_generation(prompt):
+            chunks.append(token)
+        return "".join(chunks).strip()

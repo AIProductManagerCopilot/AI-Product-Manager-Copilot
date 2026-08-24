@@ -22,7 +22,7 @@ from app.core.exceptions import (
     ModelGenerationError,
 )
 from app.services.embedding import EmbeddingService
-from app.services.vector_db import VectorService
+from app.services.vector_service import VectorService
 from app.services.prompt_builder import PromptBuilder
 from app.services.gemini import GeminiService
 
@@ -150,12 +150,15 @@ class AIEngine:
         query: Optional[str] = None,
         correlation_id: str = "default-corr-id",
         workspace_id: Optional[str] = None,
+        user_id: Optional[str] = None,
         request: Optional[Request] = None,
+        recent_messages: Optional[List[Any]] = None,
+        session_summary: Optional[str] = None,
         **kwargs
     ) -> AsyncGenerator[str, None]:
         """
         Main entry point for Copilot streaming routes.
-        Delegates directly to the 4-stage RAG SSE pipeline.
+        Delegates directly to the 4-stage RAG SSE pipeline with long-term memory retrieval.
         """
         user_query = prompt or query or kwargs.get("user_query") or ""
         
@@ -163,13 +166,29 @@ class AIEngine:
             payload_obj = kwargs["payload"]
             user_query = getattr(payload_obj, "prompt", getattr(payload_obj, "query", ""))
 
+        if not recent_messages and "payload" in kwargs:
+            payload_obj = kwargs["payload"]
+            recent_messages = getattr(payload_obj, "recent_messages", None)
+
+        if not session_summary and "payload" in kwargs:
+            payload_obj = kwargs["payload"]
+            session_summary = getattr(payload_obj, "session_summary", None)
+
+        if not user_id and "payload" in kwargs:
+            payload_obj = kwargs["payload"]
+            user_id = getattr(payload_obj, "user_id", None)
+
         if not user_query.strip():
             user_query = "What are the common issues users are reporting with authentication?"
 
         async for sse_chunk in self.execute_rag_stream(
             user_query=user_query,
             correlation_id=correlation_id,
-            request=request
+            request=request,
+            recent_messages=recent_messages,
+            session_summary=session_summary,
+            user_id=user_id,
+            workspace_id=workspace_id,
         ):
             yield sse_chunk
 
@@ -183,12 +202,22 @@ class AIEngine:
             yield sse_chunk
 
     async def stream_rag_response(
-        self, user_query: str, top_k: int = 8
+        self, user_query: str, top_k: int = 8, recent_messages: Optional[List[Any]] = None, session_summary: Optional[str] = None, user_id: Optional[str] = None, workspace_id: Optional[str] = None
     ) -> AsyncGenerator[str, None]:
         """Simplified stream generator for direct prompt/context streaming."""
         query_vector = await self.embedding_service.generate_embedding(user_query)
         context_chunks = await self.vector_service.search_similar_chunks(query_vector, top_k=top_k)
-        formatted_prompt = self.prompt_builder.build_rag_prompt(user_query, context_chunks)
+        retrieved_memories = None
+        if user_id:
+            retrieved_memories = await self.vector_service.search_user_memories(user_id=user_id, query=user_query, workspace_id=workspace_id, limit=5)
+
+        formatted_prompt = self.prompt_builder.build_rag_prompt(
+            user_query=user_query,
+            retrieved_chunks=context_chunks,
+            recent_messages=recent_messages,
+            session_summary=session_summary,
+            retrieved_memories=retrieved_memories,
+        )
 
         async for chunk in self.gemini_service.stream_generation(formatted_prompt):
             yield chunk
@@ -199,7 +228,13 @@ class AIEngine:
         self, 
         user_query: str, 
         correlation_id: str,
-        request: Optional[Request] = None
+        request: Optional[Request] = None,
+        recent_messages: Optional[List[Any]] = None,
+        session_summary: Optional[str] = None,
+        user_id: Optional[str] = None,
+        workspace_id: Optional[str] = None,
+        top_k: int = 8,
+        min_score: Optional[float] = None,
     ) -> AsyncGenerator[str, None]:
         """
         Executes the 4-stage RAG inference pipeline and yields Server-Sent Event (SSE) chunks.
@@ -213,21 +248,76 @@ class AIEngine:
             query_vector = await self.embedding_service.generate_embedding(user_query)
             log.info("STAGE_1_COMPLETE: Vector Generated", vector_dim=len(query_vector))
 
-            # Stage 2: Vector Search in Qdrant
-            log.info("STAGE_2_START: Querying Qdrant Vector Mesh")
+            # Stage 2: Vector Search in Qdrant (Domain Docs + Long-Term User Memory)
+            log.info("STAGE_2_START: Querying Qdrant Vector Mesh & User Memory Collection")
             retrieved_chunks = await self.vector_service.search_similar_chunks(
                 query_vector=query_vector, 
-                top_k=8
+                top_k=top_k,
+                min_score=min_score,
             )
-            log.info("STAGE_2_COMPLETE: Context Retrieved", chunks_found=len(retrieved_chunks))
+            
+            retrieved_memories = []
+            if user_id:
+                retrieved_memories = await self.vector_service.search_user_memories(
+                    user_id=str(user_id),
+                    query=user_query,
+                    workspace_id=str(workspace_id) if workspace_id else None,
+                    limit=5,
+                )
+            log.info("STAGE_2_COMPLETE: Context & Memory Retrieved", chunks_found=len(retrieved_chunks), memories_found=len(retrieved_memories))
 
-            # Stage 3: Prompt Construction with Injected Chunks
-            log.info("STAGE_3_START: Constructing RAG Prompt")
+            # Stage 3: Prompt Construction with Injected Chunks, Memories, Summary, and Recent Messages
+            log.info("STAGE_3_START: Constructing RAG Prompt with Context, Memories, and Summary")
             full_prompt = self.prompt_builder.build_rag_prompt(
                 user_query=user_query, 
-                retrieved_chunks=retrieved_chunks
+                retrieved_chunks=retrieved_chunks,
+                recent_messages=recent_messages,
+                session_summary=session_summary,
+                retrieved_memories=retrieved_memories,
             )
             log.info("STAGE_3_COMPLETE: Prompt Assembly Finished")
+
+            # Emit Metadata Frame for Frontend RAG Citations
+            metadata_sources = []
+            for idx, chunk in enumerate(retrieved_chunks, start=1):
+                payload = chunk.get("payload") or chunk.get("metadata") or {}
+                text_content = (
+                    chunk.get("content")
+                    or chunk.get("text")
+                    or payload.get("chunk_text")
+                    or payload.get("text")
+                    or payload.get("content")
+                    or payload.get("feedback_text")
+                    or ""
+                ).strip()
+                source_id = (
+                    chunk.get("chunk_id")
+                    or payload.get("chunk_id")
+                    or payload.get("source_type")
+                    or f"Evidence-{idx}"
+                )
+                score_val = round(float(chunk.get("score")), 3) if chunk.get("score") is not None else None
+                metadata_sources.append({
+                    "id": source_id,
+                    "score": score_val,
+                    "snippet": text_content[:180] + ("..." if len(text_content) > 180 else ""),
+                    "source_type": payload.get("source_type") or "feedback_record"
+                })
+
+            metadata_memories = [
+                {
+                    "fact": mem.get("fact") or mem.get("text") or "",
+                    "fact_type": mem.get("fact_type", "project_fact"),
+                }
+                for mem in (retrieved_memories or [])
+            ]
+
+            metadata_payload = {
+                "type": "metadata",
+                "sources": metadata_sources,
+                "memories": metadata_memories,
+            }
+            yield f"data: {json.dumps(metadata_payload)}\n\n"
 
             # Stage 4: Generative LLM SSE Streaming
             log.info("STAGE_4_START: Initiating LLM Token Stream")

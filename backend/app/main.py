@@ -20,6 +20,8 @@ from app.api.v1 import feedback
 from app.api.v1 import copilot
 from app.ai.router import router as ai_router
 from app.api.v1 import projects
+from app.api.v1 import sessions
+from app.api.v1.endpoints import memory
 from app.api.v1.endpoints.analytics import router as analytics_router
 from app.core.config import settings
 from app.core.exceptions import AppException, app_exception_handler
@@ -97,6 +99,8 @@ def create_application() -> FastAPI:
     app.include_router(copilot.router, prefix=api_v1_prefix)
     app.include_router(ai_router, prefix=f"{api_v1_prefix}/ai", tags=["AI Subsystem"])
     app.include_router(projects.router, prefix=api_v1_prefix)
+    app.include_router(sessions.router, prefix=api_v1_prefix)
+    app.include_router(memory.router, prefix=api_v1_prefix)
     app.include_router(analytics_router, prefix=f"{api_v1_prefix}/analytics", tags=["Analytics"])
 
     return app

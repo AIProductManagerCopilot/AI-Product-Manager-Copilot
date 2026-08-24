@@ -57,15 +57,15 @@ class CopilotQueryRequest(BaseModel):
 
 
 class PRDGenerationRequest(BaseModel):
-    feature_name: str = Field(..., example="Automated User Onboarding Flow")
-    user_query: str = Field(..., example="Focus on reducing drop-off during step 2")
-    category_filter: Optional[str] = Field(None, example="Onboarding")
+    feature_name: str = Field(..., json_schema_extra={"example": "Automated User Onboarding Flow"})
+    user_query: str = Field(..., json_schema_extra={"example": "Focus on reducing drop-off during step 2"})
+    category_filter: Optional[str] = Field(None, json_schema_extra={"example": "Onboarding"})
     limit: int = Field(default=8, ge=1, le=20)
 
 
 class ThemeIntelligenceRequest(BaseModel):
-    cluster_topic: str = Field(..., example="Checkout Payment Gateway Errors")
-    category_filter: Optional[str] = Field(None, example="Billing")
+    cluster_topic: str = Field(..., json_schema_extra={"example": "Checkout Payment Gateway Errors"})
+    category_filter: Optional[str] = Field(None, json_schema_extra={"example": "Billing"})
 
 
 async def generate_gemini_stream(
@@ -122,59 +122,16 @@ async def generate_gemini_stream(
     response_class=StreamingResponse,
 )
 async def stream_copilot_response(request: CopilotQueryRequest):
-    """Endpoint for streaming general AI Copilot responses with vector RAG retrieval."""
+    """Endpoint for streaming general AI Copilot responses with vector RAG retrieval & memory engine."""
     try:
-        # Retrieve vector feedback evidence matching user query
-        retrieved_docs = await context_builder._fetch_vector_chunks(
-            query=request.query, limit=8
-        )
-        evidence_text = context_builder.format_retrieved_evidence(retrieved_docs)
-
-        system_instruction = (
-            "You are the AI Product Manager Copilot — an executive-level product management assistant. "
-            "Your answers must be deeply analytical, rigorous, and directly grounded in the provided customer feedback "
-            "evidence and product analytics data.\n\n"
-            "CRITICAL FORMATTING RULES:\n"
-            "1. Always include blank lines before and after every markdown heading (##, ###).\n"
-            "2. Always include blank lines before and after every Markdown Table.\n"
-            "3. Format all tables with clean spacing:\n"
-            "   | Metric / Feature | Baseline | Target Impact | Primary Evidence |\n"
-            "   | :--- | :--- | :--- | :--- |\n"
-            "4. Structure your response into these distinct sections:\n"
-            "   - **Executive Summary**\n"
-            "   - **Customer Evidence & Friction Breakdown** (Include Table)\n"
-            "   - **Product Metrics & Churn Impact**\n"
-            "   - **Prioritized Strategic Recommendations (P0 / P1 / P2)**\n"
-            "5. Quote user feedback explicitly using italicized quotes."
-        )
-
-        analytics_info = (
-            str(request.analytics_context)
-            if request.analytics_context
-            else "MAU: 42.3K | Avg Session: 4.2m | Feature Adoption: 61% | Churn Rate: 2.4%"
-        )
-        entity_info = (
-            str(request.entity_context)
-            if request.entity_context
-            else "Workspace: SaaS Core | Feedback Records: 15,000 | Active Clusters: 6"
-        )
-
-        prompt = (
-            f"## User Question\n"
-            f"{request.query}\n\n"
-            f"## Customer Feedback Evidence (Qdrant Vector DB):\n"
-            f"{evidence_text}\n\n"
-            f"## Analytics Context:\n"
-            f"{analytics_info}\n\n"
-            f"## Workspace Context:\n"
-            f"{entity_info}\n\n"
-            f"Please generate a complete, well-spaced report addressing the question."
-        )
+        from app.services.ai_engine import AIEngine
+        engine = AIEngine()
 
         return StreamingResponse(
-            generate_gemini_stream(
-                system_instruction=system_instruction,
-                prompt=prompt,
+            engine.generate_inference_stream(
+                prompt=request.query,
+                query=request.query,
+                correlation_id="legacy-ai-stream-corr-id",
             ),
             media_type="text/event-stream",
             headers={

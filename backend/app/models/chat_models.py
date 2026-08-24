@@ -16,6 +16,7 @@ from sqlalchemy import (
     CheckConstraint,
     Column,
     DateTime,
+    Float,
     ForeignKey,
     Index,
     Integer,
@@ -107,8 +108,9 @@ class ChatSession(Base):
         "ChatMessage",
         back_populates="session",
         cascade="all, delete-orphan",
+        passive_deletes=True,
         order_by="ChatMessage.created_at",
-        lazy="dynamic",
+        lazy="selectin",
     )
 
     __table_args__ = (
@@ -208,3 +210,90 @@ class ChatMessage(Base):
             "created_at",
         ),
     )
+
+
+class UserMemory(Base):
+    """
+    Represents long-term cross-session user & project facts, preferences, decisions,
+    constraints, and tooling choices extracted by the Copilot.
+    """
+
+    __tablename__ = "user_memory"
+
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+        doc="Unique memory identifier (UUID v4)",
+    )
+
+    user_id = Column(
+        UUID(as_uuid=True),
+        nullable=False,
+        index=True,
+        doc="Owner user ID for multi-tenant isolation",
+    )
+
+    workspace_id = Column(
+        UUID(as_uuid=True),
+        nullable=True,
+        index=True,
+        doc="Optional workspace scoping identifier",
+    )
+
+    fact = Column(
+        Text,
+        nullable=False,
+        doc="The extracted fact, decision, preference, or constraint statement",
+    )
+
+    fact_type = Column(
+        Text,
+        nullable=False,
+        doc="Memory category: preference, project_fact, decision, constraint, tooling",
+    )
+
+    source_session_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("sessions.id", ondelete="SET NULL"),
+        nullable=True,
+        doc="Session from which this fact was extracted",
+    )
+
+    confidence = Column(
+        Float,
+        default=1.0,
+        server_default="1.0",
+        nullable=False,
+        doc="Extraction confidence score (0.0 to 1.0)",
+    )
+
+    superseded_by = Column(
+        UUID(as_uuid=True),
+        ForeignKey("user_memory.id", ondelete="SET NULL"),
+        nullable=True,
+        doc="ID of newer memory that replaced/superseded this memory",
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+        doc="Memory creation timestamp",
+    )
+
+    last_confirmed_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+        doc="Timestamp when this memory was last re-confirmed or updated",
+    )
+
+    __table_args__ = (
+        Index(
+            "idx_memory_user_workspace",
+            "user_id",
+            "workspace_id",
+        ),
+    )
+

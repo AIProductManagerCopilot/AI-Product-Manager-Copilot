@@ -10,6 +10,8 @@ class AIInferenceInternalContract(BaseModel):
     temperature: float = Field(0.2, ge=0.0, le=2.0, description="Inference temperature constraint")
     correlation_id: str = Field(..., description="Read-only request tracking header correlation key")
     workspace_id: str = Field(..., description="Isolated customer directory tenant partition indicator")
+    session_id: Optional[str] = Field(None, description="Optional active chat session identifier")
+
 
 class VectorPayloadModel(BaseModel):
     model_config = ConfigDict(frozen=True)
