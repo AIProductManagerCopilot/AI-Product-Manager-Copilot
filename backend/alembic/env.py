@@ -29,7 +29,7 @@ def get_url() -> str:
     """
     Retrieve database connection URL from environment variable,
     settings.DATABASE_URL, or alembic.ini fallback,
-    ensuring the asyncpg driver prefix is applied for async execution.
+    ensuring the asyncpg driver prefix and proper SSL flags are applied.
     """
     url = (
         os.getenv("DATABASE_URL")
@@ -41,6 +41,23 @@ def get_url() -> str:
     # Ensure async driver scheme is used for SQLAlchemy async engine
     if url.startswith("postgresql://"):
         url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+
+    # asyncpg expects ssl= rather than sslmode=
+    if "sslmode=" in url:
+        url = (
+            url.replace("sslmode=require", "ssl=require")
+            .replace("sslmode=prefer", "ssl=prefer")
+            .replace("sslmode=disable", "ssl=disable")
+            .replace("sslmode=allow", "ssl=allow")
+        )
+
+    # Strip incompatible channel_binding parameter if present
+    if "&channel_binding=require" in url:
+        url = url.replace("&channel_binding=require", "")
+    elif "?channel_binding=require&" in url:
+        url = url.replace("channel_binding=require&", "")
+    elif "?channel_binding=require" in url:
+        url = url.replace("?channel_binding=require", "")
 
     return url
 
