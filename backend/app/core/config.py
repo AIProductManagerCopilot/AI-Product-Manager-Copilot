@@ -7,10 +7,8 @@ full backwards compatibility.
 """
 
 import json
-import os
-from pathlib import Path
 from typing import Any, List, Optional, Union
-from pydantic import AliasChoices, Field, ValidationInfo, field_validator
+from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -136,11 +134,9 @@ class Settings(BaseSettings):
         auth = f":{self.REDIS_PASSWORD}@" if self.REDIS_PASSWORD else ""
         return f"redis://{auth}{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
 
-    # Dynamic path resolution to automatically find root .env
+    # Environment configuration: checks .env locally, and seamlessly reads injected env vars in cloud runtimes
     model_config = SettingsConfigDict(
-        env_file=os.path.join(
-            Path(__file__).resolve().parent.parent.parent.parent, ".env"
-        ),
+        env_file=(".env", "../.env"),
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",

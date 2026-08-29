@@ -5,6 +5,7 @@ Configures asynchronous execution of database migrations for SQLAlchemy 2.0 mode
 """
 
 import asyncio
+import os
 from logging.config import fileConfig
 
 from alembic import context
@@ -26,13 +27,16 @@ target_metadata = Base.metadata
 
 def get_url() -> str:
     """
-    Retrieve database connection URL from settings or alembic.ini fallback,
+    Retrieve database connection URL from environment variable,
+    settings.DATABASE_URL, or alembic.ini fallback,
     ensuring the asyncpg driver prefix is applied for async execution.
     """
-    if hasattr(settings, "SQLALCHEMY_DATABASE_URI") and settings.SQLALCHEMY_DATABASE_URI:
-        url = str(settings.SQLALCHEMY_DATABASE_URI)
-    else:
-        url = config.get_main_option("sqlalchemy.url", "")
+    url = (
+        os.getenv("DATABASE_URL")
+        or getattr(settings, "DATABASE_URL", None)
+        or config.get_main_option("sqlalchemy.url", "")
+    )
+    url = str(url).strip()
 
     # Ensure async driver scheme is used for SQLAlchemy async engine
     if url.startswith("postgresql://"):
