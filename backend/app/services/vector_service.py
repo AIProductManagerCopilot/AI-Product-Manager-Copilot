@@ -2,6 +2,7 @@
 Vector Database & Embedding Integration Service for Qdrant and Google GenAI.
 """
 
+import asyncio
 import logging
 from typing import Any, Dict, List, Optional
 from google import genai
@@ -18,11 +19,25 @@ class VectorService:
     """Service handling vector storage, payload indexing, and RAG retrieval in Qdrant."""
 
     def __init__(self) -> None:
-        self.client = AsyncQdrantClient(
-            host=settings.qdrant_host,
-            port=settings.qdrant_port,
-            timeout=10.0,
-        )
+        # Dynamically resolve Qdrant endpoint parameters and credentials
+        qdrant_url = getattr(settings, "qdrant_url", None) or getattr(settings, "QDRANT_URL", None)
+        qdrant_api_key = getattr(settings, "qdrant_api_key", None) or getattr(settings, "QDRANT_API_KEY", None)
+
+        if qdrant_url and str(qdrant_url).startswith("http"):
+            self.client = AsyncQdrantClient(
+                url=str(qdrant_url),
+                api_key=qdrant_api_key,
+                timeout=10.0,
+            )
+        else:
+            host = str(settings.qdrant_host).replace("https://", "").replace("http://", "")
+            self.client = AsyncQdrantClient(
+                host=host,
+                port=settings.qdrant_port,
+                api_key=qdrant_api_key,
+                timeout=10.0,
+            )
+
         self.collection_name = settings.qdrant_collection
         self.memory_collection_name = getattr(settings, "qdrant_memory_collection", "user_memory")
         self.vector_size = settings.embedding_dimension
