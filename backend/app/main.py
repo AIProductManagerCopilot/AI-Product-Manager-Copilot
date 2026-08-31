@@ -105,8 +105,13 @@ def create_application() -> FastAPI:
     app.include_router(memory.router, prefix=api_v1_prefix)
     app.include_router(analytics_router, prefix=f"{api_v1_prefix}/analytics", tags=["Analytics"])
 
-    # Register analytics router at root level as a fallback for routes requesting /analytics directly
+    # Fallback mounts for calls made directly without /api/v1 prefix
+    app.include_router(ai_router, prefix="/ai", tags=["AI Fallback"])
+    app.include_router(copilot.router, prefix="/copilot", tags=["Copilot Fallback"])
+    app.include_router(sessions.router, prefix="/sessions", tags=["Sessions Fallback"])
     app.include_router(analytics_router, prefix="/analytics", tags=["Analytics Fallback"])
+    app.include_router(projects.router, prefix="/projects", tags=["Projects Fallback"])
+    app.include_router(feedback.router, prefix="/feedback", tags=["Feedback Fallback"])
 
     return app
 
