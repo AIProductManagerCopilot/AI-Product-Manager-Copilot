@@ -557,6 +557,7 @@ export const DashboardPage: React.FC = () => {
   const [isBackendConnected, setIsBackendConnected] = useState<boolean | null>(null);
   const [backendClusters, setBackendClusters] = useState<BackendCluster[]>([]);
   const [backendTrends, setBackendTrends] = useState<BackendTrend[]>([]);
+  const [totalFeedbackCount, setTotalFeedbackCount] = useState<number | null>(null);
   const [copilotAlerts, setCopilotAlerts] = useState<CopilotAlert[]>(DEFAULT_ALERTS);
   const [apiProjectCount, setApiProjectCount] = useState<number | null>(null);
 
@@ -589,10 +590,11 @@ export const DashboardPage: React.FC = () => {
 
     async function loadBackendData() {
       try {
-        // Fetch live theme clusters & trends directly from PostgreSQL endpoints
-        const [clusters, trends] = await Promise.all([
+        // Fetch live theme clusters, trends, and executive summary telemetry
+        const [clusters, trends, execSummary] = await Promise.all([
           analyticsService.getThemeClusters(),
-          analyticsService.getThemeTrends(56) // 8 Weeks Default
+          analyticsService.getThemeTrends(56), // 8 Weeks Default
+          analyticsService.getExecutiveSummary()
         ]);
 
         if (isMounted) {
@@ -601,6 +603,9 @@ export const DashboardPage: React.FC = () => {
           }
           if (Array.isArray(trends) && trends.length > 0) {
             setBackendTrends(trends);
+          }
+          if (execSummary?.kpis?.total_feedback !== undefined) {
+            setTotalFeedbackCount(execSummary.kpis.total_feedback);
           }
           const liveAlerts = generateLiveAlertsFromBackend(clusters, trends);
           setCopilotAlerts(liveAlerts);
@@ -754,9 +759,11 @@ export const DashboardPage: React.FC = () => {
                 <div>
                   <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Total Records</p>
                   <span className="text-2xl font-extrabold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                    {backendClusters.length > 0
-                      ? backendClusters.reduce((sum, item) => sum + (item.total_volume || 0), 0).toLocaleString()
-                      : '8,342'}
+                    {totalFeedbackCount !== null
+                      ? totalFeedbackCount.toLocaleString()
+                      : backendClusters.length > 0
+                        ? backendClusters.reduce((sum, item) => sum + (item.total_volume || 0), 0).toLocaleString()
+                        : '0'}
                   </span>
                 </div>
               </div>

@@ -377,6 +377,23 @@ ${
             </div>
           </div>
 
+          {/* Unseeded Database Banner (When total feedback KPI is 0) */}
+          {!loading && kpis.total_feedback === 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4.5 flex items-start gap-3.5 text-amber-200 shadow-lg backdrop-blur-xl"
+            >
+              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+              <div className="text-xs leading-relaxed">
+                <p className="font-bold text-amber-300 text-sm mb-1">Zero Backend Feedback Telemetry Detected</p>
+                <p className="text-amber-200/90">
+                  Telemetry metrics show 0 values because your backend PostgreSQL database currently has 0 feedback records. If you are running a fresh deployment or fork, populate sample analytics and telemetry by executing <code className="bg-amber-950/80 px-2 py-0.5 rounded text-amber-300 font-mono text-[11px] border border-amber-500/30">python seed_db.py</code> in your backend directory or importing feedback data via the API.
+                </p>
+              </div>
+            </motion.div>
+          )}
+
           {/* AI Executive Strategic Synthesis Banner */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}

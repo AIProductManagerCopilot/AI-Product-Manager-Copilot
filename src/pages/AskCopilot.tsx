@@ -576,7 +576,7 @@ export const AskCopilotPage: React.FC = () => {
                   Ask Copilot — <span className={`text-[#94A3B8] font-normal`}>Module 9 •</span> <span className="text-[#10B981]">RAG & Memory Live</span>
                 </h1>
                 <p className={`text-sm text-[#94A3B8]`}>
-                  (8,342 Feedback Items + Long-Term Memory Activated)
+                  (Live Feedback Index + Long-Term Memory Activated)
                 </p>
               </div>
             </div>
@@ -1115,7 +1115,7 @@ export const AskCopilotPage: React.FC = () => {
                 </h3>
                 
                 <p className="text-xs leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
-                  Questions are embedded into vectors, matched against 8,342 feedback items and your user long-term memory store, and processed with sliding-window history.
+                  Questions are embedded into vectors, matched against your live feedback dataset and user long-term memory store, and processed with sliding-window history.
                 </p>
 
                 {/* Flow Diagram */}
