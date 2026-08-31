@@ -42,7 +42,7 @@ export interface FeedbackListResponse {
 
 const RAW_BASE = import.meta.env.VITE_API_BASE_URL || 'https://aipm-copilot-backend.onrender.com';
 const CLEAN_BASE = RAW_BASE.replace(/\/+$/, '');
-const BASE_URL = `${CLEAN_BASE}/api/v1`;
+const API_BASE_URL = `${CLEAN_BASE}/api/v1`;
 
 // Default project ID matching the seeded database record in seed_db.py
 export const DEFAULT_PROJECT_ID = '11111111-1111-1111-1111-111111111111';
@@ -70,7 +70,7 @@ export const feedbackService = {
     limit: number = 50
   ): Promise<FeedbackListResponse> {
     const headers = await getAuthHeader();
-    const url = `${BASE_URL}/projects/${projectId}/feedback/?limit=${limit}`;
+    const url = `${API_BASE_URL}/projects/${projectId}/feedback/?limit=${limit}`;
     console.log('[feedbackService] GET', url);
     const response = await fetch(url, { headers });
     console.log('[feedbackService] GET response status:', response.status);
@@ -91,7 +91,7 @@ export const feedbackService = {
     projectId: string = DEFAULT_PROJECT_ID
   ): Promise<ProcessedFeedbackEntry> {
     const headers = await getAuthHeader();
-    const response = await fetch(`${BASE_URL}/projects/${projectId}/feedback/`, {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}/feedback/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...headers },
       body: JSON.stringify(payload),

@@ -1,6 +1,8 @@
 import { auth } from '../config/firebase';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const RAW_BASE = import.meta.env.VITE_API_BASE_URL || 'https://aipm-copilot-backend.onrender.com';
+const CLEAN_BASE = RAW_BASE.replace(/\/+$/, '');
+const API_BASE_URL = `${CLEAN_BASE}/api/v1`;
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   try {
@@ -77,7 +79,7 @@ export const analyticsService = {
       const params = new URLSearchParams();
       if (projectId) params.append('project_id', projectId);
 
-      const url = `${BASE_URL}/analytics/executive-summary${params.toString() ? `?${params.toString()}` : ''}`;
+      const url = `${API_BASE_URL}/analytics/executive-summary${params.toString() ? `?${params.toString()}` : ''}`;
       const res = await fetch(url, { headers });
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
@@ -99,7 +101,7 @@ export const analyticsService = {
       if (startDate) params.append('start_date', startDate);
       if (endDate) params.append('end_date', endDate);
 
-      const url = `${BASE_URL}/analytics/clusters${params.toString() ? `?${params.toString()}` : ''}`;
+      const url = `${API_BASE_URL}/analytics/clusters${params.toString() ? `?${params.toString()}` : ''}`;
       const res = await fetch(url, { headers });
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
@@ -118,7 +120,7 @@ export const analyticsService = {
   async getThemeTrends(timeWindowDays = 30): Promise<BackendTrend[]> {
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${BASE_URL}/analytics/trends?time_window_days=${timeWindowDays}`, { headers });
+      const res = await fetch(`${API_BASE_URL}/analytics/trends?time_window_days=${timeWindowDays}`, { headers });
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const json = await res.json();
@@ -138,7 +140,7 @@ export const analyticsService = {
   async streamCopilotAI(query: string, onChunk: (chunk: string) => void): Promise<void> {
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${BASE_URL}/ai/stream`, {
+      const res = await fetch(`${API_BASE_URL}/ai/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -219,7 +221,7 @@ export const analyticsService = {
   ): Promise<void> {
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${BASE_URL}/ai/generate-prd`, {
+      const res = await fetch(`${API_BASE_URL}/ai/generate-prd`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

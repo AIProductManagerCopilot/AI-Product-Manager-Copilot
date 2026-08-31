@@ -2,7 +2,7 @@ import { auth } from '../config/firebase';
 
 const RAW_BASE = import.meta.env.VITE_API_BASE_URL || 'https://aipm-copilot-backend.onrender.com';
 const CLEAN_BASE = RAW_BASE.replace(/\/+$/, '');
-const BASE_URL = `${CLEAN_BASE}/api/v1`;
+const API_BASE_URL = `${CLEAN_BASE}/api/v1`;
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   try {
@@ -75,7 +75,7 @@ export const chatService = {
    */
   async createSession(title?: string, workspaceId?: string): Promise<ChatSession> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${BASE_URL}/sessions`, {
+    const res = await fetch(`${API_BASE_URL}/sessions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export const chatService = {
       limit: String(limit),
     });
 
-    const res = await fetch(`${BASE_URL}/sessions?${params.toString()}`, { headers });
+    const res = await fetch(`${API_BASE_URL}/sessions?${params.toString()}`, { headers });
     if (!res.ok) {
       throw new Error(`Failed to list sessions: HTTP ${res.status}`);
     }
@@ -120,7 +120,7 @@ export const chatService = {
    */
   async getSession(sessionId: string): Promise<ChatSession | null> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${BASE_URL}/sessions/${sessionId}`, { headers });
+    const res = await fetch(`${API_BASE_URL}/sessions/${sessionId}`, { headers });
 
     if (res.status === 404) return null;
     if (!res.ok) {
@@ -136,7 +136,7 @@ export const chatService = {
    */
   async updateSession(sessionId: string, payload: { title?: string; is_archived?: boolean }): Promise<ChatSession> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${BASE_URL}/sessions/${sessionId}`, {
+    const res = await fetch(`${API_BASE_URL}/sessions/${sessionId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ export const chatService = {
    */
   async deleteSession(sessionId: string): Promise<boolean> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${BASE_URL}/sessions/${sessionId}`, {
+    const res = await fetch(`${API_BASE_URL}/sessions/${sessionId}`, {
       method: 'DELETE',
       headers,
     });
@@ -181,7 +181,7 @@ export const chatService = {
       limit: String(limit),
     });
 
-    const res = await fetch(`${BASE_URL}/sessions/${sessionId}/messages?${params.toString()}`, { headers });
+    const res = await fetch(`${API_BASE_URL}/sessions/${sessionId}/messages?${params.toString()}`, { headers });
     if (!res.ok) {
       throw new Error(`Failed to list messages for session ${sessionId}: HTTP ${res.status}`);
     }
@@ -195,7 +195,7 @@ export const chatService = {
    */
   async createMessage(sessionId: string, content: string, role: 'user' | 'assistant' | 'system' = 'user'): Promise<ChatMessage> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${BASE_URL}/sessions/${sessionId}/messages`, {
+    const res = await fetch(`${API_BASE_URL}/sessions/${sessionId}/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -234,7 +234,7 @@ export const chatService = {
         temperature: 0.2,
       };
 
-      const res = await fetch(`${BASE_URL}/copilot/stream`, {
+      const res = await fetch(`${API_BASE_URL}/copilot/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -106,7 +106,9 @@ export const PRIORITY_COLORS: Record<Priority, string> = {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const COLLECTION = 'workspaces';
-const BASE_URL = '/api/v1';
+const RAW_BASE = import.meta.env.VITE_API_BASE_URL || 'https://aipm-copilot-backend.onrender.com';
+const CLEAN_BASE = RAW_BASE.replace(/\/+$/, '');
+const API_BASE_URL = `${CLEAN_BASE}/api/v1`;
 
 async function getAuthHeader(): Promise<Record<string, string>> {
   const currentUser = auth.currentUser;
@@ -125,7 +127,7 @@ export const workspaceService = {
    */
   async getWorkspacesFromApi() {
     const headers = await getAuthHeader();
-    const response = await fetch(`${BASE_URL}/projects`, { headers });
+    const response = await fetch(`${API_BASE_URL}/projects`, { headers });
     if (!response.ok) throw new Error('Failed to fetch workspaces from backend');
     return await response.json();
   },
@@ -135,7 +137,7 @@ export const workspaceService = {
    */
   async createWorkspaceApi(payload: CreateProjectPayload) {
     const headers = await getAuthHeader();
-    const response = await fetch(`${BASE_URL}/projects`, {
+    const response = await fetch(`${API_BASE_URL}/projects`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -152,7 +154,7 @@ export const workspaceService = {
    */
   async getWorkspaceAnalytics(projectId: string) {
     const headers = await getAuthHeader();
-    const response = await fetch(`${BASE_URL}/analytics/${projectId}`, { headers });
+    const response = await fetch(`${API_BASE_URL}/analytics/${projectId}`, { headers });
     if (!response.ok) throw new Error('Failed to fetch analytics from backend');
     return await response.json();
   },
