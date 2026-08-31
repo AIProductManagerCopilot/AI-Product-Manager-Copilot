@@ -69,6 +69,7 @@ def create_application() -> FastAPI:
     )
 
     origins = [
+        "https://ai-product-manager-copilot.vercel.app",
         "http://localhost:5173",
         "http://localhost:3000",
         "http://127.0.0.1:5173",
@@ -79,6 +80,7 @@ def create_application() -> FastAPI:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
+        allow_origin_regex=r"^https://.*ai-product-manager-copilot.*\.vercel\.app$",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -102,6 +104,9 @@ def create_application() -> FastAPI:
     app.include_router(sessions.router, prefix=api_v1_prefix)
     app.include_router(memory.router, prefix=api_v1_prefix)
     app.include_router(analytics_router, prefix=f"{api_v1_prefix}/analytics", tags=["Analytics"])
+
+    # Register analytics router at root level as a fallback for routes requesting /analytics directly
+    app.include_router(analytics_router, prefix="/analytics", tags=["Analytics Fallback"])
 
     return app
 
