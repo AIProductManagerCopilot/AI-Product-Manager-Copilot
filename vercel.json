@@ -1,36 +1,39 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/v1/:path*",
-      "destination": "https://aipm-copilot-backend.onrender.com/api/v1/:path*"
+      "src": "/api/v1/(.*)",
+      "dest": "https://aipm-copilot-backend.onrender.com/api/v1/$1"
     },
     {
-      "source": "/api/:path*",
-      "destination": "https://aipm-copilot-backend.onrender.com/api/v1/:path*"
+      "src": "/api/(.*)",
+      "dest": "https://aipm-copilot-backend.onrender.com/api/v1/$1"
     },
     {
-      "source": "/sessions/:path*",
-      "destination": "https://aipm-copilot-backend.onrender.com/api/v1/sessions/:path*"
+      "src": "/sessions/(.*)",
+      "dest": "https://aipm-copilot-backend.onrender.com/api/v1/sessions/$1"
     },
     {
-      "source": "/sessions",
-      "destination": "https://aipm-copilot-backend.onrender.com/api/v1/sessions"
+      "src": "/sessions",
+      "dest": "https://aipm-copilot-backend.onrender.com/api/v1/sessions"
     },
     {
-      "source": "/ai/:path*",
-      "destination": "https://aipm-copilot-backend.onrender.com/api/v1/ai/:path*"
+      "src": "/ai/(.*)",
+      "dest": "https://aipm-copilot-backend.onrender.com/api/v1/ai/$1"
     },
     {
-      "source": "/copilot/:path*",
-      "destination": "https://aipm-copilot-backend.onrender.com/api/v1/copilot/:path*"
+      "src": "/copilot/(.*)",
+      "dest": "https://aipm-copilot-backend.onrender.com/api/v1/copilot/$1"
     },
     {
-      "source": "/analytics/:path*",
-      "destination": "https://aipm-copilot-backend.onrender.com/api/v1/analytics/:path*"
+      "src": "/analytics/(.*)",
+      "dest": "https://aipm-copilot-backend.onrender.com/api/v1/analytics/$1"
     },
     {
-      "source": "/:path*",
-      "destination": "/index.html"
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
     }
   ]
 }
