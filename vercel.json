@@ -29,7 +29,7 @@
       "destination": "https://aipm-copilot-backend.onrender.com/api/v1/analytics/:path*"
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ]
