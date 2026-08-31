@@ -1,7 +1,7 @@
 // src/services/feedbackService.ts
 //
 // Feedback Ingestion API service — mirrors the pattern in workspaceService.ts.
-// All calls go through the Vite proxy (/api → http://127.0.0.1:8000).
+// Dynamically routes to the configured backend API URL or live Render backend.
 
 import { auth } from '../config/firebase';
 
@@ -40,7 +40,9 @@ export interface FeedbackListResponse {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const BASE_URL = '/api/v1';
+const RAW_BASE = import.meta.env.VITE_API_BASE_URL || 'https://aipm-copilot-backend.onrender.com';
+const CLEAN_BASE = RAW_BASE.replace(/\/+$/, '');
+const BASE_URL = `${CLEAN_BASE}/api/v1`;
 
 // Default project ID matching the seeded database record in seed_db.py
 export const DEFAULT_PROJECT_ID = '11111111-1111-1111-1111-111111111111';

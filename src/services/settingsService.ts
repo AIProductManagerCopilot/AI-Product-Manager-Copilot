@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+// Dynamically resolve API URL with fallback to production backend
+const RAW_BASE = import.meta.env.VITE_API_BASE_URL || 'https://aipm-copilot-backend.onrender.com';
+const CLEAN_BASE = RAW_BASE.replace(/\/+$/, '');
+const API_BASE_URL = `${CLEAN_BASE}/api/v1`;
 
 export interface TeamMember {
   id: string;
@@ -117,8 +120,8 @@ const INITIAL_API_KEYS: ApiKeyItem[] = [
     id: 'key-stripe',
     keyName: 'STRIPE_API_KEY',
     maskedValue: '********************',
-    secretValue: 'stripe_demo_api_key_sample_token_99',
     service: 'Stripe Payments',
+    secretValue: 'stripe_demo_api_key_sample_token_99',
     status: 'Active',
     lastUsed: '1 hour ago',
   },

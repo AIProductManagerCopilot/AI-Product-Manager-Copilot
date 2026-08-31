@@ -5,6 +5,14 @@
       "destination": "https://aipm-copilot-backend.onrender.com/api/:path*"
     },
     {
+      "source": "/sessions/:path*",
+      "destination": "https://aipm-copilot-backend.onrender.com/sessions/:path*"
+    },
+    {
+      "source": "/ai/:path*",
+      "destination": "https://aipm-copilot-backend.onrender.com/ai/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

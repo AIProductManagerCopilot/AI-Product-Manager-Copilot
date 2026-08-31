@@ -1,6 +1,8 @@
 import { auth } from '../config/firebase';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const RAW_BASE = import.meta.env.VITE_API_BASE_URL || 'https://aipm-copilot-backend.onrender.com';
+const CLEAN_BASE = RAW_BASE.replace(/\/+$/, '');
+const BASE_URL = `${CLEAN_BASE}/api/v1`;
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   try {
