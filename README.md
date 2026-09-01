@@ -1,15 +1,20 @@
-# AI Product Manager Copilot
+# 🚀 AI Product Manager Copilot (AIPM Copilot)
 
-An intelligent AI assistant for product planning, strategy, roadmaps, and customer insights—designed specifically for a streamlined single Product Manager workflow. Automate product management tasks with real-time PRD generation, semantic user feedback clustering, and automated feature scoring.
+> An AI-powered Product Management Copilot featuring feedback ETL ingestion, automated PRD generation, real-time strategy summaries, and RAG-grounded vector search—designed specifically for a streamlined single Product Manager workflow.
+
+---
+
+## 🌐 Live Deployment & Demo Links
+
+* **Live Web Application (Frontend):** [https://ai-product-manager-copilot.vercel.app](https://ai-product-manager-copilot.vercel.app)
+* **API Documentation (Swagger UI):** [https://aipm-copilot-backend.onrender.com/docs](https://aipm-copilot-backend.onrender.com/docs)
+* **Backend Health Check:** [https://aipm-copilot-backend.onrender.com/health](https://aipm-copilot-backend.onrender.com/health)
 
 ---
 
 ## 🏗️ System Architecture & Data Flow
 
-
-```
-
-```
+```text
                   Single Product Manager
                             │
                             ▼
@@ -20,22 +25,19 @@ An intelligent AI assistant for product planning, strategy, roadmaps, and custom
                             │
      ┌──────────────────────┼──────────────────────┐
      ▼                      ▼                      ▼
-
-```
-
-PostgreSQL 15              Redis 7               Qdrant DB
-(Metadata & Tasks)      (Broker & Cache)      (Vector Mesh)
-Port 5433               Port 6379             Port 6333
-│                      │                      │
-└──────────────────────┼──────────────────────┘
-│
-▼
-Google Gemini 3.5 Flash Engine
-(768-dim text-embedding-004)
-│
-▼
-Real-time SSE Token Stream
-(/api/v1/copilot/stream & /generate-prd)
+PostgreSQL 15            Redis 7                Qdrant DB
+(Metadata & Tasks)   (Broker & Cache)        (Vector Mesh)
+Port 5433               Port 6379              Port 6333
+     │                      │                      │
+     └──────────────────────┼──────────────────────┘
+                            │
+                            ▼
+              Google Gemini 3.6 Flash Engine
+               (768-dim gemini-embedding-001)
+                            │
+                            ▼
+               Real-time SSE Token Stream
+       (/api/v1/copilot/stream & /generate-prd)
 
 ```
 
@@ -43,34 +45,37 @@ Real-time SSE Token Stream
 
 ## 🛠️ System Overview & Architecture Steps
 
-1. **Feedback Ingestion & Vectorization**: Customer reviews, support tickets, and product context are processed and converted into 768-dimensional dense vector embeddings using Google GenAI (`text-embedding-004`).
+1. **Feedback Ingestion & Vectorization**: Customer reviews, support tickets, and product context are processed and converted into 768-dimensional dense vector embeddings using Google GenAI (`gemini-embedding-001`).
 2. **Qdrant Vector Mesh**: Embedded vectors and structured payloads (`category`, `sentiment`, `priority_score`) are indexed in Qdrant (`feedback_clusters`) for semantic similarity search.
 3. **Analytics Integration**: Pre-computed analytics summaries enrich RAG system prompts with high-level KPI trends.
-4. **AI Copilot & PRD Token Streaming**: Google Gemini (`gemini-3.6-flash`) streams markdown responses real-time over Server-Sent Events (SSE) directly to the frontend interface.
+4. **AI Copilot & PRD Token Streaming**: Google Gemini (`gemini-3.6-flash`) streams markdown responses in real-time over Server-Sent Events (SSE) directly to the frontend interface.
 
 ---
 
 ## ✨ Key Features
 
-- **Real-Time AI Copilot Streaming**: Server-Sent Events (SSE) stream AI responses with minimal latency.
-- **RAG-Grounded PRD Generator**: Generates structured Markdown Product Requirement Documents backed by Qdrant vector feedback evidence.
-- **Strategic Theme Intelligence**: Summarizes feedback cluster topics to output strategic memos and churn risk assessments.
-- **Unified PM Workspace**: Built for a single Product Manager workflow without complex RBAC overhead.
+* **Real-Time AI Copilot Streaming**: Server-Sent Events (SSE) stream AI responses with minimal latency.
+* **RAG-Grounded PRD Generator**: Generates structured Markdown Product Requirement Documents backed by Qdrant vector feedback evidence.
+* **Strategic Theme Intelligence**: Summarizes feedback cluster topics to output strategic memos and churn risk assessments.
+* **Unified PM Workspace**: Built for a single Product Manager workflow without complex RBAC overhead.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **AI & RAG Subsystem**: Google Gemini 3.5 Flash (`google-genai` SDK), Qdrant Vector DB (768-dim embeddings)
-- **Backend Infrastructure**: FastAPI, Async SQLAlchemy, PostgreSQL 15, Redis 7, Structlog
-- **Frontend App**: React 18, Vite 6, TypeScript, Tailwind CSS 3, Framer Motion
+* **AI & RAG Subsystem**: Google Gemini 3.6 Flash (`google-genai` SDK), Qdrant Vector DB (768-dim embeddings)
+* **Backend Infrastructure**: FastAPI, Async SQLAlchemy, Neon PostgreSQL (`asyncpg`), Redis 7, Structlog
+* **Frontend App**: React 18, Vite 6, TypeScript, Tailwind CSS 3, Framer Motion
+* **Hosting & Cloud**: Vercel (Frontend SPA & Edge Proxy), Render (Backend FastAPI Service), Firebase (Auth & Firestore)
 
 ---
 
 ## 🚀 Getting Started
 
 ### 1. Boot Core Infrastructure Services
+
 Launch PostgreSQL, Redis, and Qdrant in detached mode using Docker Compose:
+
 ```bash
 cd backend
 docker-compose up -d
@@ -100,7 +105,7 @@ REDIS_PORT=6379
 ```bash
 # Apply migrations & seed feedback records
 alembic upgrade head
-python -m app.db.seed
+python -m app.seed.seed_database
 
 # Launch FastAPI development server
 uvicorn app.main:app --reload --port 8000
@@ -129,12 +134,8 @@ To verify that the AI streaming engine and vector search are running cleanly:
 curl -s http://localhost:6333/collections/feedback_clusters
 
 # Test AI Copilot SSE Stream
-curl -X POST "[http://127.0.0.1:8000/api/v1/copilot/stream](http://127.0.0.1:8000/api/v1/copilot/stream)" \
+curl -X POST "http://127.0.0.1:8000/api/v1/copilot/stream" \
      -H "Content-Type: application/json" \
      -d '{"query": "Summarize top user onboarding feedback"}'
-
-```
-
-```
 
 ```
