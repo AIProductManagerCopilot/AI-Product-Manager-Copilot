@@ -6,7 +6,7 @@
 
 ## 🌐 Live Deployment & Demo Links
 
-* **Live Web Application (Frontend):** [https://ai-product-manager-copilot.vercel.app](https://ai-product-manager-copilot.vercel.app)
+* **Live Web Application (Frontend):** [https://ai-product-manager-copilot-iota.vercel.app/](https://ai-product-manager-copilot-iota.vercel.app/)
 * **API Documentation (Swagger UI):** [https://aipm-copilot-backend.onrender.com/docs](https://aipm-copilot-backend.onrender.com/docs)
 * **Backend Health Check:** [https://aipm-copilot-backend.onrender.com/health](https://aipm-copilot-backend.onrender.com/health)
 
